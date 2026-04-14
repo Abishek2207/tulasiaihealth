@@ -22,7 +22,7 @@ import { offlineManager } from '@/lib/offline';
 import DatabaseService from '@/lib/db';
 
 export default function OfflinePage() {
-  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [isOnline, setIsOnline] = useState(true);
   const [syncStatus, setSyncStatus] = useState<any>(null);
   const [isSyncing, setIsSyncing] = useState(false);
   const [storageStats, setStorageStats] = useState<any>(null);

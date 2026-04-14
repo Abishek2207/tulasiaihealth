@@ -20,7 +20,8 @@ import {
   ChevronRight, 
   LogOut,
   Search,
-  Plus
+  Plus,
+  BrainCircuit
 } from 'lucide-react';
 import { 
   AreaChart, 

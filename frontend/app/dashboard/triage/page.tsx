@@ -26,7 +26,8 @@ import {
   TrendingUp,
   Info,
   Droplets,
-  Heart
+  Heart,
+  User
 } from 'lucide-react';
 
 const NAV_ITEMS = [

@@ -24,7 +24,8 @@ import {
   BrainCircuit,
   Filter,
   MoreVertical,
-  Calendar
+  Calendar,
+  Loader2
 } from 'lucide-react';
 
 const NAV_ITEMS = [

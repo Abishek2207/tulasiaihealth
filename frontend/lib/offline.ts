@@ -25,7 +25,7 @@ class OfflineManager {
   private config: OfflineConfig;
   private syncTimer?: NodeJS.Timeout;
   private eventListeners: Map<string, Function[]> = new Map();
-  private isOnline: boolean = navigator.onLine;
+  private isOnline: boolean = typeof navigator !== 'undefined' ? navigator.onLine : true;
 
   constructor(config: Partial<OfflineConfig> = {}) {
     this.config = {
@@ -35,10 +35,11 @@ class OfflineManager {
       cacheTimeout: 24, // 24 hours
       ...config
     };
-
-    this.initializeEventListeners();
-    this.startAutoSync();
-    this.cleanupExpiredCache();
+    if (typeof window !== 'undefined') {
+      this.initializeEventListeners();
+      this.startAutoSync();
+      this.cleanupExpiredCache();
+    }
   }
 
   // Event management
