@@ -1,0 +1,301 @@
+ICD-11 TM2 CHAPTER 26 - TRADITIONAL MEDICINE MODULE 2
+
+CHAPTER 26: TRADITIONAL MEDICINE CONDITIONS - CHAPTER 26 TM2
+
+OVERVIEW:
+Chapter 26 of ICD-11 represents the Traditional Medicine Module 2 (TM2), which provides a standardized classification system for traditional medicine conditions. This module enables integration of traditional medicine concepts with conventional medical terminology through a structured coding system. TM2 focuses on traditional medicine diagnoses, patterns, and syndromes while maintaining compatibility with the main ICD-11 classification.
+
+STRUCTURE AND ORGANIZATION:
+The TM2 chapter is organized into sections based on traditional medicine systems and clinical presentations. Each code represents a specific traditional medicine diagnosis, pattern, or syndrome with detailed descriptions and clinical criteria. The coding system follows a hierarchical structure allowing for varying levels of specificity in diagnosis.
+
+SECTION TM2-SC00: TRADITIONAL MEDICINE - GENERAL CONCEPTS
+
+TM2-SC00: Traditional Medicine Conditions, Unspecified
+This code represents traditional medicine conditions that cannot be classified more specifically. It serves as a residual category for cases where the traditional medicine diagnosis is unclear or does not fit into defined categories. This code should be used sparingly and only when more specific diagnosis is not possible.
+
+TM2-SC01: RESPIRATORY SYSTEM DISORDERS IN TRADITIONAL MEDICINE
+This section covers respiratory conditions as understood and classified in traditional medicine systems. These include various patterns of respiratory illness based on traditional medicine theories of etiology and pathogenesis.
+
+TM2-SC01.0: Wind-Cold Pattern of Respiratory System
+Characterized by acute onset with chills, fever, headache, body aches, nasal congestion with clear discharge, and cough with white sputum. The condition is caused by external wind-cold pathogen invading the lung meridian. Treatment focuses on dispelling wind and dispersing cold.
+
+TM2-SC01.1: Wind-Heat Pattern of Respiratory System
+Characterized by fever, sore throat, cough with yellow sputum, nasal congestion with yellow discharge, and thirst. This condition results from wind-heat pathogen affecting the lung system. Treatment emphasizes clearing heat and dispersing wind.
+
+TM2-SC01.2: Lung Qi Deficiency Pattern
+Characterized by chronic cough, shortness of breath, spontaneous sweating, fatigue, and weak voice. This pattern reflects deficient lung qi failing to govern respiration and control pores. Treatment focuses on tonifying lung qi.
+
+TM2-SC01.3: Lung Yin Deficiency Pattern
+Characterized by dry cough, dry throat, hoarseness, afternoon fever, night sweats, and thin, rapid pulse. This pattern reflects insufficient lung yin to moisten and cool the lungs. Treatment emphasizes nourishing lung yin.
+
+TM2-SC02: DIGESTIVE SYSTEM DISORDERS IN TRADITIONAL MEDICINE
+This section covers gastrointestinal conditions classified according to traditional medicine theories. The patterns reflect various imbalances affecting digestion, absorption, and gastrointestinal function.
+
+TM2-SC02.0: Spleen Qi Deficiency Pattern
+Characterized by poor appetite, abdominal distension after meals, fatigue, loose stools, and pale complexion. This pattern reflects insufficient spleen qi to transform and transport nutrients. Treatment focuses on strengthening spleen qi.
+
+TM2-SC02.1: Stomach Yin Deficiency Pattern
+Characterized by poor appetite, dry mouth and throat, epigastric pain, thirst, and constipation. This pattern reflects inadequate stomach yin to aid digestion. Treatment emphasizes nourishing stomach yin.
+
+TM2-SC02.2: Liver Qi Stagnation Pattern
+Characterized by hypochondriac pain, mood swings, irritability, sighing, and menstrual irregularities in women. This pattern reflects constrained liver qi failing to flow freely. Treatment focuses on soothing liver qi.
+
+TM2-SC02.3: Food Retention Pattern
+Characterized by abdominal distension, belching, acid reflux, foul breath, and loss of appetite. This pattern results from improper food digestion and accumulation in the stomach. Treatment emphasizes promoting digestion and removing food stagnation.
+
+TM2-SC03: CARDIOVASCULAR DISORDERS IN TRADITIONAL MEDICINE
+This section covers heart and circulatory conditions as understood in traditional medicine. The patterns reflect various imbalances affecting heart function, blood circulation, and vascular health.
+
+TM2-SC03.0: Heart Qi Deficiency Pattern
+Characterized by palpitations, shortness of breath, fatigue, spontaneous sweating, and chest discomfort. This pattern reflects insufficient heart qi to pump blood effectively. Treatment focuses on tonifying heart qi.
+
+TM2-SC03.1: Heart Yin Deficiency Pattern
+Characterized by palpitations, insomnia, anxiety, night sweats, and memory problems. This pattern reflects inadequate heart yin to anchor the shen (spirit). Treatment emphasizes nourishing heart yin.
+
+TM2-SC03.2: Heart Blood Stasis Pattern
+Characterized by fixed chest pain, palpitations, cyanosis, and dark complexion. This pattern reflects blood stagnation in the heart vessels. Treatment focuses on invigorating blood and dispelling stasis.
+
+TM2-SC04: FEVER PATTERNS IN TRADITIONAL MEDICINE
+This section covers various fever patterns classified according to traditional medicine etiology and manifestations. The patterns reflect different types of fever based on pathogenic factors and body response.
+
+TM2-SC04.0: Wind-Cold Fever Pattern
+Characterized by chills predominating over fever, headache, body aches, and absence of thirst. This pattern results from external wind-cold pathogen invading the exterior. Treatment emphasizes dispelling wind and cold.
+
+TM2-SC04.1: Wind-Heat Fever Pattern
+Characterized by fever predominating over chills, sore throat, thirst, and rapid pulse. This pattern results from external wind-heat pathogen. Treatment focuses on clearing heat and dispersing wind.
+
+TM2-SC04.2: Damp-Heat Fever Pattern
+Characterized by persistent fever, heaviness, thirst without desire to drink, and greasy tongue coating. This pattern reflects damp-heat pathogen. Treatment emphasizes clearing damp-heat.
+
+TM2-SC04.3: Yin Deficiency Fever Pattern
+Characterized by afternoon or evening fever, night sweats, dry mouth and throat, and red tongue with little coating. This pattern reflects internal heat from yin deficiency. Treatment focuses on nourishing yin and clearing deficiency heat.
+
+TM2-SC05: MUSCULOSKELETAL DISORDERS IN TRADITIONAL MEDICINE
+This section covers bone, joint, and muscle conditions classified in traditional medicine. The patterns reflect various imbalances affecting the musculoskeletal system.
+
+TM2-SC05.0: Wind-Cold-Damp Bi Syndrome
+Characterized by wandering joint pain, fixed pain, and swelling that worsens with cold and damp weather. This pattern reflects wind-cold-damp pathogens obstructing meridians. Treatment focuses on dispelling wind, cold, and damp.
+
+TM2-SC05.1: Kidney Deficiency Low Back Pain Pattern
+Characterized by chronic low back pain, weakness, fatigue, and cold limbs. This pattern reflects kidney deficiency failing to nourish the lower back. Treatment emphasizes tonifying kidney.
+
+TM2-SC05.2: Blood Stasis Pain Pattern
+Characterized by fixed, stabbing pain, dark complexion, and purple tongue. This pattern reflects blood stasis obstructing meridians. Treatment focuses on invigorating blood and dispelling stasis.
+
+TM2-SC06: NEUROLOGICAL DISORDERS IN TRADITIONAL MEDICINE
+This section covers neurological and mental conditions classified according to traditional medicine theories. The patterns reflect various imbalances affecting the nervous system and mental function.
+
+TM2-SC06.0: Liver Wind Agitation Pattern
+Characterized by dizziness, vertigo, tremors, spasms, and irritability. This pattern reflects liver wind stirring internally. Treatment focuses on extinguishing wind and calming liver.
+
+TM2-SC06.1: Phlegm-Fogging Heart Orifice Pattern
+Characterized by mental confusion, depression, lethargy, and excessive sleep. This pattern reflects phlegm obstructing the heart orifice. Treatment emphasizes resolving phlegm and opening orifices.
+
+TM2-SC06.2: Kidney Essence Deficiency Pattern
+Characterized by poor memory, dizziness, tinnitus, and premature aging. This pattern reflects insufficient kidney essence to nourish the brain. Treatment focuses on tonifying kidney essence.
+
+TM2-SC07: ENDOCRINE AND METABOLIC DISORDERS IN TRADITIONAL MEDICINE
+This section covers endocrine, metabolic, and nutritional conditions classified in traditional medicine. The patterns reflect various imbalances affecting metabolism and endocrine function.
+
+TM2-SC07.0: Spleen-Kidney Yang Deficiency Pattern
+Characterized by edema, fatigue, cold limbs, lower back pain, and frequent urination. This pattern reflects yang deficiency of spleen and kidney. Treatment focuses on warming yang and strengthening spleen and kidney.
+
+TM2-SC07.1: Qi and Yin Deficiency Pattern
+Characterized by fatigue, thirst, dryness, weight loss, and heat sensations. This pattern reflects combined deficiency of qi and yin. Treatment emphasizes tonifying both qi and yin.
+
+TM2-SC07.2: Damp-Phlegm Constitution Pattern
+Characterized by obesity, lethargy, excessive sputum, and greasy tongue coating. This pattern reflects accumulation of damp-phlegm in the body. Treatment focuses on resolving phlegm and drying dampness.
+
+TM2-SC08: GYNECOLOGICAL DISORDERS IN TRADITIONAL MEDICINE
+This section covers women's health conditions classified according to traditional medicine theories. The patterns reflect various imbalances affecting the reproductive system.
+
+TM2-SC08.0: Qi and Blood Stagnation Pattern
+Characterized by menstrual pain, dark clots, breast tenderness, and irritability. This pattern reflects qi and blood stagnation in the uterus. Treatment focuses on moving qi and invigorating blood.
+
+TM2-SC08.1: Kidney Deficiency Pattern
+Characterized by menstrual irregularities, infertility, lower back pain, and fatigue. This pattern reflects kidney deficiency affecting reproductive function. Treatment emphasizes tonifying kidney.
+
+TM2-SC08.2: Blood Deficiency Pattern
+Characterized by scanty menstrual flow, pale complexion, dizziness, and fatigue. This pattern reflects insufficient blood to nourish the uterus. Treatment focuses on nourishing blood.
+
+TM2-SC09: DERMATOLOGICAL DISORDERS IN TRADITIONAL MEDICINE
+This section covers skin conditions classified in traditional medicine. The patterns reflect various imbalances affecting the skin and related systems.
+
+TM2-SC09.0: Wind-Heat Pattern
+Characterized by acute onset, redness, itching, and spreading lesions. This pattern reflects wind-heat affecting the skin. Treatment focuses on dispelling wind and clearing heat.
+
+TM2-SC09.1: Damp-Heat Pattern
+Characterized by oozing, crusting, and localized heat. This pattern reflects damp-heat in the skin. Treatment emphasizes clearing damp-heat.
+
+TM2-SC09.2: Blood Dryness Pattern
+Characterized by dry, scaly skin with itching. This pattern reflects insufficient blood to moisten the skin. Treatment focuses on nourishing blood and moistening dryness.
+
+TM2-SC10: PEDIATRIC DISORDERS IN TRADITIONAL MEDICINE
+This section covers childhood conditions classified according to traditional medicine. The patterns reflect various imbalances affecting children's health.
+
+TM2-SC10.0: Spleen Deficiency Pattern
+Characterized by poor appetite, abdominal distension, loose stools, and fatigue. This pattern reflects insufficient spleen qi in children. Treatment focuses on strengthening spleen.
+
+TM2-SC10.1: Lung Heat Pattern
+Characterized by cough, fever, rapid breathing, and thirst. This pattern reflects heat in the lung system. Treatment emphasizes clearing lung heat.
+
+TM2-SC11: SPECIAL TRADITIONAL MEDICINE PATTERNS
+This section covers unique traditional medicine patterns that don't fit into other categories but have clinical significance.
+
+TM2-SC11.0: Shaoyang Pattern
+Characterized by alternating fever and chills, bitter taste, hypochondriac pain, and nausea. This pattern reflects shaoyang disorder. Treatment focuses on harmonizing shaoyang.
+
+TM2-SC11.1: Yangming Pattern
+Characterized by high fever, sweating, thirst, and constipation. This pattern reflects yangming excess. Treatment emphasizes clearing yangming heat.
+
+TM2-SC11.2: Taiyin Pattern
+Characterized by abdominal distension, poor appetite, loose stools, and fatigue. This pattern reflects taiyin deficiency. Treatment focuses on strengthening taiyin.
+
+TM2-SC12: CONSTITUTIONAL TYPES IN TRADITIONAL MEDICINE
+This section covers constitutional types that predispose individuals to certain conditions.
+
+TM2-SC12.0: Yang Constitution Type
+Characterized by robust physique, high metabolism, and tendency toward heat conditions. This constitution is prone to excess heat patterns. Treatment focuses on cooling and balancing.
+
+TM2-SC12.1: Yin Constitution Type
+Characterized by delicate physique, low metabolism, and tendency toward cold conditions. This constitution is prone to deficiency and cold patterns. Treatment emphasizes warming and tonifying.
+
+TM2-SC12.2: Phlegm-Damp Constitution Type
+Characterized by heavier build, tendency toward fluid retention, and susceptibility to damp conditions. This constitution is prone to phlegm-damp disorders. Treatment focuses on resolving phlegm and drying dampness.
+
+TM2-SC13: TRADITIONAL MEDICINE TREATMENT PRINCIPLES
+This section covers treatment principles used in traditional medicine for various conditions.
+
+TM2-SC13.0: Dispelling External Pathogens Principle
+Used for acute conditions caused by external pathogens. Treatment aims to expel pathogens from the exterior level before they penetrate deeper.
+
+TM2-SC13.1: Clearing Heat Principle
+Used for heat-type conditions with fever, inflammation, and redness. Treatment uses cooling herbs and therapies to reduce pathological heat.
+
+TM2-SC13.2: Warming Interior Principle
+Used for cold-type conditions with cold limbs, abdominal pain, and loose stools. Treatment uses warming herbs and therapies to dispel cold.
+
+TM2-SC13.3: Tonifying Deficiency Principle
+Used for deficient conditions with fatigue, weakness, and poor function. Treatment uses tonifying herbs and therapies to strengthen deficient aspects.
+
+TM2-SC14: TRADITIONAL MEDICINE DIAGNOSTIC CRITERIA
+This section provides standardized diagnostic criteria for traditional medicine conditions.
+
+TM2-SC14.0: Pulse Diagnosis Criteria
+Standardized pulse characteristics for different patterns including rate, rhythm, depth, and quality. Specific pulse types correspond to specific patterns.
+
+TM2-SC14.1: Tongue Diagnosis Criteria
+Standardized tongue characteristics including body color, coating, shape, and moisture. Different tongue signs indicate different patterns.
+
+TM2-SC14.2: Observation Diagnosis Criteria
+Standardized physical signs including complexion, eyes, facial expression, and demeanor. Specific signs correspond to specific patterns.
+
+TM2-SC15: TRADITIONAL MEDICINE PROGNOSTIC INDICATORS
+This section covers prognostic indicators for traditional medicine conditions.
+
+TM2-SC15.0: Favorable Prognosis Indicators
+Signs indicating good response to treatment including normal appetite, regular sleep, and positive tongue changes.
+
+TM2-SC15.1: Unfavorable Prognosis Indicators
+Signs indicating poor prognosis including loss of appetite, abnormal sleep patterns, and negative tongue changes.
+
+TM2-SC16: TRADITIONAL MEDICINE PREVENTION PRINCIPLES
+This section covers preventive approaches in traditional medicine.
+
+TM2-SC16.0: Seasonal Prevention Principle
+Guidelines for maintaining health during different seasons through diet, lifestyle, and preventive herbs.
+
+TM2-SC16.1: Constitutional Prevention Principle
+Guidelines for preventing disease based on individual constitutional types and susceptibilities.
+
+TM2-SC17: TRADITIONAL MEDICINE REHABILITATION
+This section covers rehabilitation approaches in traditional medicine.
+
+TM2-SC17.0: Post-Illness Rehabilitation
+Guidelines for restoring health after acute illness using tonifying herbs, gentle exercise, and dietary therapy.
+
+TM2-SC17.1: Chronic Disease Rehabilitation
+Guidelines for managing chronic conditions through long-term herbal therapy, lifestyle modifications, and self-care practices.
+
+TM2-SC18: TRADITIONAL MEDICINE INTEGRATION
+This section covers integration with conventional medicine.
+
+TM2-SC18.0: Complementary Integration
+Guidelines for using traditional medicine alongside conventional treatments to enhance effectiveness and reduce side effects.
+
+TM2-SC18.1: Sequential Integration
+Guidelines for using traditional medicine before or after conventional treatments for optimal outcomes.
+
+TM2-SC19: TRADITIONAL MEDICINE QUALITY STANDARDS
+This section covers quality standards for traditional medicine practice.
+
+TM2-SC19.0: Diagnostic Quality Standards
+Standardized protocols for traditional medicine diagnosis to ensure consistency and reliability.
+
+TM2-SC19.1: Treatment Quality Standards
+Standardized protocols for traditional medicine treatment to ensure safety and efficacy.
+
+TM2-SC20: TRADITIONAL MEDICINE RESEARCH METHODOLOGY
+This section covers research approaches for traditional medicine.
+
+TM2-SC20.0: Clinical Research Methods
+Standardized methods for clinical research in traditional medicine including study design and outcome measures.
+
+TM2-SC20.1: Basic Research Methods
+Methods for basic research on traditional medicine including pharmacology and mechanism studies.
+
+TM2-SC21: TRADITIONAL MEDICINE EDUCATION
+This section covers educational standards for traditional medicine.
+
+TM2-SC21.0: Core Curriculum Requirements
+Essential knowledge and skills for traditional medicine practitioners including theory, diagnosis, and treatment.
+
+TM2-SC21.1: Clinical Training Requirements
+Standardized clinical training requirements including supervised practice and competency assessment.
+
+TM2-SC22: TRADITIONAL MEDICINE REGULATION
+This section covers regulatory aspects of traditional medicine.
+
+TM2-SC22.0: Practice Standards
+Regulatory standards for traditional medicine practice including licensing and scope of practice.
+
+TM2-SC22.1: Product Standards
+Regulatory standards for traditional medicine products including quality control and safety testing.
+
+TM2-SC23: TRADITIONAL MEDICINE PUBLIC HEALTH
+This section covers public health applications of traditional medicine.
+
+TM2-SC23.0: Primary Healthcare Integration
+Integration of traditional medicine into primary healthcare systems for comprehensive health services.
+
+TM2-SC23.1: Community Health Programs
+Community-based traditional medicine programs for health promotion and disease prevention.
+
+TM2-SC24: TRADITIONAL MEDICINE GLOBAL HEALTH
+This section covers global health aspects of traditional medicine.
+
+TM2-SC24.0: International Collaboration
+Collaborative approaches for traditional medicine development and standardization across countries.
+
+TM2-SC24.1: Knowledge Preservation
+Methods for preserving traditional medicine knowledge including documentation and transmission.
+
+TM2-SC25: TRADITIONAL MEDICINE INNOVATION
+This section covers innovation in traditional medicine.
+
+TM2-SC25.0: Technological Integration
+Integration of modern technology with traditional medicine for enhanced diagnosis and treatment.
+
+TM2-SC25.1: Product Development
+Development of new traditional medicine products based on classical formulations and modern research.
+
+TM2-SC26: TRADITIONAL MEDICINE FUTURE DIRECTIONS
+This section covers future directions for traditional medicine.
+
+TM2-SC26.0: Evidence-Based Development
+Development of evidence-based traditional medicine through rigorous research and clinical validation.
+
+TM2-SC26.1: Global Integration
+Integration of traditional medicine into global healthcare systems while maintaining cultural integrity and traditional knowledge.
+
+This comprehensive classification system enables standardized documentation, research, and integration of traditional medicine with conventional healthcare systems worldwide.

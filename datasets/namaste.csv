@@ -1,0 +1,12 @@
+NAMASTE_Code,AYUSH_System,Disease_Name,Symptoms,ICD11_Code,ICD11_Title,Severity
+AY01,Ayurveda,Jvara,"fever, headache, chills",1D01,Paratyphoid fever,2
+AY02,Ayurveda,Kasa,"cough, throat pain, shortness of breath",CA23,Acute bronchitis,1
+AY03,Ayurveda,Svasa,"breathlessness, wheezing, asthma",CA23,Asthma,3
+AY04,Ayurveda,Atisara,"diarrhea, loose motions, abdominal pain",1A00,Cholera,2
+AY05,Ayurveda,Amlapitta,"acid reflux, heartburn, indigestion",DA22,Gastro-oesophageal reflux disease,1
+UN01,Unani,Humma,"fever, high temperature",1D00,Typhoid fever,2
+UN02,Unani,Sual,"cough, dry cough",CA23,Acute bronchitis,1
+HO01,Homeopathy,Coryza,"runny nose, sneezing, cold",CA20,Common cold,1
+HO02,Homeopathy,Cephalalgia,"headache, pulsating pain",8A80,Migraine,1
+SY01,Siddha,Suram,"fever, fatigue",1D00,Typhoid fever,2
+SY02,Siddha,Irumal,"cough, chest congestion",CA23,Acute bronchitis,1

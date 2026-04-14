@@ -1,0 +1,55 @@
+code,system,name_en,name_ta,name_hi,description,category,dosha,tm2_code,icd11_mms_code,snomed_ct,loinc,symptoms,signs,risk_factors
+AYU-D-0001,AYU,Vataja Jwara,வாத ஜ்வர,वात ज्वर,Vata-type fever characterized by dryness, body pain, and variable temperature,Digestive Disorders,Vata,TM2-SC04,5A10.0,404684003,8310-2,dry cough,body pain,variable temperature,irregular eating habits,excessive travel
+AYU-D-0002,AYU,Pittaja Jwara,பித்த ஜ்வர,पित्त ज्वर,Pitta-type fever with burning sensation, thirst, and high temperature,Digestive Disorders,Pitta,TM2-SC04,5A10.0,404684003,8310-2,burning sensation,thirst,high temperature,spicy foods,excessive sun exposure
+AYU-D-0003,AYU,Kaphaja Jwara,கப ஜ்வர,कफ ज्वर,Kapha-type fever with heaviness, congestion, and low-grade temperature,Digestive Disorders,Kapha,TM2-SC04,5A10.0,404684003,8310-2,heaviness,congestion,low-grade temperature,heavy foods,cold weather
+AYU-D-0101,AYU,Udakameha,உதகமேக,उदकमेह,Diabetes with frequent urination and sweet urine,Endocrine Disorders,Kapha,TM2-BC23,5A11.0,44054006,2345-7,frequent urination,sweet urine,thirst,sedentary lifestyle,sweet foods
+AYU-D-0102,AYU,Ikshuvalikarasa,இக்ஷுவலிகரச,इक्षुवलिकरस,Sugar-related diabetes from excessive sweet consumption,Endocrine Disorders,Kapha,TM2-BC23,5A11.0,44054006,2345-7,excessive sugar craving,weight gain,fatigue,refined sugar,processed foods
+AYU-D-0110,AYU,Madhumeha,மதுமேக,मधुमेह,Honey-like urine diabetes - advanced stage,Endocrine Disorders,Kapha,TM2-BC23,5A11.0,44054006,2345-7,sweet urine,slow healing,wounds,genetic predisposition,obesity
+AYU-D-0201,AYU,Hridroga,ஹிரிதோக,हृद्रोग,General heart disease in Ayurvedic terminology,Cardiovascular Disorders,Vata,TM2-SC11,BA80.0,22298006,8462-4,chest pain,palpitations,breathlessness,high stress,unhealthy diet
+AYU-D-0202,AYU,Vataja Hridroga,வாத ஹிரிதோக,वात हृद्रोग,Vata-type heart disease with irregular heartbeat,Cardiovascular Disorders,Vata,TM2-SC11,BA80.0,22298006,8462-4,irregular heartbeat,anxiety,insomnia,excessive mental work,anxiety
+AYU-D-0301,AYU,Amavata,அமவத,अमवात,Rheumatoid arthritis with joint stiffness and pain,Musculoskeletal Disorders,Vata,TM2-SD05,FA00.0,302869004,8468-2,joint stiffness,morning pain,swelling,improper digestion,cold climate
+AYU-D-0302,AYU,Sandhivata,சந்திவத,संधिवात,Osteoarthritis with joint degeneration,Musculoskeletal Disorders,Vata,TM2-SD05,FA00.0,302869004,8468-2,joint pain,reduced mobility,crepitus,aging,obesity
+AYU-D-0401,AYU,Kamala,கமல,कामला,Jaundice with yellow discoloration,Hepatic Disorders,Pitta,TM2-SC09,9B20.0,40468003,1975-2,yellow skin,dark urine,loss of appetite,liver dysfunction,alcohol
+AYU-D-0402,AYU,Rakta Pitta,ரக்த பித்த,रक्त पित्त,Blood disorders with bleeding tendencies,Hematologic Disorders,Pitta,TM2-SC15,5C80.0,126670004,8468-2,bleeding,bruising,weakness,genetic factors,nutritional deficiency
+AYU-D-0501,AYU,Pratishyaya,பிரதிஷ்யாய,प्रतिश्याय,Chronic rhinitis with nasal congestion,Respiratory Disorders,Kapha,TM2-SC01,CA00.0,4086005,8468-2,nasal congestion,headache,post-nasal drip,allergies,pollution
+AYU-D-0502,AYU,Tamaka Shvasa,தமக ஸ்வாஸ,तमक श्वास,Bronchial asthma with wheezing,Respiratory Disorders,Vata,TM2-SC01,CA08.0,195967001,8468-2,wheezing,shortness of breath,cough,allergens,cold air
+AYU-D-0601,AYU,Atisara,அதிஸார,अतिसार,Gastroenteritis with diarrhea,Gastrointestinal Disorders,Pitta,TM2-SC06,9B10.0,422587007,8468-2,diarrhea,abdominal pain,dehydration,contaminated food,poor hygiene
+AYU-D-0602,AYU,Aruchi,அருசி,अरुचि,Loss of appetite and indigestion,Gastrointestinal Disorders,Vata,TM2-SC06,9B10.0,422587007,8468-2,loss of appetite,bloating,indigestion,irregular meals,stress
+AYU-D-0701,AYU,Mukhapaka,முகபக,मुखपाक,Oral ulcers and mouth sores,Oral Disorders,Pitta,TM2-SC08,DB90.0,283545006,8468-2,mouth ulcers,pain,burning sensation,spicy foods,poor oral hygiene
+AYU-D-0702,AYU,Danta Rakta,தந்த ரக்த,दन्त रक्त,Bleeding gums and periodontal disease,Oral Disorders,Pitta,TM2-SC08,DB90.0,283545006,8468-2,bleeding gums,bad breath,swollen gums,poor dental care,vitamin C deficiency
+AYU-D-0801,AYU,Timira,திமிர,तिमिर,Myopia and refractive errors,Ophthalmic Disorders,Vata,TM2-SC03,9D20.0,39854007,8468-2,blurred vision,headaches,eye strain,prolonged reading,genetic factors
+AYU-D-0802,AYU,Shukra Nasha,சுக்ர நாஷ,शुक्र नाश,Sexual dysfunction and infertility,Genitourinary Disorders,Vata,TM2-SC12,9D80.0,248760004,8468-2,low libido,infertility,fatigue,stress,hormonal imbalance
+SID-D-0001,SID,Azhal Noi,அழல் நோய்,अझल नोई,Heat-related disorders in Siddha medicine,General Disorders,Pitta,TM2-PA01,5A10.0,404684003,8310-2,fever,thirst,burning sensation,hot weather,excessive physical activity
+SID-D-0002,SID,Iyya Noi,இய்ய நோய்,इय्या नोई,Wind-related disorders in Siddha,General Disorders,Vata,TM2-PA01,5A10.0,404684003,8468-2,gas,bloating,irregular bowel,cold foods,anxiety
+SID-D-0003,SID,Vali Noi,வலி நோய்,वली नोई,Bile-related disorders in Siddha,General Disorders,Kapha,TM2-PA01,5A10.0,404684003,8468-2,nausea,vomiting,indigestion,fatty foods,late night eating
+SID-D-0101,SID,Kabam,கபம்,कबम,Phlegm disorders in Siddha,Respiratory Disorders,Kapha,TM2-SC01,CA00.0,4086005,8468-2,congestion,cough,mucus formation,cold weather,dairy products
+SID-D-0102,SID,Pitham,பித்தம்,पित्तम्,Bile disorders in Siddha,Digestive Disorders,Pitta,TM2-SC06,9B10.0,422587007,8468-2,hyperacidity,burning sensation,ulcers,spicy foods,alcohol
+SID-D-0201,SID,Vatham,வாதம்,वातम्,Wind disorders in Siddha,Musculoskeletal Disorders,Vata,TM2-SD05,FA00.0,302869004,8468-2,joint pain,stiffness,cramps,dry foods,cold exposure
+SID-D-0202,SID,Kabha Vatham,கப வாதம்,कफ वातम्,Phlegm-wind combination disorders,Musculoskeletal Disorders,Vata,TM2-SD05,FA00.0,302869004,8468-2,swelling,stiffness,pain,humid climate,improper diet
+UNA-D-0001,UNA,Humma,ஹும்மா,हुम्मा,Fever in Unani medicine,General Disorders,Pitta,TM2-PA01,5A10.0,404684003,8310-2,fever,headache,body pain,infections,environmental factors
+UNA-D-0002,UNA,Waram,வரம்,वरम,Inflammation and swelling in Unani,Inflammatory Disorders,Pitta,TM2-SC15,5C80.0,126670004,8468-2,swelling,redness,pain,injury,infection
+UNA-D-0003,UNA,Qabz,கப்ஸ்,कब्ज़,Constipation in Unani medicine,Gastrointestinal Disorders,Vata,TM2-SC06,9B10.0,422587007,8468-2,constipation,hard stools,bloating,low fiber,dehydration
+UNA-D-0101,UNA,Nafas-e-Qillat,நஃபஸ் கிலாத்,नफ़स-ए-क़िल्लत,Breathlessness in Unani,Respiratory Disorders,Vata,TM2-SC01,CA08.0,195967001,8468-2,shortness of breath,wheezing,cough,allergens,pollution
+UNA-D-0102,UNA,Sual-e-Khun,சுவல் குன்,सुअल-ए-ख़ून,Bloody cough in Unani,Respiratory Disorders,Pitta,TM2-SC01,CA08.0,195967001,8468-2,bloody cough,chest pain,fever,infections,tuberculosis
+UNA-D-0201,UNA,Waja-ul-Qalb,வஜா உல் கல்ப்,वजा-उल-क़ल्ब,Cardiac pain in Unani,Cardiovascular Disorders,Vata,TM2-SC11,BA80.0,22298006,8462-4,chest pain,palpitations,anxiety,high cholesterol,stress
+UNA-D-0202,UNA,Dhagh-e-Qalb,தஃ கல்ப்,ढ़ग़-ए-क़ल्ब,Palpitations in Unani,Cardiovascular Disorders,Vata,TM2-SC11,BA80.0,22298006,8462-4,irregular heartbeat,anxiety,fatigue,caffeine,stress
+AYU-D-0901,AYU,Unmada,உன்மத,उन्माद,Mental disorders and psychosis,Psychiatric Disorders,Vata,TM2-SC17,6A20.0,19153002,8468-2,confusion,agitation,insomnia,severe stress,substance abuse
+AYU-D-0902,AYU,Apasmara,அபஸ்மார,अपस्मार,Epilepsy and convulsive disorders,Psychiatric Disorders,Vata,TM2-SC17,6A20.0,19153002,8468-2,seizures,loss of consciousness,confusion,brain injury,genetic factors
+AYU-D-1001,AYU,Kshata,க்ஷத,क्षत,Trauma and injuries,Trauma Disorders,Vata,TM2-SC20,5S90.0,125605004,8468-2,pain,swelling,bleeding,accidents,falls
+AYU-D-1002,AYU,Bhagna,பக்ன,भग्न,Fractures and bone injuries,Trauma Disorders,Vata,TM2-SC20,5S90.0,125605004,8468-2,bone pain,deformity,immobility,accidents,osteoporosis
+SID-D-0301,SID,Kuttam,குட்டம்,कुट्टम्,Skin diseases in Siddha,Dermatologic Disorders,Pitta,TM2-SC21,9D90.0,40388005,8468-2,skin rashes,itching,discoloration,allergies,infections
+SID-D-0302,SID,Malai,மலை,मलाई,Eruptions and skin lesions,Dermatologic Disorders,Pitta,TM2-SC21,9D90.0,40388005,8468-2,skin lesions,bumps,redness,heat,humidity
+UNA-D-0301,UNA,Juzam,ஜுஸம்,ज़ुज़ाम,Leprosy in Unani,Dermatologic Disorders,Kapha,TM2-SC21,9D90.0,40388005,8468-2,skin patches,numbness,weakness,bacterial infection,poor immunity
+UNA-D-0302,UNA,Bahas,பஹாஸ்,बहास,Dermatitis and eczema in Unani,Dermatologic Disorders,Pitta,TM2-SC21,9D90.0,40388005,8468-2,skin inflammation,itching,redness,allergies,chemicals
+AYU-D-1101,AYU,Shoola,ஸூல,शूल,Generalized pain disorders,Pain Disorders,Vata,TM2-SC18,5A80.0,22253008,8468-2,generalized pain,headache,body ache,inflammation,chronic stress
+AYU-D-1102,AYU,Shula,ஸுல,शुल,Abdominal pain specifically,Pain Disorders,Vata,TM2-SC18,5A80.0,22253008,8468-2,abdominal cramps,bloating,gas,indigestion,food poisoning
+SID-D-0401,SID,Kalai,கலை,कलै,Neurological disorders in Siddha,Neurologic Disorders,Vata,TM2-SC17,6A20.0,19153002,8468-2,nerve pain,paralysis,weakness,aging,toxins
+SID-D-0402,SID,Mookam,மூகம்,मूकम्,Mutism and speech disorders,Neurologic Disorders,Vata,TM2-SC17,6A20.0,19153002,8468-2,speech difficulty,communication issues,brain injury,developmental disorders
+UNA-D-0401,UNA,Falij,பலிஜ்,फ़लिज,Paralysis in Unani,Neurologic Disorders,Vata,TM2-SC17,6A20.0,19153002,8468-2,paralysis,weakness,numbness,stroke,brain injury
+UNA-D-0402,UNA,Sara'a,ஸரா,सराअ़ा,Tremors and shaking disorders,Neurologic Disorders,Vata,TM2-SC17,6A20.0,19153002,8468-2,tremors,shaking,coordination loss,anxiety,neurological disease
+AYU-D-1201,AYU,Kasa,காச,कास,Cough and respiratory conditions,Respiratory Disorders,Vata,TM2-SC01,CA00.0,4086005,8468-2,dry cough,wet cough,chest discomfort,cold weather,pollution
+AYU-D-1202,AYU,Peenas,பீனஸ்,पीनस,Sinusitis and nasal conditions,Respiratory Disorders,Kapha,TM2-SC01,CA00.0,4086005,8468-2,sinus pressure,nasal congestion,headache,allergies,infections
+SID-D-0501,SID,Noi Noi,நோய் நோய்,नोई नोई,Chronic diseases in Siddha,Chronic Disorders,Mixed,TM2-PA01,5A10.0,404684003,8468-2,chronic pain,fatigue,multiple symptoms,aging,lifestyle
+SID-D-0502,SID,Kal Noi,கல் நோய்,कल नोई,Stone diseases in Siddha,Urologic Disorders,Kapha,TM2-SC12,9D80.0,248760004,8468-2,kidney stones,gallstones,severe pain,dehydration,poor diet
+UNA-D-0501,UNA,Sudda,சுத்த,सुद्दा,Purification disorders in Unani,Detoxification Disorders,Mixed,TM2-PA01,5A10.0,404684003,8468-2,toxin accumulation,skin issues,fatigue,poor diet,environmental toxins
+UNA-D-0502,UNA,Tashreeh,தஷ்ரீஹ்,तशरीह्,Structural disorders in Unani,Structural Disorders,Mixed,TM2-SC20,5S90.0,125605004,8468-2,structural abnormalities,deformities,congenital issues,genetic factors,developmental problems

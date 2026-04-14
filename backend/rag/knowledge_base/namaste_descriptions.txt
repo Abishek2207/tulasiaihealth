@@ -1,0 +1,151 @@
+NAMASTE CODE DESCRIPTIONS - AYUSH TERMINOLOGY SYSTEM
+
+AYU-D-0001: Vataja Jwara
+Vata-type fever is characterized by dryness in the body, variable temperature patterns, and associated symptoms such as body pain, anxiety, and insomnia. The fever tends to fluctuate throughout the day, often worsening in the late afternoon and evening. Patients typically experience dry cough, cracking joints, and a feeling of coldness despite having elevated temperature. The condition is aggravated by dry foods, excessive travel, and irregular eating habits. Treatment focuses on pacifying Vata dosha through warm, oily foods and gentle therapies.
+
+AYU-D-0002: Pittaja Jwara
+Pitta-type fever presents with high temperature, burning sensation throughout the body, excessive thirst, and sweating. The fever is typically steady and high, with patients feeling hot to touch. Associated symptoms include yellowish discoloration of skin and eyes, bitter taste in mouth, and irritability. The condition worsens with spicy foods, sun exposure, and anger. Treatment involves cooling therapies and bitter-tasting herbs to pacify Pitta dosha.
+
+AYU-D-0003: Kaphaja Jwara
+Kapha-type fever is characterized by heaviness in the body, congestion, and low-grade temperature that persists for extended periods. Patients experience excessive salivation, sweet taste in mouth, and lethargy. The fever is often accompanied by respiratory symptoms such as cough with expectoration and nasal congestion. The condition is aggravated by heavy, sweet foods and cold, humid weather. Treatment focuses on drying and lightening therapies to reduce Kapha.
+
+AYU-D-0101: Udakameha
+Udakameha represents diabetes mellitus with polyuria where urine is tasteless and abundant. Patients experience frequent urination, especially at night, excessive thirst, and dryness of mouth. The condition is associated with debility, weight loss, and general weakness. It's considered a Kapha disorder affecting the kidneys and urinary system. Treatment includes diuretic herbs, dietary restrictions, and lifestyle modifications to reduce Kapha dosha.
+
+AYU-D-0102: Ikshuvalikarasa
+This form of diabetes is specifically caused by excessive consumption of sugarcane and sweet substances. Patients develop sweet cravings, weight gain, and fatigue. The urine becomes sweet and patients may experience skin infections and delayed wound healing. It's primarily a Kapha disorder resulting from dietary indiscretions. Treatment emphasizes strict dietary control and herbs that improve metabolism.
+
+AYU-D-0110: Madhumeha
+Madhumeha is the most severe form of diabetes where urine resembles honey in color, taste, and consistency. It represents advanced diabetes with complications. Patients experience severe thirst, excessive urination, emaciation, and weakness. The condition affects multiple body systems and can lead to serious complications. It's considered difficult to treat and requires comprehensive management.
+
+AYU-D-0201: Hridroga
+Hridroga encompasses all heart diseases in Ayurvedic terminology. It includes conditions affecting the heart and cardiovascular system. Patients may experience chest pain, palpitations, breathlessness, and edema. The condition can be caused by all three doshas but Vata is often the primary factor. Treatment varies based on the predominant dosha and specific manifestations.
+
+AYU-D-0202: Vataja Hridroga
+Vata-type heart disease is characterized by irregular heartbeat, anxiety, insomnia, and chest pain that is sharp and migrating. Patients often experience palpitations, especially during stress or at night. The condition is associated with excessive mental work, anxiety, and irregular lifestyle. Treatment focuses on calming Vata through oil therapies and stress management.
+
+AYU-D-0301: Amavata
+Amavata is rheumatoid arthritis where Ama (metabolic toxins) combine with Vata to affect joints. Patients experience severe joint stiffness, especially in the morning, swelling, and pain that migrates between joints. The condition is characterized by loss of appetite, indigestion, and general debility. It's considered a serious autoimmune condition requiring long-term management.
+
+AYU-D-0302: Sandhivata
+Sandhivata represents osteoarthritis and degenerative joint diseases. Patients experience joint pain that worsens with movement, reduced mobility, and crepitus. The condition primarily affects weight-bearing joints and is associated with aging and wear and tear. Treatment focuses on reducing Vata and nourishing joint tissues.
+
+AYU-D-0401: Kamala
+Kamala is jaundice characterized by yellow discoloration of skin, eyes, and mucous membranes. Patients experience loss of appetite, weakness, fever, and dark-colored urine. The condition is primarily a Pitta disorder affecting the liver and digestive system. Treatment involves liver-purifying herbs and dietary restrictions.
+
+AYU-D-0402: Rakta Pitta
+Rakta Pitta encompasses blood disorders with bleeding tendencies. Patients experience easy bruising, bleeding from gums, nosebleeds, and heavy menstrual bleeding. The condition is caused by aggravated Pitta affecting blood tissue. Treatment focuses on cooling therapies and blood-purifying herbs.
+
+AYU-D-0501: Pratishyaya
+Pratishyaya is chronic rhinitis with persistent nasal congestion and discharge. Patients experience headache, post-nasal drip, and reduced sense of smell. The condition is primarily Kapha disorder affecting the upper respiratory tract. Treatment includes nasal cleansing and herbs that reduce Kapha.
+
+AYU-D-0502: Tamaka Shvasa
+Tamaka Shvasa is bronchial asthma characterized by wheezing, shortness of breath, and difficulty breathing especially at night. Patients experience chest tightness, cough with expectoration, and anxiety during attacks. The condition is primarily Vata disorder affecting the respiratory system. Treatment focuses on bronchodilator herbs and avoiding triggers.
+
+AYU-D-0601: Atisara
+Atisara is gastroenteritis with diarrhea, abdominal pain, and dehydration. Patients experience frequent loose stools, abdominal cramps, thirst, and weakness. The condition can be caused by contaminated food, poor hygiene, or digestive impairment. Treatment focuses on rehydration and antimicrobial herbs.
+
+AYU-D-0602: Aruchi
+Aruchi is loss of appetite and indigestion. Patients experience bloating, gas, abdominal discomfort, and aversion to food. The condition is primarily Vata disorder affecting digestive fire. Treatment focuses on stimulating appetite and improving digestion.
+
+AYU-D-0701: Mukhapaka
+Mukhapaka represents oral ulcers and mouth sores. Patients experience painful ulcers in mouth, burning sensation, and difficulty eating. The condition is primarily Pitta disorder affecting oral mucosa. Treatment includes cooling herbs and oral hygiene.
+
+AYU-D-0702: Danta Rakta
+Danta Rakta is bleeding gums and periodontal disease. Patients experience bleeding during brushing, bad breath, and swollen gums. The condition is caused by poor oral hygiene and aggravated Pitta. Treatment focuses on oral care and blood-purifying herbs.
+
+AYU-D-0801: Timira
+Timira represents myopia and refractive errors. Patients experience blurred vision for distant objects, headaches, and eye strain. The condition is primarily Vata disorder affecting visual apparatus. Treatment includes eye exercises and nourishing therapies.
+
+AYU-D-0802: Shukra Nasha
+Shukra Nasha encompasses sexual dysfunction and infertility. Patients experience low libido, erectile dysfunction, and reduced fertility. The condition is primarily Vata disorder affecting reproductive tissues. Treatment focuses on rejuvenation therapies and stress management.
+
+SID-D-0001: Azhal Noi
+Azhal Noi represents heat-related disorders in Siddha medicine. Patients experience fever, burning sensation, thirst, and exhaustion. The condition is caused by excessive heat in the body affecting various systems. Treatment focuses on cooling therapies and heat-reducing herbs.
+
+SID-D-0002: Iyya Noi
+Iyya Noi represents wind-related disorders in Siddha medicine. Patients experience gas, bloating, abdominal distension, and irregular bowel movements. The condition is caused by aggravated Vata affecting digestive system. Treatment focuses on gas-relieving herbs and digestive normalization.
+
+SID-D-0003: Vali Noi
+Vali Noi represents bile-related disorders in Siddha medicine. Patients experience nausea, vomiting, indigestion, and acid reflux. The condition is caused by aggravated Pitta affecting digestive system. Treatment focuses on anti-emetic herbs and digestive normalization.
+
+UNA-D-0001: Humma
+Humma is fever in Unani medicine characterized by elevated body temperature, headache, and body pain. Patients experience loss of appetite, weakness, and sometimes delirium in severe cases. The condition is caused by various factors including infections and environmental changes. Treatment focuses on fever-reducing herbs and supportive care.
+
+UNA-D-0002: Waram
+Waram represents inflammation and swelling in Unani medicine. Patients experience localized swelling, redness, pain, and heat in affected area. The condition can affect any part of body and is caused by various factors including injury and infection. Treatment focuses on anti-inflammatory herbs and local applications.
+
+UNA-D-0003: Qabz
+Qabz is constipation in Unani medicine. Patients experience difficulty passing stools, hard stools, abdominal discomfort, and bloating. The condition is caused by reduced intestinal motility and dryness. Treatment focuses on laxative herbs and dietary fiber.
+
+UNA-D-0101: Nafas-e-Qillat
+Nafas-e-Qillat is breathlessness in Unani medicine. Patients experience shortness of breath, difficulty breathing, and sometimes wheezing. The condition affects respiratory system and can be acute or chronic. Treatment focuses on bronchodilator herbs and respiratory support.
+
+UNA-D-0102: Sual-e-Khun
+Sual-e-Khun is bloody cough in Unani medicine. Patients cough up blood, experience chest pain, and sometimes fever. The condition is serious and requires immediate attention. Treatment focuses on hemostatic herbs and treating underlying cause.
+
+UNA-D-0201: Waja-ul-Qalb
+Waja-ul-Qalb is cardiac pain in Unani medicine. Patients experience chest pain, palpitations, and anxiety. The condition can be due to various cardiac disorders. Treatment focuses on cardiac tonics and stress management.
+
+UNA-D-0202: Dhagh-e-Qalb
+Dhagh-e-Qalb is palpitations in Unani medicine. Patients experience rapid or irregular heartbeat, anxiety, and sometimes chest discomfort. The condition is often stress-related. Treatment focuses on calming herbs and stress reduction.
+
+AYU-D-0901: Unmada
+Unmada encompasses mental disorders and psychosis in Ayurveda. Patients experience confusion, agitation, inappropriate behavior, and sometimes violence. The condition affects mental faculties and can be acute or chronic. Treatment focuses on calming herbs and behavioral therapy.
+
+AYU-D-0902: Apasmara
+Apasmara represents epilepsy and convulsive disorders. Patients experience seizures, loss of consciousness, confusion, and sometimes injury during seizures. The condition affects nervous system and requires long-term management. Treatment focuses on nervine tonics and seizure control.
+
+AYU-D-1001: Kshata
+Kshata represents trauma and injuries in Ayurveda. Patients experience pain, swelling, bleeding, and functional impairment. The condition can affect any part of body and ranges from minor to severe. Treatment focuses on wound healing and pain management.
+
+AYU-D-1002: Bhagna
+Bhagna represents fractures and bone injuries. Patients experience severe pain, deformity, immobility, and swelling. The condition affects bones and joints. Treatment focuses on bone setting and healing promotion.
+
+SID-D-0301: Kuttam
+Kuttam represents skin diseases in Siddha medicine. Patients experience various skin manifestations including rashes, itching, and discoloration. The condition can be acute or chronic and affects skin quality. Treatment focuses on skin-purifying herbs and topical applications.
+
+SID-D-0302: Malai
+Malai represents eruptions and skin lesions in Siddha medicine. Patients experience bumps, pustules, and various skin eruptions. The condition affects skin appearance and can be infectious. Treatment focuses on anti-inflammatory herbs and lesion management.
+
+UNA-D-0301: Juzam
+Juzam is leprosy in Unani medicine. Patients experience skin patches, numbness, weakness, and deformities in advanced cases. The condition is chronic and affects nerves and skin. Treatment focuses on anti-bacterial herbs and nerve support.
+
+UNA-D-0302: Bahas
+Bahas represents dermatitis and eczema in Unani medicine. Patients experience skin inflammation, itching, redness, and sometimes oozing. The condition can be acute or chronic and affects skin comfort. Treatment focuses on anti-inflammatory herbs and skin care.
+
+AYU-D-1101: Shoola
+Shoola represents generalized pain disorders in Ayurveda. Patients experience widespread pain, headaches, and body aches. The condition can affect multiple body systems and varies in intensity. Treatment focuses on pain management and underlying cause treatment.
+
+AYU-D-1102: Shula
+Shula represents abdominal pain specifically in Ayurveda. Patients experience abdominal cramps, bloating, gas, and discomfort. The condition affects digestive system primarily. Treatment focuses on digestive normalization and pain relief.
+
+SID-D-0401: Kalai
+Kalai represents neurological disorders in Siddha medicine. Patients experience nerve pain, paralysis, weakness, and coordination problems. The condition affects nervous system and can be progressive. Treatment focuses on nerve support and rehabilitation.
+
+SID-D-0402: Mookam
+Mookam represents mutism and speech disorders in Siddha medicine. Patients experience difficulty speaking, communication problems, and sometimes complete inability to speak. The condition affects speech and communication. Treatment focuses on speech therapy and nervine tonics.
+
+UNA-D-0401: Falij
+Falij is paralysis in Unani medicine. Patients experience loss of movement, weakness, numbness, and functional impairment. The condition affects motor functions and can be partial or complete. Treatment focuses on physiotherapy and nerve support.
+
+UNA-D-0402: Sara'a
+Sara'a represents tremors and shaking disorders in Unani medicine. Patients experience involuntary shaking, coordination loss, and difficulty with fine motor tasks. The condition affects voluntary movements. Treatment focuses on tremor control and muscle relaxation.
+
+AYU-D-1201: Kasa
+Kasa represents cough and respiratory conditions in Ayurveda. Patients experience dry or productive cough, chest discomfort, and sometimes breathing difficulty. The condition affects respiratory system and can be acute or chronic. Treatment focuses on cough control and respiratory support.
+
+AYU-D-1202: Peenas
+Peenas represents sinusitis and nasal conditions in Ayurveda. Patients experience sinus pressure, nasal congestion, headaches, and post-nasal drip. The condition affects sinuses and nasal passages. Treatment focuses on decongestion and sinus care.
+
+SID-D-0501: Noi Noi
+Noi Noi represents chronic diseases in Siddha medicine. Patients experience multiple symptoms, fatigue, and long-term health issues. The condition affects overall health and quality of life. Treatment focuses on comprehensive management and health restoration.
+
+SID-D-0502: Kal Noi
+Kal Noi represents stone diseases in Siddha medicine. Patients experience severe pain, obstruction, and sometimes infection. The condition affects kidneys, gallbladder, or urinary tract. Treatment focuses on stone dissolution and pain management.
+
+UNA-D-0501: Sudda
+Sudda represents purification disorders in Unani medicine. Patients experience toxin accumulation, skin issues, fatigue, and multiple system involvement. The condition affects detoxification processes. Treatment focuses on purification therapies and detoxification.
+
+UNA-D-0502: Tashreeh
+Tashreeh represents structural disorders in Unani medicine. Patients experience structural abnormalities, deformities, and functional limitations. The condition can be congenital or acquired. Treatment focuses on structural correction and functional improvement.

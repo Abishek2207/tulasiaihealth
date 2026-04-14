@@ -1,0 +1,21 @@
+code,display,definition,sanskrit_name,tamil_name,hindi_name,english_name,category,parent_code,level,dosha_involved,severity,chronicity
+NAMASTE-001,Vataja Jwara,Vata-type fever characterized by body ache, dryness, and variable temperature,Vata Jvara,Vata Jwaram, Vata Bukhar,Vata-type fever,disease,,1,vata,moderate,acute
+NAMASTE-002,Pittaja Jwara,Pitta-type fever with burning sensation, thirst, and high temperature,Pitta Jvara,Pitta Jwaram, Pitta Bukhar,Pitta-type fever,disease,,1,pitta,moderate,acute
+NAMASTE-003,Kaphaja Jwara,Kapha-type fever with heaviness, coldness, and low appetite,Kapha Jvara,Kapha Jwaram, Kapha Bukhar,Kapha-type fever,disease,,1,kapha,mild,acute
+NAMASTE-004,Prameha,General urinary disorders including frequency and turbidity,Prameha,Moothra Noi,Mootra Vikar,Urinary disorders,disease,,1,tridosha,moderate,chronic
+NAMASTE-005,Madhumeha,Diabetes mellitus - honey-like urine,Madhumeha,Madhumegham,Madhumeha,Diabetes,disease,NAMASTE-004,2,tridosha,severe,chronic
+NAMASTE-006,Hrudayam,Heart disease and cardiac disorders,Hrudaya Roga,Hridaya Rogam,Hriday Rog,Heart disease,disease,,1,tridosha,severe,chronic
+NAMASTE-007,Hridroga,Specific heart conditions including angina and palpitations,Hridroga,Hridrogam,Hridrog,Cardiac disorders,disease,NAMASTE-006,2,tridosha,severe,chronic
+NAMASTE-008,Sandhivata,Osteoarthritis - joint pain and stiffness,Sandhivata,Sandhivadam,Sandhivat,Osteoarthritis,disease,,1,vata,moderate,chronic
+NAMASTE-009,Arshas,Hemorrhoids and rectal disorders,Arshas,Arasal,Arsas,Hemorrhoids,disease,,1,pitta,moderate,chronic
+NAMASTE-010,Grahani,Irritable bowel syndrome and malabsorption,Grahani,Grahani,Grahani,IBS/Malabsorption,disease,,1,tridosha,moderate,chronic
+NAMASTE-011,Shiroroga,Headache and head disorders,Shiroroga,Thala Vali,Sir Dard,Headache,disease,,1,tridosha,mild,acute
+NAMASTE-012,Atisara,Diarrhea and dysentery,Atisara,Vizhichal,Atisar,Diarrhea,disease,,1,tridosha,moderate,acute
+NAMASTE-013,Kasa,Cough and respiratory conditions,Kasa,Yeqal,Khasi,Cough,disease,,1,kapha,mild,acute
+NAMASTE-014,Shwasa,Breathlessness and asthma,Shwasa,Swasam,Shwas,Breathlessness,disease,NAMASTE-013,2,kapha,moderate,acute
+NAMASTE-015,Jwara,General fever - umbrella term,Jwara,Jwaram,Bukhar,Fever,disease,,1,tridosha,moderate,acute
+NAMASTE-016,Amlapitta,Acid peptic disease and hyperacidity,Amlapitta,Amlapittam,Amlapitta,Acid peptic disease,disease,,1,pitta,moderate,chronic
+NAMASTE-017,Kamala,Jaundice and liver disorders,Kamala,Kamalan,Kamala,Jaundice,disease,,1,pitta,moderate,acute
+NAMASTE-018,Rajayakshma,Tuberculosis and consumptive diseases,Rajayakshma,Ezhaippu,Rajyakshma,Tuberculosis,disease,,1,tridosha,severe,chronic
+NAMASTE-019,Unmada,Psychiatric disorders and insanity,Unmada,Pitham,Unmad,Psychiatric disorders,disease,,1,tridosha,severe,chronic
+NAMASTE-020,Apasmara,Epilepsy and convulsive disorders,Apasmara,Vezhivu,Apasmara,Epilepsy,disease,,1,tridosha,severe,chronic
