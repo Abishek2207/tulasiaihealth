@@ -359,8 +359,8 @@ class OfflineManager {
       const registration = await navigator.serviceWorker.ready;
       
       try {
-        await registration.sync.register('background-sync-patients');
-        await registration.sync.register('background-sync-audit');
+        await (registration as any).sync.register('background-sync-patients');
+        await (registration as any).sync.register('background-sync-audit');
         console.log('Background sync registered successfully');
       } catch (error) {
         console.error('Background sync registration failed:', error);
@@ -378,7 +378,7 @@ class OfflineManager {
       const registration = await navigator.serviceWorker.ready;
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: this.urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!)
+        applicationServerKey: this.urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!) as any
       });
 
       // Send subscription to server
@@ -408,7 +408,7 @@ class OfflineManager {
       outputArray[i] = rawData.charCodeAt(i);
     }
     
-    return outputArray;
+    return outputArray as any;
   }
 
   // Storage management

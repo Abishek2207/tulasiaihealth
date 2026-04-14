@@ -131,7 +131,7 @@ class TulsiHealthDB extends Dexie {
       obj.synced = false;
     });
 
-    this.patients.hook('updating', (modifications, primKey, obj, trans) => {
+    this.patients.hook('updating', (modifications: any, primKey, obj, trans) => {
       modifications.updatedAt = new Date().toISOString();
       modifications.synced = false;
     });
@@ -142,7 +142,7 @@ class TulsiHealthDB extends Dexie {
       obj.synced = false;
     });
 
-    this.encounters.hook('updating', (modifications, primKey, obj, trans) => {
+    this.encounters.hook('updating', (modifications: any, primKey, obj, trans) => {
       modifications.updatedAt = new Date().toISOString();
       modifications.synced = false;
     });
@@ -161,7 +161,7 @@ class TulsiHealthDB extends Dexie {
       obj.timestamp = new Date().toISOString();
     });
 
-    this.userPreferences.hook('updating', (modifications, primKey, obj, trans) => {
+    this.userPreferences.hook('updating', (modifications: any, primKey, obj, trans) => {
       modifications.updatedAt = new Date().toISOString();
     });
   }
@@ -326,7 +326,7 @@ export class DatabaseService {
 
   static async incrementActionRetry(uuid: string, error?: string): Promise<void> {
     await db.offlineActions.update(uuid, {
-      retryCount: Dexie.min('retryCount').add(1),
+      retryCount: (Dexie as any).min('retryCount').add(1),
       lastRetryAt: new Date().toISOString(),
       error
     });
@@ -395,9 +395,9 @@ export class DatabaseService {
     auditLogs: AuditLog[];
   }> {
     const [patients, encounters, auditLogs] = await Promise.all([
-      db.patients.where('synced').equals(false).toArray(),
-      db.encounters.where('synced').equals(false).toArray(),
-      db.auditLogs.where('synced').equals(false).toArray()
+      db.patients.where('synced').equals(false as any).toArray(),
+      db.encounters.where('synced').equals(false as any).toArray(),
+      db.auditLogs.where('synced').equals(false as any).toArray()
     ]);
 
     return { patients, encounters, auditLogs };
