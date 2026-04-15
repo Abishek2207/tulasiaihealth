@@ -9,6 +9,9 @@ from fastapi import APIRouter, HTTPException, Query, Request
 from pydantic import BaseModel
 
 from api.services.ml_service import ml_service, audit_chain
+from api.database import get_db
+from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import Depends
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -48,11 +51,7 @@ class MedicineRecommendationRequest(BaseModel):
 
 # ── Routes ────────────────────────────────────────────────────────────────────
 
-@router.post("/triage")
-async def run_triage(
-    symptoms: List[str],
-    age: str = Query("30"),
-    gender: str = Query("M"),
+    db: AsyncSession = Depends(get_db)
 ):
     """
     AI triage: map symptoms list to NAMASTE codes with risk scoring.
@@ -62,7 +61,7 @@ async def run_triage(
         raise HTTPException(status_code=400, detail="At least one symptom required")
 
     text_input = " ".join(symptoms)
-    matches = ml_service.extract_symptoms_from_text(text_input)
+    matches = await ml_service.extract_symptoms_from_text(text_input, db=db)
 
     # Risk scoring based on matched conditions + age
     age_int = int(age) if age.isdigit() else 30
@@ -110,12 +109,15 @@ async def run_triage(
 
 
 @router.post("/extract-symptoms")
-async def extract_symptoms(request: SymptomExtractionRequest):
+async def extract_symptoms(
+    request: SymptomExtractionRequest,
+    db: AsyncSession = Depends(get_db)
+):
     """NLP text → NAMASTE code extraction."""
     if len(request.text) < 5:
         raise HTTPException(status_code=400, detail="Text too short for extraction")
 
-    codes = ml_service.extract_symptoms_from_text(request.text, request.language)
+    codes = await ml_service.extract_symptoms_from_text(request.text, db=db, language=request.language)
     confidence = sum(c["confidence"] for c in codes) / len(codes) if codes else 0.0
 
     return {

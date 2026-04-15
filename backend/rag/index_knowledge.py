@@ -9,6 +9,11 @@ from pathlib import Path
 from typing import List, Dict, Any
 import uuid
 from datetime import datetime, timezone
+import sys
+import os
+
+# Add backend to path
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import chromadb
 from chromadb.utils import embedding_functions
@@ -25,7 +30,8 @@ class KnowledgeBaseIndexer:
     """Indexes knowledge base documents into ChromaDB"""
     
     def __init__(self):
-        self.chroma_client = chromadb.PersistentClient(path="rag/chroma_db")
+        self.base_dir = Path(__file__).parent.parent.absolute()
+        self.chroma_client = chromadb.PersistentClient(path=str(self.base_dir / "rag" / "chroma_db"))
         self.embedding_model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')
         self.collection_name = settings.chroma_collection
         self.chunk_size = 512  # tokens
@@ -49,7 +55,7 @@ class KnowledgeBaseIndexer:
     
     def load_knowledge_files(self) -> List[Dict[str, Any]]:
         """Load all knowledge base files"""
-        knowledge_dir = Path("rag/knowledge_base")
+        knowledge_dir = self.base_dir / "rag" / "knowledge_base"
         documents = []
         
         file_mappings = {

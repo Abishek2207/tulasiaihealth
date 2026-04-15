@@ -6,6 +6,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   User, 
   Phone, 
@@ -16,7 +17,10 @@ import {
   QrCode,
   Download,
   Share2,
-  AlertCircle
+  AlertCircle,
+  Activity,
+  ChevronRight,
+  Heart
 } from 'lucide-react';
 
 interface Patient {
@@ -46,6 +50,12 @@ interface PatientIDCardProps {
   showActions?: boolean;
 }
 
+const fadeInUp = {
+  initial: { opacity: 0, y: 15 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
+};
+
 export default function PatientIDCard({
   patient,
   showQR = true,
@@ -54,27 +64,27 @@ export default function PatientIDCard({
 }: PatientIDCardProps) {
   const [qrCodeUrl, setQrCodeUrl] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    if (showQR && patient.abhaId) {
+    if (showQR && patient.id) {
       generateQRCode();
     }
-  }, [patient.abhaId, showQR]);
+  }, [patient.id, showQR]);
 
   const generateQRCode = async () => {
     setIsLoading(true);
     try {
       const response = await fetch('/api/patient/qr', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ patientId: patient.id }),
       });
-
       if (response.ok) {
         const data = await response.json();
         setQrCodeUrl(data.qrCode);
+      } else {
+        // Fallback or handle error
       }
     } catch (error) {
       console.error('Error generating QR code:', error);
@@ -83,41 +93,15 @@ export default function PatientIDCard({
     }
   };
 
-  const downloadCard = async () => {
-    try {
-      const response = await fetch(`/api/patient/${patient.id}/card/download`);
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${patient.name.replace(' ', '_')}_ID_Card.png`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-      }
-    } catch (error) {
-      console.error('Error downloading card:', error);
-    }
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setMousePosition({ x, y });
   };
 
-  const shareCard = async () => {
-    try {
-      if (navigator.share) {
-        await navigator.share({
-          title: `Patient ID Card - ${patient.name}`,
-          text: `Patient: ${patient.name}\nABHA ID: ${patient.abhaId || 'N/A'}\nDOB: ${patient.dateOfBirth || 'N/A'}`,
-          url: window.location.href,
-        });
-      } else {
-        // Fallback: Copy to clipboard
-        const text = `Patient: ${patient.name}\nABHA ID: ${patient.abhaId || 'N/A'}\nDOB: ${patient.dateOfBirth || 'N/A'}`;
-        await navigator.clipboard.writeText(text);
-      }
-    } catch (error) {
-      console.error('Error sharing card:', error);
-    }
+  const handleMouseLeave = () => {
+    setMousePosition({ x: 0, y: 0 });
   };
 
   const calculateAge = (dateOfBirth?: string) => {
@@ -129,246 +113,208 @@ export default function PatientIDCard({
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
       age--;
     }
-    return `${age} years`;
+    return age;
   };
 
   if (compact) {
     return (
-      <div className="bg-gray-900 border border-gray-800 rounded-lg p-4">
-        <div className="flex items-center space-x-4">
-          <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-700 rounded-full flex items-center justify-center">
-            <User className="w-6 h-6 text-white" />
-          </div>
-          
-          <div className="flex-1">
-            <h3 className="font-semibold text-white">{patient.name}</h3>
-            <div className="flex items-center space-x-4 text-sm text-gray-400">
-              <span>ID: {patient.id}</span>
-              {patient.dateOfBirth && (
-                <span>Age: {calculateAge(patient.dateOfBirth)}</span>
-              )}
-              {patient.gender && (
-                <span>{patient.gender}</span>
-              )}
-            </div>
-          </div>
-          
-          {showQR && (
-            <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center">
-              {isLoading ? (
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-green-500"></div>
-              ) : qrCodeUrl ? (
-                <img src={qrCodeUrl} alt="QR Code" className="w-10 h-10" />
-              ) : (
-                <QrCode className="w-6 h-6 text-gray-400" />
-              )}
-            </div>
-          )}
+      <motion.div 
+        whileHover={{ x: 5 }}
+        className="glass group flex items-center gap-5 p-4 rounded-2xl border-white/5 hover:border-[#00d69b]/20 transition-all cursor-pointer"
+      >
+        <div className="w-12 h-12 rounded-xl bg-[#00d69b]/10 flex items-center justify-center border border-[#00d69b]/20 shadow-lg shadow-[#00d69b]/5">
+          <User className="w-6 h-6 text-[#00d69b]" />
         </div>
-      </div>
+        
+        <div className="flex-1 min-w-0">
+          <h3 className="font-bold text-white tracking-tight truncate">{patient.name}</h3>
+          <div className="flex items-center gap-3 mt-0.5">
+            <span className="text-[10px] font-black uppercase tracking-widest text-[#00d69b] bg-[#00d69b]/10 px-1.5 py-0.5 rounded">ID: {patient.id.slice(-6)}</span>
+            <span className="text-[10px] text-white/20 font-bold">{calculateAge(patient.dateOfBirth)}Y · {patient.gender?.[0] || 'N/A'}</span>
+          </div>
+        </div>
+        
+        {showQR && (
+          <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center p-1.5 group-hover:scale-105 transition-transform">
+             {qrCodeUrl ? <img src={qrCodeUrl} alt="QR" className="w-full h-full" /> : <QrCode className="w-5 h-5 text-black/20" />}
+          </div>
+        )}
+        <ChevronRight size={16} className="text-white/10 group-hover:text-[#00d69b] transition-colors" />
+      </motion.div>
     );
   }
 
   return (
-    <div className="bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-xl overflow-hidden">
-      {/* Card Header */}
-      <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <Shield className="w-6 h-6 text-white" />
-            <span className="text-white font-semibold">Patient ID Card</span>
+    <motion.div 
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        transform: `perspective(1000px) rotateY(${mousePosition.x * 10}deg) rotateX(${-mousePosition.y * 10}deg)`,
+        transition: 'transform 0.1s ease-out'
+      }}
+      className="relative w-full max-w-lg"
+    >
+      {/* Glow Effect */}
+      <div 
+        className="absolute -inset-1 bg-gradient-to-r from-[#00d69b]/20 to-[#7075ff]/20 rounded-[32px] blur-2xl opacity-40 group-hover:opacity-100 transition-opacity pointer-events-none"
+        style={{
+          transform: `translate(${mousePosition.x * 20}px, ${mousePosition.y * 20}px)`
+        }}
+      />
+      
+      <div className="relative glass rounded-[32px] overflow-hidden border-white/10 shadow-2xl backdrop-blur-3xl bg-black/40">
+        <div className="noise opacity-[0.03] pointer-events-none" />
+        
+        {/* Holographic Sweep */}
+        <motion.div 
+          animate={{ x: ['100%', '-100%'] }} transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.05] to-transparent skew-x-12 pointer-events-none"
+        />
+
+        {/* Card Header */}
+        <div className="bg-gradient-to-r from-[#00d69b] to-[#00b383] px-10 py-8 relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+            <Activity size={160} />
           </div>
-          {patient.abhaId && (
-            <div className="bg-white/20 px-3 py-1 rounded-full">
-              <span className="text-white text-sm font-medium">ABHA Verified</span>
+          <div className="relative z-10 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-black/20 backdrop-blur-3xl flex items-center justify-center border border-white/20">
+                <Shield className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <span className="text-black/60 text-[9px] font-black uppercase tracking-[0.2em] block mb-0.5">National EMR Registry</span>
+                <span className="text-white font-black text-xl tracking-tighter">TulsiHealth <span className="text-black/40 font-bold">Verified</span></span>
+              </div>
+            </div>
+            {patient.abhaId && (
+              <div className="bg-black/20 backdrop-blur-3xl border border-white/20 px-4 py-2 rounded-2xl flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                <span className="text-white text-[10px] font-black uppercase tracking-widest">ABHA ACTIVE</span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Patient Core */}
+        <div className="p-10 relative">
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-10">
+            {/* Avatar Stage */}
+            <div className="relative shrink-0">
+               <div className="w-32 h-40 rounded-[28px] bg-white/[0.03] border-2 border-white/10 flex items-center justify-center relative overflow-hidden group/avatar">
+                 <User size={64} className="text-white/5 group-hover/avatar:scale-110 transition-transform duration-500" />
+                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                 <div className="absolute bottom-4 left-0 right-0 text-center text-[9px] font-black uppercase tracking-widest text-[#00d69b]">Digital ID</div>
+               </div>
+            </div>
+
+            {/* Content Stage */}
+            <div className="flex-1 text-center md:text-left">
+              <h2 className="text-4xl font-black tracking-tighter mb-4 text-white leading-none">{patient.name}</h2>
+              
+              <div className="grid grid-cols-2 gap-8 mb-8">
+                <div>
+                  <div className="text-[9px] font-black uppercase tracking-widest text-white/10 mb-2">Patient Index</div>
+                  <div className="font-mono text-[13px] font-black text-[#00d69b] tracking-tight">{patient.id}</div>
+                </div>
+                <div>
+                  <div className="text-[9px] font-black uppercase tracking-widest text-white/10 mb-2">ABHA Address</div>
+                  <div className="font-mono text-[13px] font-black text-[#7075ff] tracking-tight lowercase">{patient.abhaId || 'not_linked'}</div>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-6 text-[11px] font-bold text-white/30">
+                <div className="flex items-center gap-2">
+                  <Calendar size={13} className="text-[#00d69b]" />
+                  <span>{patient.dateOfBirth} <span className="text-white/10 italic">({calculateAge(patient.dateOfBirth)}Y)</span></span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Activity size={13} className="text-red-400" />
+                  <span className="uppercase text-red-100">{patient.bloodGroup || 'UNK'}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <User size={13} />
+                  <span className="uppercase">{patient.gender || 'Other'}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* QR Stage */}
+            {showQR && (
+              <div className="shrink-0 flex flex-col items-center">
+                <div className="w-32 h-32 glass border-white/10 rounded-3xl p-3 shadow-2xl relative group/qr">
+                   {isLoading ? (
+                     <div className="w-full h-full flex items-center justify-center">
+                       <RefreshCw className="animate-spin text-[#00d69b]" size={24} />
+                     </div>
+                   ) : qrCodeUrl ? (
+                     <motion.img 
+                      initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+                      src={qrCodeUrl} alt="QR Code" className="w-full h-full mix-blend-screen opacity-80 brightness-125" 
+                     />
+                   ) : (
+                     <div className="w-full h-full flex items-center justify-center text-white/5">
+                       <QrCode size={40} />
+                     </div>
+                   )}
+                   <div className="absolute inset-0 border-2 border-[#00d69b]/20 rounded-3xl pointer-events-none group-hover:border-[#00d69b]/40 transition-colors" />
+                </div>
+                <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white/10 mt-3">Scan to Intake</span>
+              </div>
+            )}
+          </div>
+
+          {/* Contact Strip */}
+          <div className="mt-12 pt-10 border-t border-white/5 grid grid-cols-1 md:grid-cols-2 gap-8">
+             <div className="space-y-4">
+                <div className="flex items-center gap-4 text-white/30 group/link">
+                   <div className="w-10 h-10 rounded-xl bg-white/[0.03] flex items-center justify-center group-hover/link:text-white transition-colors"><Phone size={14} /></div>
+                   <span className="text-xs font-bold">{patient.phone || 'N/A'}</span>
+                </div>
+                <div className="flex items-center gap-4 text-white/30 group/link">
+                   <div className="w-10 h-10 rounded-xl bg-white/[0.03] flex items-center justify-center group-hover/link:text-white transition-colors"><Mail size={14} /></div>
+                   <span className="text-xs font-bold truncate">{patient.email || 'N/A'}</span>
+                </div>
+             </div>
+             <div className="space-y-4">
+                <div className="flex items-center gap-4 text-white/30 group/link">
+                   <div className="w-10 h-10 rounded-xl bg-white/[0.03] flex items-center justify-center group-hover/link:text-white transition-colors"><MapPin size={14} /></div>
+                   <span className="text-[11px] font-bold leading-tight">{patient.address || 'Location Hidden'}</span>
+                </div>
+             </div>
+          </div>
+
+          {/* Action Row */}
+          {showActions && (
+            <div className="mt-10 flex gap-4">
+              <motion.button 
+                whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                className="flex-1 py-4 rounded-2xl bg-white text-black font-black text-xs uppercase tracking-widest shadow-xl shadow-white/5 flex items-center justify-center gap-3"
+              >
+                <Download size={16} /> Save to Wallet
+              </motion.button>
+              <motion.button 
+                whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                className="w-16 h-14 rounded-2xl glass border-white/10 flex items-center justify-center text-white/30 hover:text-white hover:bg-white/5 transition-all"
+              >
+                <Share2 size={18} />
+              </motion.button>
             </div>
           )}
         </div>
-      </div>
 
-      {/* Patient Information */}
-      <div className="p-6">
-        <div className="flex items-start space-x-6">
-          {/* Patient Avatar */}
-          <div className="flex-shrink-0">
-            <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-700 rounded-full flex items-center justify-center">
-              <User className="w-10 h-10 text-white" />
-            </div>
-          </div>
-
-          {/* Patient Details */}
-          <div className="flex-1">
-            <h2 className="text-2xl font-bold text-white mb-2">{patient.name}</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-              <div className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <span className="text-gray-400 w-20">Patient ID:</span>
-                  <span className="text-white font-medium">{patient.id}</span>
-                </div>
-                
-                {patient.dateOfBirth && (
-                  <div className="flex items-center space-x-2">
-                    <Calendar className="w-4 h-4 text-gray-400" />
-                    <span className="text-gray-400">DOB/Age:</span>
-                    <span className="text-white">{patient.dateOfBirth} ({calculateAge(patient.dateOfBirth)})</span>
-                  </div>
-                )}
-                
-                {patient.gender && (
-                  <div className="flex items-center space-x-2">
-                    <span className="text-gray-400 w-20">Gender:</span>
-                    <span className="text-white">{patient.gender}</span>
-                  </div>
-                )}
-                
-                {patient.bloodGroup && (
-                  <div className="flex items-center space-x-2">
-                    <span className="text-gray-400 w-20">Blood Group:</span>
-                    <span className="text-white font-medium">{patient.bloodGroup}</span>
-                  </div>
-                )}
+        {/* Card Footer Strip */}
+        <div className="px-10 py-6 bg-white/[0.02] border-t border-white/5 flex items-center justify-between">
+           <div className="flex items-center gap-6">
+              <div className="flex items-center gap-1.5 text-[9px] font-black uppercase text-white/10 tracking-widest">
+                <Heart size={10} className="text-red-500/40" /> AYUSH Prime
               </div>
-
-              <div className="space-y-2">
-                {patient.phone && (
-                  <div className="flex items-center space-x-2">
-                    <Phone className="w-4 h-4 text-gray-400" />
-                    <span className="text-white">{patient.phone}</span>
-                  </div>
-                )}
-                
-                {patient.email && (
-                  <div className="flex items-center space-x-2">
-                    <Mail className="w-4 h-4 text-gray-400" />
-                    <span className="text-white text-sm">{patient.email}</span>
-                  </div>
-                )}
-                
-                {patient.address && (
-                  <div className="flex items-center space-x-2">
-                    <MapPin className="w-4 h-4 text-gray-400" />
-                    <span className="text-white text-sm">{patient.address}</span>
-                  </div>
-                )}
-                
-                {patient.abhaId && (
-                  <div className="flex items-center space-x-2">
-                    <Shield className="w-4 h-4 text-gray-400" />
-                    <span className="text-white text-sm">ABHA: {patient.abhaId}</span>
-                  </div>
-                )}
+              <div className="flex items-center gap-1.5 text-[9px] font-black uppercase text-white/10 tracking-widest">
+                <Shield size={10} className="text-[#00d69b]/40" /> ISO 27001
               </div>
-            </div>
-          </div>
-
-          {/* QR Code */}
-          {showQR && (
-            <div className="flex-shrink-0">
-              <div className="w-24 h-24 bg-white rounded-lg p-2">
-                {isLoading ? (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-green-500"></div>
-                  </div>
-                ) : qrCodeUrl ? (
-                  <img src={qrCodeUrl} alt="Patient QR Code" className="w-full h-full" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <QrCode className="w-8 h-8 text-gray-400" />
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
+           </div>
+           <div className="text-[9px] font-mono text-white/5 uppercase font-black">Ref: {patient.lastVisit || 'NEW'}</div>
         </div>
-
-        {/* Medical Information */}
-        {(patient.allergies?.length || patient.conditions?.length) && (
-          <div className="mt-6 pt-6 border-t border-gray-700">
-            <h3 className="text-lg font-semibold text-white mb-3">Medical Information</h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {patient.allergies && patient.allergies.length > 0 && (
-                <div>
-                  <h4 className="text-sm font-medium text-red-400 mb-2 flex items-center">
-                    <AlertCircle className="w-4 h-4 mr-1" />
-                    Allergies
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {patient.allergies.map((allergy, index) => (
-                      <span key={index} className="px-2 py-1 bg-red-500/20 text-red-400 text-xs rounded">
-                        {allergy}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              {patient.conditions && patient.conditions.length > 0 && (
-                <div>
-                  <h4 className="text-sm font-medium text-blue-400 mb-2">Chronic Conditions</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {patient.conditions.map((condition, index) => (
-                      <span key={index} className="px-2 py-1 bg-blue-500/20 text-blue-400 text-xs rounded">
-                        {condition}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Emergency Contact */}
-        {patient.emergencyContact && (
-          <div className="mt-6 pt-6 border-t border-gray-700">
-            <h3 className="text-lg font-semibold text-white mb-3">Emergency Contact</h3>
-            <div className="bg-gray-800 rounded-lg p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-medium text-white">{patient.emergencyContact.name}</p>
-                  <p className="text-sm text-gray-400">{patient.emergencyContact.relation}</p>
-                </div>
-                <div className="flex items-center space-x-2 text-green-400">
-                  <Phone className="w-4 h-4" />
-                  <span className="font-medium">{patient.emergencyContact.phone}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Action Buttons */}
-        {showActions && (
-          <div className="mt-6 pt-6 border-t border-gray-700">
-            <div className="flex flex-wrap gap-3">
-              <button
-                onClick={downloadCard}
-                className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-              >
-                <Download className="w-4 h-4" />
-                <span>Download Card</span>
-              </button>
-              
-              <button
-                onClick={shareCard}
-                className="flex items-center space-x-2 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
-              >
-                <Share2 className="w-4 h-4" />
-                <span>Share</span>
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Last Visit */}
-        {patient.lastVisit && (
-          <div className="mt-4 text-center text-sm text-gray-400">
-            Last Visit: {new Date(patient.lastVisit).toLocaleDateString()}
-          </div>
-        )}
       </div>
-    </div>
+    </motion.div>
   );
 }

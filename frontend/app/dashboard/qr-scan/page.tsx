@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import {
   ScanLine, 
@@ -17,13 +18,13 @@ import {
   ChevronRight, 
   LogOut, 
   QrCode, 
-  Loader2, 
   X, 
   Pill, 
   Heart,
   User,
   History,
-  Info
+  Info,
+  RefreshCcw
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -56,6 +57,12 @@ const MOCK_PATIENTS = [
     medicines: ['Rasnasaptak Kwath 30ml BD'],
   },
 ];
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+};
 
 export default function QRScanPage() {
   const router = useRouter();
@@ -94,218 +101,292 @@ export default function QRScanPage() {
     setTimeout(() => {
       setScanning(false);
       setPatient(MOCK_PATIENTS[Math.floor(Math.random() * MOCK_PATIENTS.length)]);
-    }, 1500);
+    }, 1800);
   };
 
   return (
-    <div className="bg-mesh min-h-screen text-white font-sans flex relative overflow-hidden">
+    <div className="bg-primary min-h-screen text-white font-sans flex relative overflow-hidden selection:bg-[#7075ff]/30">
       <div className="noise opacity-[0.02]" />
       
       {/* ── Sidebar ── */}
-      <aside className="w-[280px] min-h-screen glass border-r border-white/5 backdrop-blur-3xl flex flex-col p-6 sticky top-0">
-        <div className="flex items-center gap-3 mb-10 px-2 transition-all hover:scale-[1.02] cursor-pointer" onClick={() => router.push('/')}>
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00d69b] to-[#00b383] flex items-center justify-center shadow-[0_8px_20px_-4px_rgba(0,214,155,0.4)]">
-            <Activity className="text-white" size={20} />
+      <motion.aside 
+        initial={{ x: -100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="w-[280px] min-h-screen border-r border-white/5 backdrop-blur-3xl flex flex-col p-8 sticky top-0"
+      >
+        <div className="flex items-center gap-3 mb-12 px-2 cursor-pointer group" onClick={() => router.push('/')}>
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-b from-[#00d69b] to-[#00b383] flex items-center justify-center shadow-lg">
+            <Activity className="text-black" size={20} />
           </div>
           <span className="text-xl font-bold tracking-tight">Tulsi<span className="text-[#00d69b]">Health</span></span>
         </div>
 
-        <nav className="flex-1 space-y-1">
-          {NAV_ITEMS.map(item => {
+        <nav className="flex-1 space-y-1.5 ">
+          {NAV_ITEMS.map((item, i) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
             return (
-              <Link key={item.href} href={item.href} className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${isActive ? 'bg-[#00d69b]/10 text-[#00d69b] border border-[#00d69b]/20' : 'text-white/50 hover:bg-white/5 hover:text-white'}`}>
-                <Icon size={18} className={isActive ? 'text-[#00d69b]' : 'group-hover:text-white'} />
-                <span className="text-sm font-semibold">{item.label}</span>
-                {isActive && <div className="ml-auto w-1 h-4 bg-[#00d69b] rounded-full" />}
+              <Link key={item.href} href={item.href} className={`flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group ${isActive ? 'bg-white/5 text-[#00d69b]' : 'text-white/40 hover:text-white'}`}>
+                <Icon size={18} className={isActive ? 'text-[#00d69b]' : 'group-hover:text-white transition-colors'} />
+                <span className="text-[13px] font-bold tracking-tight">{item.label}</span>
+                {isActive && <motion.div layoutId="active-pill" className="ml-auto w-1.5 h-1.5 bg-[#00d69b] rounded-full shadow-[0_0_10px_#00d69b]" />}
               </Link>
             );
           })}
         </nav>
 
-        <div className="mt-auto pt-6 border-t border-white/5">
-          <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-white/50 hover:bg-red-500/10 hover:text-red-400 transition-all font-semibold text-sm">
+        <div className="mt-auto pt-8 border-t border-white/5">
+          <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-white/30 hover:bg-red-500/10 hover:text-red-400 transition-all font-bold text-xs uppercase tracking-widest">
             <LogOut size={18} /> Logout
           </button>
         </div>
-      </aside>
+      </motion.aside>
 
       {/* ── Main Content ── */}
-      <main className="flex-1 p-8 md:p-12 relative z-10 overflow-y-auto">
-        <div className="max-w-[1000px] mx-auto">
+      <main className="flex-1 p-12 md:p-16 relative z-10 overflow-y-auto">
+        <div className="max-w-[1200px] mx-auto">
           {/* Page Header */}
-          <div className="flex items-center justify-between mb-10 animate-fade-up">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-[#7075ff]/10 border border-[#7075ff]/20 flex items-center justify-center shadow-[0_0_20px_rgba(112,117,255,0.1)]">
-                <QrCode className="text-[#7075ff]" size={28} />
+          <motion.div {...fadeInUp} className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16">
+            <div className="flex items-center gap-6">
+              <div className="w-16 h-16 rounded-[24px] bg-white/[0.03] border border-white/5 flex items-center justify-center shadow-xl">
+                <QrCode className="text-[#7075ff]" size={32} />
               </div>
               <div>
-                <h1 className="text-3xl font-black tracking-tight">Patient Identification</h1>
-                <p className="text-white/40 font-medium">Verified QR Scanning · Blockchain Identity Trail</p>
+                <h1 className="text-4xl font-black tracking-tighter mb-1">Identification</h1>
+                <p className="text-white/30 text-xs font-black uppercase tracking-[0.2em]">Verified QR Portal · Blockchain Identity Trail</p>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {!patient ? (
-            <div className="glass p-12 md:p-20 text-center animate-fade-up delay-100">
-              {/* Scanner Simulation */}
-              <div className="w-64 h-64 mx-auto mb-10 relative group">
-                {/* Corner Accents */}
-                <div className="absolute top-0 left-0 w-10 h-10 border-t-4 border-l-4 border-[#7075ff] rounded-tl-2xl" />
-                <div className="absolute top-0 right-0 w-10 h-10 border-t-4 border-r-4 border-[#7075ff] rounded-tr-2xl" />
-                <div className="absolute bottom-0 left-0 w-10 h-10 border-b-4 border-l-4 border-[#7075ff] rounded-bl-2xl" />
-                <div className="absolute bottom-0 right-0 w-10 h-10 border-b-4 border-r-4 border-[#7075ff] rounded-br-2xl" />
+            <motion.div 
+              {...fadeInUp} transition={{ delay: 0.1 }}
+              className="glass p-16 md:p-24 text-center relative overflow-hidden"
+            >
+              <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#7075ff]/30 to-transparent" />
+              
+              {/* Scanner Interface */}
+              <div className="w-72 h-72 mx-auto mb-12 relative group">
+                <div className="absolute -inset-4 border border-[#7075ff]/20 rounded-[40px] pointer-events-none group-hover:border-[#7075ff]/40 transition-colors" />
                 
-                <div className="absolute inset-4 rounded-2xl bg-white/[0.03] border border-white/10 flex flex-col items-center justify-center gap-4 group-hover:bg-white/[0.05] transition-all">
-                  {scanning ? (
-                    <>
-                      <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-2xl">
-                        <div 
-                          className="w-full h-1 bg-gradient-to-r from-transparent via-[#7075ff] to-transparent absolute shadow-[0_0_15px_#7075ff]"
-                          style={{ top: `${scanProgress}%`, transition: 'top 0.05s linear' }}
+                {/* Visual Scanner Frame */}
+                <div className="absolute top-0 left-0 w-12 h-12 border-t-[5px] border-l-[5px] border-[#7075ff] rounded-tl-3xl group-hover:scale-110 transition-transform" />
+                <div className="absolute top-0 right-0 w-12 h-12 border-t-[5px] border-r-[5px] border-[#7075ff] rounded-tr-3xl group-hover:scale-110 transition-transform" />
+                <div className="absolute bottom-0 left-0 w-12 h-12 border-b-[5px] border-l-[5px] border-[#7075ff] rounded-bl-3xl group-hover:scale-110 transition-transform" />
+                <div className="absolute bottom-0 right-0 w-12 h-12 border-b-[5px] border-r-[5px] border-[#7075ff] rounded-br-3xl group-hover:scale-110 transition-transform" />
+                
+                <div className="absolute inset-6 rounded-[32px] bg-white/[0.02] border border-white/10 flex flex-col items-center justify-center gap-6 group-hover:bg-white/[0.04] transition-all overflow-hidden">
+                  <AnimatePresence mode="wait">
+                    {scanning ? (
+                      <motion.div 
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                        className="flex flex-col items-center gap-6"
+                      >
+                        <motion.div 
+                          className="w-full h-[6px] bg-gradient-to-r from-transparent via-[#7075ff] to-transparent absolute shadow-[0_0_25px_#7075ff]"
+                          style={{ top: `${scanProgress}%` }}
                         />
-                      </div>
-                      <Loader2 className="animate-spin text-[#7075ff]" size={40} />
-                      <span className="text-xs font-black tracking-widest text-[#7075ff] uppercase">Analyzing...</span>
-                    </>
-                  ) : (
-                    <>
-                      <div className="w-16 h-16 rounded-full bg-[#7075ff]/10 flex items-center justify-center text-[#7075ff] animate-pulse">
-                        <QrCode size={32} />
-                      </div>
-                      <span className="text-[10px] font-black tracking-[0.2em] text-white/30 uppercase">Ready to Scan</span>
-                    </>
-                  )}
+                        <RefreshCcw className="animate-spin text-[#7075ff]" size={48} strokeWidth={3} />
+                        <span className="text-[10px] font-black tracking-[0.3em] text-[#7075ff] uppercase">Decoding Hub</span>
+                      </motion.div>
+                    ) : (
+                      <motion.div 
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                        className="flex flex-col items-center gap-6"
+                      >
+                        <div className="w-20 h-20 rounded-full bg-[#7075ff]/10 flex items-center justify-center text-[#7075ff]">
+                          <QrCode size={40} strokeWidth={2.5} />
+                        </div>
+                        <span className="text-[10px] font-black tracking-[0.3em] text-white/20 uppercase">Lens Ready</span>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </div>
 
-              <div className="max-w-md mx-auto">
-                <h2 className="text-2xl font-bold mb-4">Patient Portal Gateway</h2>
-                <p className="text-white/40 font-medium leading-relaxed mb-10">
-                  Align the patient's TulsiHealth or ABHA QR code within the frame to retrieve their verified clinical profile and historical dual-coded diagnoses.
+              <div className="max-w-lg mx-auto">
+                <h2 className="text-3xl font-black mb-6 tracking-tight leading-tight">Secure Portal Authorization</h2>
+                <p className="text-white/30 text-sm font-bold leading-relaxed mb-12 uppercase tracking-widest px-10">
+                  Retrieve verified clinical history and identity using the patient's encrypted TulsiHealth node or ABHA token.
                 </p>
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <button 
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+                  <motion.button 
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={handleScan} 
                     disabled={scanning}
-                    className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-[#7075ff] text-white font-bold text-lg shadow-[0_20px_40px_-10px_rgba(112,117,255,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                    className="w-full sm:w-auto px-12 py-6 rounded-[24px] bg-[#7075ff] text-white font-black text-lg shadow-2xl hover:bg-[#6065ff] disabled:opacity-50 transition-all flex items-center justify-center gap-3 uppercase tracking-widest"
                   >
-                    {scanning ? 'Verifying...' : <><ScanLine size={20} /> Launch Scanner</>}
-                  </button>
-                  <button className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-white/5 border border-white/10 text-white/40 font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-2">
-                    Enter ID Manually
-                  </button>
+                    {scanning ? 'Authorizing...' : <><ScanLine size={24} strokeWidth={3} /> Launch Portal</>}
+                  </motion.button>
+                  <motion.button 
+                    whileHover={{ scale: 1.02 }}
+                    className="w-full sm:w-auto px-12 py-6 rounded-[24px] bg-white/5 border border-white/5 text-white/20 font-black text-sm uppercase tracking-widest hover:bg-white/10 transition-all"
+                  >
+                    Manual Registry
+                  </motion.button>
                 </div>
               </div>
               
-              <div className="mt-16 flex items-center justify-center gap-8 border-t border-white/5 pt-10 opacity-30">
-                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest"><ShieldCheck size={14} /> ISO 27001 Secure</div>
-                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest"><Info size={14} /> HIPAA Compliant</div>
+              <div className="mt-20 flex flex-col md:flex-row items-center justify-center gap-12 border-t border-white/5 pt-12 opacity-20">
+                <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em]"><ShieldCheck size={16} /> ISO 27001 SECURE</div>
+                <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em]"><Info size={16} /> HIPAA COMPLIANT</div>
+                <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em]"><Activity size={16} /> REAL-TIME SYNC</div>
               </div>
-            </div>
+            </motion.div>
           ) : (
-            <div className="space-y-8 animate-fade-up">
-              {/* Verified Badge Section */}
-              <div className="glass p-1 focus-ring-glow border-[#00d69b]/30 bg-[#00d69b]/[0.02]">
-                <div className="p-8 border-b border-white/5 flex flex-col md:flex-row items-center gap-8">
-                  <div className="w-32 h-32 rounded-3xl bg-gradient-to-br from-[#00d69b] to-[#7075ff] p-[2px]">
-                    <div className="w-full h-full rounded-3xl bg-[#030308] flex items-center justify-center text-5xl font-black text-[#00d69b]">
+            <motion.div {...fadeInUp} className="space-y-10">
+              {/* Patient Core Card */}
+              <div className="glass rounded-[40px] overflow-hidden">
+                <div className="p-10 md:p-14 border-b border-white/5 flex flex-col md:flex-row items-center gap-12 bg-gradient-to-br from-[#00d69b]/5 to-transparent">
+                  <motion.div 
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="w-40 h-40 rounded-[48px] bg-gradient-to-tr from-[#00d69b] to-[#7075ff] p-[3px]"
+                  >
+                    <div className="w-full h-full rounded-[45px] bg-primary flex items-center justify-center text-6xl font-black text-[#00d69b]">
                       {patient.name.charAt(0)}
                     </div>
-                  </div>
+                  </motion.div>
                   
                   <div className="flex-1 text-center md:text-left">
-                    <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
-                       <div className="badge badge-green flex items-center gap-2 text-[10px] font-black">
-                         <ShieldCheck size={12} /> IDENTITY VERIFIED
-                       </div>
-                       <span className="text-[10px] font-mono text-white/20">{patient.id}</span>
+                    <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
+                       <motion.div 
+                         initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
+                         className="px-4 py-1.5 rounded-full bg-[#00d69b]/10 border border-[#00d69b]/20 text-[#00d69b] text-[10px] font-black uppercase tracking-widest flex items-center gap-2"
+                       >
+                         <ShieldCheck size={14} strokeWidth={3} /> Identity Verified
+                       </motion.div>
+                       <span className="text-[10px] font-black text-white/10 uppercase tracking-[0.3em]">{patient.id}</span>
                     </div>
-                    <h2 className="text-4xl font-black tracking-tight mb-2">{patient.name}</h2>
-                    <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-white/40 font-bold text-sm">
-                       <span className="flex items-center gap-1"><User size={14} /> {patient.age} Years</span>
-                       <span className="flex items-center gap-1"><Info size={14} /> {patient.blood_group} Blood Group</span>
-                       <span className="flex items-center gap-1 text-[#ffb84d]"><Activity size={14} /> {patient.ayush_system} Root</span>
+                    <h2 className="text-5xl font-black tracking-tighter mb-4">{patient.name}</h2>
+                    <div className="flex flex-wrap items-center justify-center md:justify-start gap-8 text-white/30 text-[11px] font-black uppercase tracking-widest">
+                       <span className="flex items-center gap-2"><User size={16} className="text-[#00d69b]" /> {patient.age} Yrs</span>
+                       <span className="flex items-center gap-2"><Heart size={16} className="text-red-400" /> {patient.blood_group}</span>
+                       <span className="flex items-center gap-2 text-[#ffb84d]"><Activity size={16} /> {patient.ayush_system} Engine</span>
                     </div>
                   </div>
 
-                  <button 
+                  <motion.button 
+                    whileHover={{ scale: 1.1, rotate: 90 }}
                     onClick={() => setPatient(null)}
-                    className="p-3 glass hover:bg-red-500/10 hover:text-red-400 transition-all"
+                    className="p-5 rounded-full bg-white/5 text-white/20 hover:text-red-400 hover:bg-red-400/10 transition-all border border-white/5"
                   >
-                    <X size={24} />
-                  </button>
+                    <X size={28} />
+                  </motion.button>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
-                  <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 p-10 md:p-14">
+                  <div className="space-y-10">
                     <div>
-                      <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20 mb-4 flex items-center gap-2">
-                        <AlertTriangle size={14} className="text-red-400" /> Active Clinical Alerts
+                      <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/10 mb-6 flex items-center gap-3">
+                        <AlertTriangle size={18} className="text-red-400" /> Active Registry Alerts
                       </h4>
-                      <div className="space-y-3">
+                      <div className="space-y-4">
                          {patient.alerts.map((a: string, i: number) => (
-                           <div key={i} className="p-4 rounded-2xl bg-red-500/5 border border-red-500/10 text-red-100/70 text-sm font-semibold flex items-center gap-3">
-                             <div className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]" />
+                           <motion.div 
+                             key={i} 
+                             initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 * i }}
+                             className="p-5 rounded-3xl bg-red-400/5 border border-red-400/10 text-red-200/60 text-sm font-bold flex items-center gap-4 group hover:bg-red-400/10 transition-colors"
+                           >
+                             <div className="w-2.5 h-2.5 rounded-full bg-red-400 shadow-[0_0_12px_#f87171] group-hover:scale-125 transition-transform" />
                              {a}
-                           </div>
+                           </motion.div>
                          ))}
                       </div>
                     </div>
 
                     <div>
-                      <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20 mb-4 flex items-center gap-2">
-                        <Pill size={14} className="text-[#ffb84d]" /> Prescribed Medications
+                      <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/10 mb-6 flex items-center gap-3">
+                        <Pill size={18} className="text-[#ffb84d]" /> Current Prescription
                       </h4>
-                      <div className="space-y-3">
+                      <div className="space-y-4">
                          {patient.medicines.map((m: string, i: number) => (
-                           <div key={i} className="p-4 rounded-2xl bg-[#ffb84d]/5 border border-[#ffb84d]/10 text-white/60 text-sm font-semibold">
+                           <motion.div 
+                             key={i} 
+                             initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + 0.1 * i }}
+                             className="p-5 rounded-3xl bg-white/[0.03] border border-white/5 text-white/50 text-[13px] font-bold hover:bg-white/[0.06] transition-colors"
+                           >
                              {m}
-                           </div>
+                           </motion.div>
                          ))}
                       </div>
                     </div>
                   </div>
 
-                  <div className="space-y-6">
+                  <div className="space-y-10">
                     <div>
-                      <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20 mb-4 flex items-center gap-2">
-                        <History size={14} className="text-[#7075ff]" /> Medical History Timeline
+                      <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/10 mb-6 flex items-center gap-3">
+                        <History size={18} className="text-[#7075ff]" /> Medical Intelligence Timeline
                       </h4>
-                      <div className="space-y-4">
+                      <div className="space-y-5">
                         {patient.history.map((h: any, i: number) => (
-                          <div key={i} className="p-5 rounded-2xl glass hover:bg-white/[0.04] transition-all border-white/5 group border-2">
-                            <div className="flex justify-between items-start mb-3">
-                               <div className="font-bold text-sm tracking-tight">{h.display}</div>
-                               <span className="text-[10px] font-black px-2 py-1 bg-[#00d69b]/10 text-[#00d69b] rounded-lg">DUAL-CODED</span>
+                          <motion.div 
+                             key={i} 
+                             initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + 0.1 * i }}
+                             className="p-6 rounded-[32px] glass hover:bg-white/[0.06] transition-all border-white/5 group relative overflow-hidden"
+                          >
+                            <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                               <ChevronRight size={16} className="text-[#00d69b]" />
                             </div>
-                            <div className="flex items-center gap-4">
-                               <div className="flex-1 text-[11px] text-white/30 font-medium leading-relaxed uppercase tracking-wider">{h.icd11_display}</div>
-                               <span className="text-[10px] font-bold text-white/20 group-hover:text-[#00d69b] transition-colors">{h.icd11}</span>
+                            <div className="flex justify-between items-start mb-4">
+                               <div className="font-black text-lg tracking-tight group-hover:text-[#00d69b] transition-colors">{h.display}</div>
+                               <span className="text-[9px] font-black px-2.5 py-1 bg-[#00d69b]/10 text-[#00d69b] rounded-lg tracking-widest uppercase">Dual-Coded</span>
                             </div>
-                          </div>
+                            <div className="flex items-center gap-6">
+                               <div className="flex-1 text-[11px] text-white/20 font-black uppercase tracking-[0.2em]">{h.icd11_display}</div>
+                               <span className="text-[11px] font-black text-white/10 group-hover:text-white transition-colors">{h.icd11}</span>
+                            </div>
+                          </motion.div>
                         ))}
                       </div>
                     </div>
 
-                    <button 
+                    <motion.button 
+                      whileHover={{ scale: 1.02, y: -2 }}
+                      whileTap={{ scale: 0.98 }}
                       onClick={() => router.push('/dashboard/emr')}
-                      className="w-full py-6 rounded-3xl bg-transparent border-2 border-[#00d69b] text-[#00d69b] font-black text-lg hover:bg-[#00d69b] hover:text-black hover:shadow-[0_20px_40px_-10px_rgba(0,214,155,0.4)] transition-all flex items-center justify-center gap-3 uppercase tracking-widest mt-4"
+                      className="w-full py-7 rounded-[32px] bg-gradient-to-r from-[#00d69b] to-[#00b383] text-black font-black text-xl shadow-2xl hover:shadow-[#00d69b]/20 transition-all flex items-center justify-center gap-4 uppercase tracking-[0.2em]"
                     >
-                      <Stethoscope size={24} /> Start Consultation
-                    </button>
+                      <Stethoscope size={28} strokeWidth={3} /> Consultation
+                    </motion.button>
                   </div>
                 </div>
               </div>
               
-              <div className="flex items-center justify-center gap-4 text-[10px] font-black tracking-widest text-white/20 uppercase">
-                 <ShieldCheck size={14} /> Cryptographic Proof: 0x82f9b1d...83c01
+              <div className="flex flex-col items-center gap-6 opacity-20 py-8">
+                 <div className="flex items-center gap-10">
+                    <ShieldCheck size={20} />
+                    <History size={20} />
+                    <Database size={20} />
+                 </div>
+                 <p className="text-[9px] font-black tracking-[0.4em] uppercase text-center">
+                    Proof of Integrity: 0x82f9b1d...83c01
+                 </p>
               </div>
-            </div>
+            </motion.div>
           )}
         </div>
       </main>
     </div>
+  );
+}
+
+function Loader2({ className, size }: { className?: string; size?: number }) {
+  return (
+    <svg className={className} width={size || 24} height={size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+    </svg>
+  );
+}
+
+function Database({ className, size }: { className?: string; size?: number }) {
+  return (
+    <svg className={className} width={size || 24} height={size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <ellipse cx="12" cy="5" rx="9" ry="3" />
+      <path d="M3 5V19A9 3 0 0 0 21 19V5" />
+      <path d="M3 12A9 3 0 0 0 21 12" />
+    </svg>
   );
 }

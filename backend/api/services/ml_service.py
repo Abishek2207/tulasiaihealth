@@ -8,8 +8,9 @@ import math
 import hashlib
 import json
 import logging
-from typing import List, Dict, Any, Optional
-from datetime import datetime
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select, or_
+from api.models.database import NamasteCode, ConceptMap, ICD11Code
 
 logger = logging.getLogger(__name__)
 
@@ -146,12 +147,12 @@ def normalize_tamil(text: str) -> str:
 class MLService:
     """Production ML service for TulsiHealth."""
 
-    def extract_symptoms_from_text(
-        self, text: str, language: str = "en"
+    async def extract_symptoms_from_text(
+        self, text: str, db: Optional[AsyncSession] = None, language: str = "en"
     ) -> List[Dict[str, Any]]:
         """
         NLP symptom extraction — maps free text to NAMASTE codes.
-        Uses keyword matching + confidence scoring.
+        If db is provided, queries the NamasteCode table. Falls back to knowledge base.
         """
         if language == "ta":
             text = normalize_tamil(text)
@@ -159,26 +160,73 @@ class MLService:
         text_lower = text.lower()
         results = []
 
+        # If DB is provided, search there
+        if db:
+            try:
+                # Search for codes where symptoms contain any word from the text or name matches
+                # In production, use full-text search index (e.g., SQLite FTS5)
+                # Here we do a broad fetch and filter for simplicity in SQLite
+                result = await db.execute(select(NamasteCode))
+                db_codes = result.scalars().all()
+                
+                for code_obj in db_codes:
+                    score = 0.0
+                    matched_keywords = []
+                    
+                    # Search in name
+                    if code_obj.name_en.lower() in text_lower:
+                        score += 3.0
+                    
+                    # Search in symptoms (JSON list)
+                    if code_obj.symptoms:
+                        for s in code_obj.symptoms:
+                            if s.lower() in text_lower:
+                                score += 1.0
+                                matched_keywords.append(s)
+                    
+                    # Search in native names
+                    if code_obj.name_ta and code_obj.name_ta in text:
+                        score += 3.0
+                    
+                    # Direct code match
+                    if code_obj.code.lower() in text_lower:
+                        score += 5.0
+
+                    if score > 0:
+                        confidence = min(score / 6.0, 1.0)
+                        results.append({
+                            "namaste_code": code_obj.code,
+                            "namaste_name": code_obj.name_en,
+                            "icd11_code": code_obj.icd11_mms_code,
+                            "tm2_code": code_obj.tm2_code,
+                            "tamil_name": code_obj.name_ta or "",
+                            "confidence": round(confidence, 3),
+                            "matched_keywords": matched_keywords,
+                            "category": code_obj.category or "General",
+                        })
+                
+                results.sort(key=lambda x: x["confidence"], reverse=True)
+                if results:
+                    return results[:10]
+            except Exception as e:
+                logger.error(f"DB search for symptoms failed: {e}")
+
+        # Fallback to hardcoded knowledge base
         for entry in NAMASTE_KNOWLEDGE_BASE:
             score = 0.0
             matched_keywords = []
 
-            # Keyword matching
             for keyword in entry["keywords"]:
                 if keyword in text_lower:
                     score += 1.0
                     matched_keywords.append(keyword)
 
-            # Symptom matching
             for symptom in entry["symptoms"]:
                 for word in symptom.split():
                     if word in text_lower and len(word) > 3:
                         score += 0.5
 
-            # Direct code match
             if entry["namaste_code"].lower() in text_lower:
-                score += 5.0
-            if entry["icd11"].lower() in text_lower:
                 score += 5.0
 
             if score > 0:

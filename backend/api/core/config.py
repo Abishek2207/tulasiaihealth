@@ -44,6 +44,9 @@ class Settings(BaseSettings):
     # WHO ICD API
     who_icd_api_url: str = "https://id.who.int/icd/release/11/2024-01/mms"
     who_icd_api_version: str = "v2"
+    who_icd_token_url: str = "https://icdaccessmanagement.who.int/connect/token"
+    who_icd_client_id: Optional[str] = None
+    who_icd_client_secret: Optional[str] = None
     
     # CORS
     cors_origins: List[str] = [

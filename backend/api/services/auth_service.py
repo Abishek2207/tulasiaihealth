@@ -13,21 +13,16 @@ from passlib.context import CryptContext
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from fastapi import HTTPException, status
-# import face_recognition  # Temporarily disabled for Windows compatibility
-import numpy as np
-from PIL import Image
-import io
-import base64
-
 from api.models.database import User, Patient, UserRole
 from api.core.config import get_settings
 from api.schemas.auth import TokenData, LoginRequest, RegisterRequest
+from api.services.face_service import face_service
 
 settings = get_settings()
 logger = __import__('logging').getLogger(__name__)
 
 # Password hashing context
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["pbkdf2_sha256", "bcrypt"], deprecated="auto")
 
 
 class AuthService:
@@ -40,21 +35,6 @@ class AuthService:
         self.access_token_expire_minutes = settings.jwt_access_token_expire_minutes
         self.refresh_token_expire_days = settings.jwt_refresh_token_expire_days
         self.face_recognition_threshold = settings.face_recognition_threshold
-    
-    def _mock_face_recognition(self, image_data: bytes):
-        """Mock face recognition for Windows compatibility"""
-        # Simulate face detection and encoding
-        return {
-            "face_detected": True,
-            "encoding": np.random.rand(128),  # Mock face encoding
-            "confidence": 0.95
-        }
-    
-    def _mock_face_compare(self, known_encoding, unknown_encoding, tolerance=0.6):
-        """Mock face comparison for Windows compatibility"""
-        # Simulate face comparison with random confidence
-        distance = np.linalg.norm(known_encoding - unknown_encoding)
-        return distance < tolerance
     
     def verify_password(self, plain_password: str, hashed_password: str) -> bool:
         """Verify a password against its hash"""
@@ -303,36 +283,17 @@ class AuthService:
                 logger.error(f"Face image processing error: {e}")
                 return None
             
-            # Get face encoding
+            # Get face encoding and verify
             try:
-                # Mock face recognition for Windows compatibility
-                face_result = self._mock_face_recognition(image_data)
-                
-                if not face_result["face_detected"]:
-                    logger.warning("No face detected in image")
+                stored_embedding = user.face_embedding.get('embedding')
+                if not stored_embedding:
                     return None
                 
-                current_face_encoding = face_result["encoding"]
+                # Perform verification using the uploaded image
+                result = face_service.verify_face(stored_embedding, image_data)
                 
-            except Exception as e:
-                logger.error(f"Face encoding error: {e}")
-                return None
-            
-            # Compare with stored embedding
-            try:
-                stored_embedding = np.array(user.face_embedding['embedding'])
-                
-                # Calculate face distance (mock for Windows compatibility)
-                similarity = self._mock_face_compare(stored_embedding, current_face_encoding)
-                
-                # Convert to similarity score
-                similarity = 0.95 if similarity else 0.45
-                
-                logger.info(f"Face recognition similarity: {similarity:.3f}")
-                
-                # Check threshold
-                if similarity >= self.face_recognition_threshold:
-                    logger.info(f"Face authentication successful for user: {user.email}")
+                if result.get("verified"):
+                    logger.info(f"Face authentication successful for user: {user.email} (Confidence: {result.get('confidence')})")
                     
                     # Update last login
                     user.last_login = datetime.now(timezone.utc)
@@ -340,7 +301,7 @@ class AuthService:
                     
                     return user
                 else:
-                    logger.warning(f"Face recognition failed: similarity {similarity:.3f} below threshold {self.face_recognition_threshold}")
+                    logger.warning(f"Face recognition failed for {user.email}: {result.get('error', 'Low confidence')}")
                     return None
                     
             except Exception as e:
@@ -389,19 +350,18 @@ class AuthService:
                     detail="Invalid face image"
                 )
             
-            # Get face encoding
+            # Generate face embedding
             try:
-                # Mock face recognition for Windows compatibility
-                face_result = self._mock_face_recognition(image_data)
+                face_encoding = face_service.get_embedding(image_data)
                 
-                if not face_result["face_detected"]:
+                if not face_encoding:
                     raise HTTPException(
                         status_code=status.HTTP_400_BAD_REQUEST,
                         detail="No face detected in image"
                     )
                 
-                face_encoding = face_result["encoding"]
-                
+            except HTTPException:
+                raise
             except Exception as e:
                 logger.error(f"Face encoding error: {e}")
                 raise HTTPException(

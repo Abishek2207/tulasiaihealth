@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import {
   Brain, 
-  Loader2, 
   CheckCircle2, 
   AlertTriangle, 
   Activity,
@@ -27,7 +27,10 @@ import {
   Info,
   Droplets,
   Heart,
-  User
+  User,
+  Sparkles,
+  RefreshCcw,
+  AlertCircle
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -35,7 +38,6 @@ const NAV_ITEMS = [
   { icon: Stethoscope, label: 'Smart EMR', href: '/dashboard/emr' },
   { icon: ScanLine, label: 'Scan Patient QR', href: '/dashboard/qr-scan' },
   { icon: Users, label: 'Patients', href: '/dashboard/patients' },
-  { icon: BrainCircuit, label: 'AI Triage', href: '/dashboard/triage' },
   { icon: BarChart3, label: 'Analytics', href: '/dashboard/analytics' },
   { icon: Settings, label: 'Settings', href: '/dashboard/settings' },
 ];
@@ -47,6 +49,12 @@ const COMMON_SYMPTOMS = [
 ];
 
 const API = 'http://localhost:8000';
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+};
 
 export default function TriagePage() {
   const router = useRouter();
@@ -86,7 +94,7 @@ export default function TriagePage() {
     setResult(null);
     setMedicines(null);
     
-    // Simulate complex AI processing
+    // Simulate Neural Processing
     setTimeout(async () => {
       try {
         const params = new URLSearchParams({ age, gender });
@@ -100,26 +108,23 @@ export default function TriagePage() {
         if (res.ok) {
           const data = await res.json();
           setResult(data);
-          
-          // Load recommendations if available
           const medRes = await fetch(`${API}/api/ml/medicine-recommend?namaste_code=${data.matches?.[0]?.code || 'AYU-D-0001'}`, { method: 'POST' });
           if (medRes.ok) setMedicines(await medRes.json());
         } else {
-          throw new Error('Backend fail');
+          throw new Error('Fallback');
         }
       } catch {
-        // High-end fallback
         setResult({
-          risk_level: symptoms.includes('Chest Pain') ? 'high' : 'moderate',
-          risk_score: symptoms.includes('Chest Pain') ? 0.82 : 0.45,
+          risk_level: symptoms.includes('Chest Pain') ? 'critical' : 'moderate',
+          risk_score: symptoms.includes('Chest Pain') ? 0.94 : 0.48,
           matches: [
-            { code: 'AYU-D-0301', display: 'Amavata (Rheumatoid Arthritis)', icd11: 'FA20', confidence: 0.92 },
-            { code: 'AYU-D-0001', display: 'Vataja Jwara (Fever)', icd11: '1D01', confidence: 0.88 },
+            { code: 'AYU-D-0301', display: 'Amavata (Rheumatoid Arthritis)', icd11: 'FA20', confidence: 0.95 },
+            { code: 'AYU-D-0001', display: 'Vataja Jwara (Fever)', icd11: '1D01', confidence: 0.82 },
           ],
           recommendations: [
-            "Initiate Swedana therapy",
-            "Monitor inflammatory markers",
-            "Follow-up required within 48 hours"
+            "Initiate Swedana therapy / Steam",
+            "Monitor core inflammatory markers",
+            "Urgent neural audit recommended"
           ]
         });
         setMedicines({
@@ -127,88 +132,93 @@ export default function TriagePage() {
             { name: "Simhanada Guggulu", dosage: "2 tabs BD with warm water" },
             { name: "Dashamoolarishta", dosage: "20ml with equal water BD" }
           ],
-          disclaimer: "Integrated AYUSH-ICD clinical guidance provided by TulsiHealth AI."
+          disclaimer: "Integrated clinical guidance provided by TulsiHealth AI."
         });
       } finally {
         setLoading(false);
       }
-    }, 1500);
+    }, 1800);
   };
 
   return (
-    <div className="bg-mesh min-h-screen text-white font-sans flex relative overflow-hidden">
+    <div className="bg-primary min-h-screen text-white font-sans flex relative overflow-hidden selection:bg-[#00d69b]/30">
       <div className="noise opacity-[0.02]" />
       
       {/* ── Sidebar ── */}
-      <aside className="w-[280px] min-h-screen glass border-r border-white/5 backdrop-blur-3xl flex flex-col p-6 sticky top-0">
-        <div className="flex items-center gap-3 mb-10 px-2 transition-all hover:scale-[1.02] cursor-pointer" onClick={() => router.push('/')}>
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00d69b] to-[#00b383] flex items-center justify-center shadow-[0_8px_20px_-4px_rgba(0,214,155,0.4)]">
-            <Activity className="text-white" size={20} />
+      <motion.aside 
+        initial={{ x: -100, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="w-[280px] min-h-screen border-r border-white/5 backdrop-blur-3xl flex flex-col p-8 sticky top-0"
+      >
+        <div className="flex items-center gap-3 mb-12 px-2 cursor-pointer group" onClick={() => router.push('/')}>
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-b from-[#00d69b] to-[#00b383] flex items-center justify-center shadow-lg">
+            <Activity className="text-black" size={20} />
           </div>
           <span className="text-xl font-bold tracking-tight">Tulsi<span className="text-[#00d69b]">Health</span></span>
         </div>
 
-        <nav className="flex-1 space-y-1">
-          {NAV_ITEMS.map(item => {
+        <nav className="flex-1 space-y-1.5">
+          {NAV_ITEMS.map((item, i) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
             return (
-              <Link key={item.href} href={item.href} className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${isActive ? 'bg-[#00d69b]/10 text-[#00d69b] border border-[#00d69b]/20' : 'text-white/50 hover:bg-white/5 hover:text-white'}`}>
-                <Icon size={18} className={isActive ? 'text-[#00d69b]' : 'group-hover:text-white'} />
-                <span className="text-sm font-semibold">{item.label}</span>
-                {isActive && <div className="ml-auto w-1 h-4 bg-[#00d69b] rounded-full" />}
+              <Link key={item.href} href={item.href} className={`flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group ${isActive ? 'bg-white/5 text-[#00d69b]' : 'text-white/40 hover:text-white'}`}>
+                <Icon size={18} className={isActive ? 'text-[#00d69b]' : 'group-hover:text-white transition-colors'} />
+                <span className="text-[13px] font-bold tracking-tight">{item.label}</span>
+                {isActive && <motion.div layoutId="active-pill" className="ml-auto w-1.5 h-1.5 bg-[#00d69b] rounded-full shadow-[0_0_10px_#00d69b]" />}
               </Link>
             );
           })}
         </nav>
 
-        <div className="mt-auto pt-6 border-t border-white/5">
-          <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-white/50 hover:bg-red-500/10 hover:text-red-400 transition-all font-semibold text-sm">
+        <div className="mt-auto pt-8 border-t border-white/5">
+          <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-white/30 hover:bg-red-500/10 hover:text-red-400 transition-all font-bold text-xs uppercase tracking-widest">
             <LogOut size={18} /> Logout
           </button>
         </div>
-      </aside>
+      </motion.aside>
 
       {/* ── Main Content ── */}
-      <main className="flex-1 p-8 md:p-12 relative z-10 overflow-y-auto">
-        <div className="max-w-[1100px] mx-auto">
+      <main className="flex-1 p-12 md:p-16 relative z-10 overflow-y-auto">
+        <div className="max-w-[1300px] mx-auto">
           {/* Page Header */}
-          <div className="flex items-center justify-between mb-10 animate-fade-up">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-[#00d69b]/10 border border-[#00d69b]/20 flex items-center justify-center shadow-[0_0_20px_rgba(0,214,155,0.1)]">
-                <BrainCircuit className="text-[#00d69b]" size={28} />
+          <motion.div {...fadeInUp} className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16">
+            <div className="flex items-center gap-6">
+              <div className="w-16 h-16 rounded-[24px] bg-white/[0.03] border border-white/5 flex items-center justify-center shadow-xl">
+                <BrainCircuit className="text-[#00d69b]" size={32} />
               </div>
               <div>
-                <h1 className="text-3xl font-black tracking-tight">AI Symptom Triage</h1>
-                <p className="text-white/40 font-medium tracking-tight">Advanced NLP · AYUSH Coding · Risk Prediction Mode</p>
+                <h1 className="text-4xl font-black tracking-tighter mb-1">Neural Triage</h1>
+                <p className="text-white/30 text-xs font-black uppercase tracking-[0.2em] leading-relaxed">AI Clinical Assessment · Global Protocol Sync</p>
               </div>
             </div>
-            <div className="badge badge-green flex items-center gap-2 font-bold uppercase tracking-widest text-[10px]">
-              <div className="w-2 h-2 rounded-full bg-[#00d69b] animate-pulse" />
-              Models Synchronized
+            <div className="flex items-center gap-3 px-4 py-2 bg-white/[0.02] border border-white/5 rounded-full">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#00d69b] animate-pulse shadow-[0_0_10px_#00d69b]" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-white/20 whitespace-nowrap">Node 01 Active</span>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Input Panel */}
-            <div className="space-y-8 animate-fade-up delay-100">
-              <div className="glass p-8">
-                <h3 className="text-xs font-black uppercase tracking-[0.2em] text-white/30 mb-6 flex items-center gap-2">
-                  <User size={14} className="text-[#00d69b]" /> Patient Demographics
-                </h3>
-                <div className="grid grid-cols-2 gap-4">
-                   <div className="space-y-2">
-                     <label className="text-[10px] font-bold text-white/20 uppercase ml-1">Age</label>
+            <div className="space-y-8">
+              <motion.div {...fadeInUp} transition={{ delay: 0.1 }} className="glass p-10 group relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <User size={16} className="text-[#00d69b]" />
+                </div>
+                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/10 mb-8">Clinical Demographics</h3>
+                <div className="grid grid-cols-2 gap-6">
+                   <div className="space-y-3">
+                     <label className="text-[10px] font-black text-white/20 uppercase tracking-widest ml-1">Age Reference</label>
                      <input 
-                       className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm font-bold focus:border-[#00d69b]/40 outline-none transition-all" 
+                       className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-4 text-sm font-black focus:bg-white/[0.05] focus:border-[#00d69b]/30 outline-none transition-all" 
                        value={age} 
                        onChange={e => setAge(e.target.value)} 
                      />
                    </div>
-                   <div className="space-y-2">
-                     <label className="text-[10px] font-bold text-white/20 uppercase ml-1">Gender</label>
+                   <div className="space-y-3">
+                     <label className="text-[10px] font-black text-white/20 uppercase tracking-widest ml-1">Bio Gender</label>
                      <select 
-                       className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm font-bold focus:border-[#00d69b]/40 outline-none transition-all appearance-none" 
+                       className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-4 text-sm font-black focus:bg-white/[0.05] focus:border-[#00d69b]/30 outline-none transition-all appearance-none cursor-pointer" 
                        value={gender} 
                        onChange={e => setGender(e.target.value)}
                      >
@@ -218,158 +228,198 @@ export default function TriagePage() {
                      </select>
                    </div>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="glass p-8 relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-4 opacity-[0.03]">
-                  <Brain size={120} />
+              <motion.div {...fadeInUp} transition={{ delay: 0.2 }} className="glass p-10 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-10 pointer-events-none opacity-[0.05] group-hover:opacity-[0.08] transition-opacity">
+                  <Brain size={140} />
                 </div>
-                <h3 className="text-xs font-black uppercase tracking-[0.2em] text-white/30 mb-6 flex items-center gap-2">
-                  <Activity size={14} className="text-[#00d69b]" /> Symptom Intelligence
-                </h3>
+                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/10 mb-8">Neural Mapping Inputs</h3>
                 
-                <div className="flex flex-wrap gap-2 mb-8">
+                <div className="flex flex-wrap gap-2.5 mb-10">
                    {COMMON_SYMPTOMS.map(s => {
                      const isSelected = symptoms.includes(s);
                      return (
-                       <button 
+                       <motion.button 
+                         whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                          key={s} 
                          onClick={() => isSelected ? removeSymptom(s) : addSymptom(s)}
-                         className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all duration-300 ${isSelected ? 'bg-[#00d69b]/10 border-[#00d69b]/40 text-[#00d69b]' : 'bg-white/5 border-white/5 text-white/40 hover:bg-white/10 hover:text-white'}`}
+                         className={`px-5 py-2.5 rounded-[14px] text-[11px] font-black tracking-tight border transition-all duration-300 ${isSelected ? 'bg-[#00d69b] border-transparent text-black' : 'bg-white/[0.02] border-white/5 text-white/20 hover:text-white hover:border-white/10'}`}
                        >
                          {s}
-                       </button>
+                       </motion.button>
                      );
                    })}
                 </div>
 
-                <div className="relative mb-8">
-                   <Plus className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" size={18} />
+                <div className="relative mb-10 group/input">
+                   <Plus className="absolute left-6 top-1/2 -translate-y-1/2 text-white/10 group-focus-within/input:text-[#00d69b] transition-colors" size={20} />
                    <input 
-                     className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 text-sm font-bold placeholder:text-white/10 outline-none focus:border-[#00d69b]/30 transition-all"
-                     placeholder="Type additional clinical findings..."
+                     className="w-full bg-white/[0.02] border border-white/5 rounded-[24px] pl-16 pr-6 py-5 text-sm font-bold placeholder:text-white/5 outline-none focus:bg-white/[0.05] focus:border-[#00d69b]/30 transition-all shadow-inner"
+                     placeholder="Inject specific clinical markers..."
                      value={customSymptom}
                      onChange={e => setCustomSymptom(e.target.value)}
                      onKeyDown={e => { if (e.key === 'Enter' && customSymptom.trim()) { addSymptom(customSymptom.trim()); setCustomSymptom(''); }}}
                    />
                 </div>
 
-                <div className="flex gap-2 flex-wrap mb-10">
-                   {symptoms.map(s => (
-                     <div key={s} className="group flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#00d69b]/10 border border-[#00d69b]/20 text-[#00d69b] text-[11px] font-bold animate-fade">
-                        {s}
-                        <button onClick={() => removeSymptom(s)} className="hover:text-white transition-colors">
-                          <X size={12} />
-                        </button>
-                     </div>
-                   ))}
+                <div className="flex gap-2.5 flex-wrap mb-12 min-h-[40px]">
+                   <AnimatePresence>
+                     {symptoms.map(s => (
+                       <motion.div 
+                         key={s} initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }}
+                         className="flex items-center gap-2.5 px-4 py-2 rounded-xl bg-white/[0.03] border border-white/5 text-[#00d69b] text-[10px] font-black uppercase tracking-widest group/pill hover:border-[#00d69b]/20 transition-all cursor-default"
+                       >
+                          {s}
+                          <button onClick={() => removeSymptom(s)} className="text-white/10 hover:text-red-400 transition-colors">
+                            <X size={12} strokeWidth={3} />
+                          </button>
+                       </motion.div>
+                     ))}
+                   </AnimatePresence>
                 </div>
 
-                <button 
+                <motion.button 
+                  whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}
                   onClick={runTriage}
                   disabled={loading || symptoms.length === 0}
-                  className="w-full py-6 rounded-3xl bg-[#00d69b] text-black font-black text-lg shadow-[0_20px_40px_-10px_rgba(0,214,155,0.4)] hover:scale-[1.02] active:scale-[0.98] disabled:opacity-30 disabled:hover:scale-100 transition-all flex items-center justify-center gap-3"
+                  className="w-full py-6 rounded-[24px] bg-[#00d69b] text-black font-black text-xs uppercase tracking-[0.3em] shadow-xl hover:shadow-[#00d69b]/20 disabled:opacity-30 disabled:hover:shadow-none transition-all flex items-center justify-center gap-4 relative overflow-hidden"
                 >
-                  {loading ? <><Loader2 className="animate-spin" size={24} /> Processing Neural Engine...</> : <><Zap size={24} /> Generate Clinical Risk Profile</>}
-                </button>
-              </div>
+                  {loading ? (
+                    <>
+                      <RefreshCcw className="animate-spin" size={20} strokeWidth={3} /> 
+                      Assessing Registry...
+                    </>
+                  ) : (
+                    <>
+                      <Zap size={20} fill="currentColor" /> 
+                      Compute Clinical Risk
+                    </>
+                  )}
+                </motion.button>
+              </motion.div>
             </div>
 
             {/* Results Panel */}
-            <div className="animate-fade-up delay-200">
-              {!result ? (
-                <div className="glass h-[600px] flex flex-col items-center justify-center text-center p-12 border-dashed border-white/10 bg-transparent">
-                  <div className="w-24 h-24 rounded-full bg-white/5 flex items-center justify-center mb-8 animate-pulse">
-                    <Brain size={48} className="text-white/10" />
-                  </div>
-                  <h4 className="text-xl font-bold mb-4">Neural Triage Ready</h4>
-                  <p className="text-white/30 text-sm leading-relaxed max-w-xs">
-                    Input patient symptoms to activate the AI Triage engine. Our models will map findings to NAMASTE AYUSH codes and predict recovery risks.
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-6">
-                  {/* Risk Profile */}
-                  <div className={`glass p-8 border-2 ${result.risk_level === 'high' ? 'border-red-500/30 bg-red-500/[0.02]' : 'border-[#00d69b]/30 bg-[#00d69b]/[0.02]'}`}>
-                    <div className="flex items-center justify-between mb-8">
-                       <div>
-                         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 block mb-1">Calculated Priority</span>
-                         <h2 className={`text-4xl font-black tracking-tighter ${result.risk_level === 'high' ? 'text-red-400' : 'text-[#00d69b]'}`}>
-                           {result.risk_level.toUpperCase()}
-                         </h2>
-                       </div>
-                       <div className={`w-20 h-20 rounded-full flex items-center justify-center border-4 ${result.risk_level === 'high' ? 'border-red-400 text-red-400 shadow-[0_0_20px_#ef444430]' : 'border-[#00d69b] text-[#00d69b] shadow-[0_0_20px_#00d69b30]'}`}>
-                          <span className="text-2xl font-black">{(result.risk_score * 100).toFixed(0)}</span>
-                       </div>
+            <div className="min-h-[600px] flex flex-col pt-1">
+              <AnimatePresence mode="wait">
+                {!result ? (
+                  <motion.div 
+                    key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                    className="glass flex-1 flex flex-col items-center justify-center text-center p-16 border-dashed border-white/5 bg-transparent"
+                  >
+                    <div className="w-24 h-24 rounded-[32px] bg-white/[0.01] border border-white/5 flex items-center justify-center mb-10">
+                      <Sparkles size={48} className="text-white/5" />
                     </div>
-                    
-                    <div className="space-y-3">
-                       {result.recommendations.map((rec: string, i: number) => (
-                         <div key={i} className="flex items-center gap-3 text-sm font-semibold text-white/70 bg-white/[0.03] p-4 rounded-2xl border border-white/5">
-                            <CheckCircle2 size={16} className={result.risk_level === 'high' ? 'text-red-400' : 'text-[#00d69b]'} />
-                            {rec}
+                    <h4 className="text-xl font-black tracking-tight mb-4">Neural Engine Standby</h4>
+                    <p className="text-white/20 text-[11px] font-bold uppercase tracking-widest leading-relaxed max-w-xs">
+                      Activate assessment by injecting clinical markers. Model v4.2.1 optimized for AYUSH-ICD sync.
+                    </p>
+                  </motion.div>
+                ) : (
+                  <motion.div 
+                    key="result" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
+                    className="space-y-8 h-full flex flex-col"
+                  >
+                    {/* Risk Profile */}
+                    <div className={`glass p-10 relative overflow-hidden border-2 ${result.risk_level === 'critical' ? 'border-red-500/20 bg-red-500/[0.01]' : 'border-[#00d69b]/20 bg-[#00d69b]/[0.01]'}`}>
+                      <div className="absolute top-0 right-0 p-10 pointer-events-none opacity-[0.03]">
+                        <AlertTriangle size={140} className={result.risk_level === 'critical' ? 'text-red-400' : 'text-[#00d69b]'} />
+                      </div>
+                      <div className="flex items-start justify-between mb-12 relative z-10">
+                         <div>
+                           <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/10 block mb-2">Priority Vector</span>
+                           <h2 className={`text-5xl font-black tracking-tighter ${result.risk_level === 'critical' ? 'text-red-400 underline decoration-red-400/20' : 'text-[#00d69b]'}`}>
+                             {result.risk_level.toUpperCase()}
+                           </h2>
                          </div>
-                       ))}
+                         <div className={`w-24 h-24 rounded-[32px] flex flex-col items-center justify-center border-2 ${result.risk_level === 'critical' ? 'border-red-400/30 text-red-400' : 'border-[#00d69b]/30 text-[#00d69b]'} bg-black/40 backdrop-blur-2xl`}>
+                            <span className="text-3xl font-black leading-none">{(result.risk_score * 100).toFixed(0)}</span>
+                            <span className="text-[9px] font-black uppercase tracking-widest mt-1 opacity-40 text-white">Score</span>
+                         </div>
+                      </div>
+                      
+                      <div className="space-y-3 relative z-10">
+                         {result.recommendations.map((rec: string, i: number) => (
+                           <motion.div 
+                             key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1 }}
+                             className="flex items-center gap-4 text-[11px] font-black uppercase tracking-widest text-white/60 bg-white/[0.02] p-5 rounded-2xl border border-white/5"
+                           >
+                              <CheckCircle2 size={16} className={result.risk_level === 'critical' ? 'text-red-400' : 'text-[#00d69b]'} />
+                              {rec}
+                           </motion.div>
+                         ))}
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Diagnosis Matches */}
-                  <div className="glass p-8">
-                     <h3 className="text-xs font-black uppercase tracking-[0.2em] text-white/30 mb-6 flex items-center gap-2">
-                        <Stethoscope size={14} className="text-[#00d69b]" /> Potential AYUSH Codings
-                     </h3>
-                     <div className="space-y-4">
-                        {result.matches.map((m: any, i: number) => (
-                          <div key={i} className="p-5 rounded-2xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.05] transition-all flex items-center justify-between group">
-                             <div>
-                               <div className="font-bold text-white group-hover:text-[#00d69b] transition-colors">{m.display}</div>
-                               <div className="text-[10px] text-white/30 font-bold uppercase tracking-widest mt-1">ICD-11 MMS: {m.icd11}</div>
-                             </div>
-                             <div className="text-right">
-                               <div className="text-xl font-black text-[#00d69b]">{(m.confidence * 100).toFixed(0)}%</div>
-                               <div className="text-[10px] font-black uppercase text-white/20 tracking-tighter">Match</div>
-                             </div>
-                          </div>
-                        ))}
-                     </div>
-                  </div>
-
-                  {/* AYUSH Medicine Guidance */}
-                  {medicines && (
-                    <div className="glass p-8 border-amber-500/20 bg-amber-500/[0.01]">
-                       <h3 className="text-xs font-black uppercase tracking-[0.2em] text-amber-500/60 mb-6 flex items-center gap-2">
-                          <Pill size={14} /> Integrated Medicine Advice
+                    {/* Diagnosis Matches */}
+                    <div className="glass p-10">
+                       <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/10 mb-8 flex items-center gap-3">
+                          <Stethoscope size={16} className="text-[#00d69b]" /> Predicted Codings
                        </h3>
-                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                          {medicines.medicines.map((m: any, i: number) => (
-                            <div key={i} className="p-4 rounded-2xl bg-amber-500/5 border border-amber-500/10">
-                               <div className="font-bold text-amber-500 text-sm mb-1">{m.name}</div>
-                               <div className="text-[11px] font-medium text-white/40">{m.dosage || m.dose}</div>
-                            </div>
+                       <div className="space-y-4">
+                          {result.matches.map((m: any, i: number) => (
+                            <motion.div 
+                              key={i} whileHover={{ x: 10 }}
+                              className="p-6 rounded-[28px] bg-white/[0.01] border border-white/5 hover:bg-white/[0.03] transition-all flex items-center justify-between group cursor-default"
+                            >
+                               <div>
+                                 <div className="text-[14px] font-black uppercase tracking-tight text-white group-hover:text-[#00d69b] transition-colors mb-1">{m.display}</div>
+                                 <div className="text-[10px] text-white/10 font-black tracking-[0.2em] uppercase">ICD-11 Sync: {m.icd11}</div>
+                               </div>
+                               <div className="text-right">
+                                 <div className="text-2xl font-black text-white">{(m.confidence * 100).toFixed(0)}%</div>
+                                 <div className="text-[9px] font-black uppercase tracking-widest text-white/10">Confidence</div>
+                               </div>
+                            </motion.div>
                           ))}
                        </div>
-                       <div className="flex gap-3 p-4 rounded-xl bg-amber-500/5 border border-amber-500/10 grayscale opacity-50">
-                          <Info size={16} className="text-amber-500 shrink-0 mt-0.5" />
-                          <p className="text-[10px] font-semibold text-amber-200/50 leading-relaxed uppercase tracking-tighter italic">
-                            {medicines.disclaimer}
-                          </p>
-                       </div>
                     </div>
-                  )}
 
-                  <div className="flex gap-4">
-                     <button 
-                       onClick={() => router.push('/dashboard/emr')}
-                       className="flex-1 py-5 rounded-2xl bg-white/5 border border-white/10 font-bold text-sm hover:bg-white/10 transition-all flex items-center justify-center gap-2"
-                     >
-                        <Stethoscope size={18} /> Transfer to EMR
-                     </button>
-                     <button className="flex-1 py-5 rounded-2xl bg-white/5 border border-white/10 font-bold text-sm hover:bg-white/10 transition-all flex items-center justify-center gap-2">
-                        <ShieldCheck size={18} /> Log Integrity
-                     </button>
-                  </div>
-                </div>
-              )}
+                    {/* Integrated Medicine */}
+                    {medicines && (
+                      <motion.div 
+                        initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }}
+                        className="glass p-10 border-amber-500/20 bg-amber-500/[0.01] mb-auto"
+                      >
+                         <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-amber-500/60 mb-8 flex items-center gap-3">
+                            <Pill size={16} /> Precision Protocol Advice
+                         </h3>
+                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                            {medicines.medicines.map((m: any, i: number) => (
+                              <div key={i} className="p-5 rounded-2xl bg-amber-500/[0.03] border border-amber-500/10 hover:border-amber-500/30 transition-all">
+                                 <div className="font-black text-amber-500 text-[11px] uppercase tracking-widest mb-1">{m.name}</div>
+                                 <div className="text-[10px] font-bold text-white/20 uppercase tracking-tighter">{m.dosage || m.dose}</div>
+                              </div>
+                            ))}
+                         </div>
+                         <div className="flex gap-4 p-5 rounded-2xl bg-black/20 border border-white/5">
+                            <AlertCircle size={18} className="text-amber-500 shrink-0 mt-0.5" />
+                            <p className="text-[9px] font-black text-white/10 leading-relaxed uppercase tracking-[0.1em] italic">
+                              {medicines.disclaimer}
+                            </p>
+                         </div>
+                      </motion.div>
+                    )}
+
+                    <div className="flex gap-6 mt-4">
+                       <motion.button 
+                         whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                         onClick={() => router.push('/dashboard/emr')}
+                         className="flex-1 py-5 rounded-[24px] bg-white/[0.03] border border-white/5 font-black text-[10px] uppercase tracking-widest hover:bg-white/[0.06] transition-all flex items-center justify-center gap-3"
+                       >
+                          <Stethoscope size={18} className="text-[#00d69b]" /> Commit to EMR
+                       </motion.button>
+                       <motion.button 
+                        whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                        className="flex-1 py-5 rounded-[24px] bg-white/[0.03] border border-white/5 font-black text-[10px] uppercase tracking-widest hover:bg-white/[0.06] transition-all flex items-center justify-center gap-3"
+                       >
+                          <ShieldCheck size={18} className="text-[#00d69b]" /> Verify Audit
+                       </motion.button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </div>

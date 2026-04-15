@@ -23,13 +23,53 @@ class ICDSyncService:
     
     def __init__(self):
         self.base_url = settings.who_icd_api_url
+        self.token_url = settings.who_icd_token_url
+        self.client_id = settings.who_icd_client_id
+        self.client_secret = settings.who_icd_client_secret
         self.api_version = settings.who_icd_api_version
+        
+        self.access_token = None
+        self.token_expiry = None
+        
         self.headers = {
             "API-Version": self.api_version,
             "Accept-Language": "en",
             "Accept": "application/json"
         }
         self.timeout = 30.0
+
+    async def _get_auth_token(self) -> Optional[str]:
+        """Fetch OIDC access token from WHO API"""
+        if self.access_token and self.token_expiry and datetime.now(timezone.utc) < self.token_expiry:
+            return self.access_token
+
+        if not self.client_id or not self.client_secret:
+            logger.warning("WHO ICD API credentials not provided. Using mock data if available.")
+            return None
+
+        try:
+            async with httpx.AsyncClient(timeout=self.timeout) as client:
+                payload = {
+                    "client_id": self.client_id,
+                    "client_secret": self.client_secret,
+                    "scope": "icdapi_access",
+                    "grant_type": "client_credentials"
+                }
+                response = await client.post(self.token_url, data=payload)
+                
+                if response.status_code != 200:
+                    logger.error(f"Failed to fetch WHO token: {response.status_code} - {response.text}")
+                    return None
+                
+                data = response.json()
+                self.access_token = data.get("access_token")
+                expires_in = data.get("expires_in", 3600)
+                self.token_expiry = datetime.now(timezone.utc) + timedelta(seconds=expires_in - 60)
+                
+                return self.access_token
+        except Exception as e:
+            logger.error(f"Error fetching WHO token: {e}")
+            return None
         
     async def sync_icd11_chapter26(self, db: AsyncSession) -> Dict[str, Any]:
         """Sync ICD-11 Chapter 26 (Traditional Medicine Module 2) data"""
@@ -93,11 +133,16 @@ class ICDSyncService:
     
     async def _fetch_tm2_linearization(self) -> List[Dict[str, Any]]:
         """Fetch TM2 linearization from WHO API"""
+        token = await self._get_auth_token()
+        headers = self.headers.copy()
+        if token:
+            headers["Authorization"] = f"Bearer {token}"
+
         try:
             async with httpx.AsyncClient(timeout=self.timeout) as client:
                 # Get Chapter 26 TM2 data
-                url = f"{self.base_url}/mms/other"
-                response = await client.get(url, headers=self.headers)
+                url = f"{self.base_url}/mms/release/11/2024-01/tm2"
+                response = await client.get(url, headers=headers)
                 
                 if response.status_code != 200:
                     logger.error(f"WHO API error: {response.status_code} - {response.text}")
