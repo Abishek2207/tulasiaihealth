@@ -63,7 +63,7 @@ const container = {
 
 const item = {
   hidden: { opacity: 0, scale: 0.8, y: 10 },
-  show: { opacity: 1, scale: 1, y: 0, transition: { type: 'spring', damping: 15, stiffness: 200 } }
+  show: { opacity: 1, scale: 1, y: 0, transition: { type: 'spring' as const, damping: 15, stiffness: 200 } }
 };
 
 export default function IndiaMap({
@@ -169,7 +169,7 @@ export default function IndiaMap({
                      >
                        <motion.div 
                          animate={{ opacity: [0, 1, 0], scale: [0.8, 1.2, 0.8] }}
-                         transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+                         transition={{ duration: 4, repeat: Infinity, ease: 'linear' as const }}
                          className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#00d69b] blur-[2px]"
                        />
                      </motion.div>
@@ -254,7 +254,5 @@ export default function IndiaMap({
          ))}
       </div>
     </div>
-  );
-}
   );
 }

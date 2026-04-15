@@ -35,8 +35,8 @@ const scannerVariants = {
     rotate: [0, 360],
     scale: [0.95, 1.05, 0.95],
     transition: {
-      rotate: { duration: 8, repeat: Infinity, ease: 'linear' },
-      scale: { duration: 2, repeat: Infinity, ease: 'easeInOut' }
+      rotate: { duration: 8, repeat: Infinity, ease: 'linear' as const },
+      scale: { duration: 2, repeat: Infinity, ease: 'easeInOut' as const }
     }
   },
   detected: {

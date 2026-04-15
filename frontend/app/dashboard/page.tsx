@@ -387,7 +387,7 @@ export default function DashboardPage() {
                 <motion.div 
                   initial={{ width: 0 }}
                   animate={{ width: '64%' }}
-                  transition={{ duration: 1.5, delay: 1, ease: "circOut" }}
+                  transition={{ duration: 1.5, delay: 1, ease: "circOut" as const }}
                   className="h-full bg-gradient-to-r from-[#00d69b] to-[#7075ff] rounded-full" 
                 />
               </div>
@@ -395,9 +395,6 @@ export default function DashboardPage() {
           </motion.div>
         </div>
       </main>
-    </div>
-  );
-}
     </div>
   );
 }

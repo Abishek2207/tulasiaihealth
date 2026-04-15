@@ -20,7 +20,8 @@ import {
   AlertCircle,
   Activity,
   ChevronRight,
-  Heart
+  Heart,
+  RefreshCw
 } from 'lucide-react';
 
 interface Patient {
