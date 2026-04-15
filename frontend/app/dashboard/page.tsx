@@ -21,7 +21,10 @@ import {
   LogOut,
   Search,
   Plus,
-  BrainCircuit
+  BrainCircuit,
+  BookOpen,
+  Shield,
+  MessageSquare
 } from 'lucide-react';
 import { 
   AreaChart, 
@@ -38,8 +41,11 @@ const NAV_ITEMS = [
   { icon: Stethoscope, label: 'Smart EMR', href: '/dashboard/emr' },
   { icon: ScanLine, label: 'Scan Patient QR', href: '/dashboard/qr-scan' },
   { icon: Users, label: 'Patients', href: '/dashboard/patients' },
-  { icon: Calendar, label: 'Appointments', href: '/dashboard/appointments' },
+  { icon: BrainCircuit, label: 'AI Triage', href: '/dashboard/triage' },
+  { icon: BookOpen, label: 'Diagnosis', href: '/dashboard/diagnosis' },
+  { icon: MessageSquare, label: 'AI Assistant', href: '/dashboard/ai' },
   { icon: BarChart3, label: 'Analytics', href: '/dashboard/analytics' },
+  { icon: Shield, label: 'Admin', href: '/dashboard/admin' },
   { icon: Settings, label: 'Settings', href: '/dashboard/settings' },
 ];
 
