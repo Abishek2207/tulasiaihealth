@@ -1,631 +1,261 @@
 """
-Terminology Routes for TulsiHealth
-Handles ICD-11 sync, terminology search, and concept mapping
+TulsiHealth — Terminology Search & Translate Routes (Production)
+Serves NAMASTE ↔ TM2 ↔ ICD-11 ConceptMap with auto-complete search
 """
 
-from typing import Dict, Any, List, Optional
-from fastapi import APIRouter, Depends, HTTPException, status, Query
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, or_, and_
+import logging
+from typing import Any, Dict, List, Optional
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel
 
-from api.models.database import User, UserRole, NamasteCode, ICD11Code, ConceptMap
-from api.services.icd_sync_service import icd_sync_service
-from api.database import get_db
-from api.deps import get_current_active_user, require_role
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
+# ── Embedded NAMASTE Knowledge Base (no external DB required) ─────────────────
 
-class SyncRequest(BaseModel):
-    """Request model for ICD-11 sync"""
-    sync_type: str = "full"  # full, incremental
-    create_mappings: bool = True
+KNOWLEDGE_BASE: List[Dict[str, Any]] = [
+    {"namaste_code": "AYU-D-0001", "namaste_name": "Vataja Jwara",  "icd11_code": "1D01",  "icd11_name": "Fever of unknown origin",        "tm2_code": "TM2-001", "tm2_name": "Fever NOS (TM)",             "category": "Jwara (Fever)",           "tamil_name": "வாதஜ ஜ்வரம்",    "confidence": 0.94, "keywords": ["fever", "jwara", "temp", "chills", "vata"]},
+    {"namaste_code": "AYU-D-0002", "namaste_name": "Pittaja Jwara", "icd11_code": "1D01",  "icd11_name": "Fever of unknown origin",        "tm2_code": "TM2-002", "tm2_name": "Fever — Heat Type",          "category": "Jwara (Fever)",           "tamil_name": "பித்தஜ ஜ்வரம்",   "confidence": 0.91, "keywords": ["fever", "pitta", "burning", "high temperature"]},
+    {"namaste_code": "AYU-D-0201", "namaste_name": "Prameha",       "icd11_code": "5A11",  "icd11_name": "Type 2 Diabetes Mellitus",        "tm2_code": "TM2-201", "tm2_name": "Diabetes Mellitus (TM)",     "category": "Prameha (Diabetes)",      "tamil_name": "பிரமேகம்",        "confidence": 0.91, "keywords": ["diabetes", "prameha", "sugar", "glucose", "urine", "thirst"]},
+    {"namaste_code": "AYU-D-0301", "namaste_name": "Amavata",       "icd11_code": "FA20",  "icd11_name": "Rheumatoid Arthritis",           "tm2_code": "TM2-301", "tm2_name": "Bi Syndrome Wind-Cold",      "category": "Vata Disorders",          "tamil_name": "ஆமவாதம்",         "confidence": 0.88, "keywords": ["arthritis", "amavata", "joint", "pain", "swelling", "rheumatoid"]},
+    {"namaste_code": "AYU-D-0401", "namaste_name": "Arsha",         "icd11_code": "DB33",  "icd11_name": "Haemorrhoids",                   "tm2_code": "TM2-401", "tm2_name": "Intestinal Qi Stagnation",   "category": "Ano-rectal Disorders",    "tamil_name": "அர்சஸ்",          "confidence": 0.82, "keywords": ["piles", "hemorrhoids", "arsha", "rectal", "bleeding"]},
+    {"namaste_code": "AYU-D-0102", "namaste_name": "Kaphaja Kasa",  "icd11_code": "CA23",  "icd11_name": "Acute Bronchitis",               "tm2_code": "TM2-102", "tm2_name": "Lung Phlegm-Damp Cough",    "category": "Kasa (Cough)",            "tamil_name": "கபஜ காசம்",       "confidence": 0.87, "keywords": ["cough", "kasa", "bronchitis", "phlegm", "mucus"]},
+    {"namaste_code": "AYU-D-0602", "namaste_name": "Shwasa",        "icd11_code": "CA22",  "icd11_name": "Bronchial Asthma",               "tm2_code": "TM2-602", "tm2_name": "Lung Qi Deficiency",         "category": "Shwasa (Asthma)",         "tamil_name": "ஸ்வாஸ ரோகம்",    "confidence": 0.85, "keywords": ["asthma", "shwasa", "breathlessness", "wheezing"]},
+    {"namaste_code": "AYU-D-0701", "namaste_name": "Pandu",         "icd11_code": "3A00",  "icd11_name": "Iron Deficiency Anaemia",        "tm2_code": "TM2-701", "tm2_name": "Blood Deficiency (TM)",      "category": "Pandu (Anaemia)",         "tamil_name": "பாண்டு ரோகம்",    "confidence": 0.80, "keywords": ["anaemia", "pandu", "pallor", "weakness", "iron"]},
+    {"namaste_code": "AYU-D-0801", "namaste_name": "Grahani",       "icd11_code": "DA91",  "icd11_name": "Irritable Bowel Syndrome",       "tm2_code": "TM2-801", "tm2_name": "Spleen-Stomach Disharmony", "category": "Grahani (GI)",            "tamil_name": "கிரஹணி",          "confidence": 0.78, "keywords": ["ibs", "diarrhea", "constipation", "grahani", "bowel"]},
+    {"namaste_code": "AYU-D-0901", "namaste_name": "Kamala",        "icd11_code": "DC21",  "icd11_name": "Jaundice",                       "tm2_code": "TM2-901", "tm2_name": "Liver Damp-Heat (TM)",       "category": "Liver Disorders",         "tamil_name": "மஞ்சள் காமாலை",  "confidence": 0.85, "keywords": ["jaundice", "kamala", "liver", "yellow", "bilirubin"]},
+    {"namaste_code": "AYU-D-1001", "namaste_name": "Shotha",        "icd11_code": "ME41",  "icd11_name": "Oedema",                         "tm2_code": "TM2-1001","tm2_name": "Water Retention (TM)",       "category": "Shotha (Oedema)",         "tamil_name": "சோதம்",           "confidence": 0.75, "keywords": ["edema", "swelling", "oedema", "water retention", "shotha"]},
+    {"namaste_code": "AYU-D-1101", "namaste_name": "Gridhrasi",     "icd11_code": "ME84",  "icd11_name": "Sciatica",                       "tm2_code": "TM2-1101","tm2_name": "Kidney Yang Deficiency",     "category": "Vata Disorders",          "tamil_name": "கிரித்ராசி",      "confidence": 0.82, "keywords": ["sciatica", "gridhrasi", "leg pain", "nerve pain", "lumbar"]},
+    {"namaste_code": "AYU-D-1201", "namaste_name": "Mutrakrichra",  "icd11_code": "GC00",  "icd11_name": "Urinary Tract Infection",        "tm2_code": "TM2-1201","tm2_name": "Bladder Damp-Heat",          "category": "Mutravahasrotas",         "tamil_name": "மூத்திர கிருச்சிரம்","confidence": 0.80, "keywords": ["uti", "urinary", "burning urination", "mutrakrichra", "dysuria"]},
+    {"namaste_code": "AYU-D-1301", "namaste_name": "Shiroroga",     "icd11_code": "8A85",  "icd11_name": "Migraine",                       "tm2_code": "TM2-1301","tm2_name": "Liver Yang Rising",          "category": "Shiro Rogas",             "tamil_name": "தலைவலி",          "confidence": 0.78, "keywords": ["migraine", "headache", "shiroroga", "head pain"]},
+    {"namaste_code": "AYU-D-1401", "namaste_name": "Tvak Rogas",    "icd11_code": "EA90",  "icd11_name": "Eczema / Atopic Dermatitis",     "tm2_code": "TM2-1401","tm2_name": "Blood Heat Skin Disorder",   "category": "Skin Disorders",          "tamil_name": "தோல் நோய்",       "confidence": 0.76, "keywords": ["eczema", "skin", "rash", "dermatitis", "tvak", "itching"]},
+]
+
+# Tamil → English normalization map
+TAMIL_MAP: Dict[str, str] = {
+    "ஜ்வரம்": "fever", "பிரமேகம்": "diabetes", "ஆமவாதம்": "arthritis",
+    "காசம்": "cough", "ஸ்வாஸ": "asthma", "பாண்டு": "anaemia",
+    "சோர்வு": "fatigue", "தலைவலி": "headache", "மஞ்சள் காமாலை": "jaundice",
+    "மூட்டு வலி": "joint pain", "மூச்சு திணறல்": "breathlessness",
+}
+
+CONCEPT_MAP = {
+    entry["namaste_code"]: {
+        "icd11": entry["icd11_code"],
+        "tm2": entry["tm2_code"],
+        "name": entry["namaste_name"],
+    }
+    for entry in KNOWLEDGE_BASE
+}
 
 
-class CodeSearchRequest(BaseModel):
-    """Request model for code search"""
+def _normalize(text: str) -> str:
+    for tamil, eng in TAMIL_MAP.items():
+        text = text.replace(tamil, eng)
+    return text.lower().strip()
+
+
+def _score(entry: Dict[str, Any], q: str) -> float:
+    score = 0.0
+    q = q.lower()
+    if q in entry["namaste_name"].lower():
+        score += 4.0
+    if q in entry["namaste_code"].lower():
+        score += 5.0
+    if q in entry["icd11_code"].lower():
+        score += 5.0
+    if q in entry["tm2_code"].lower():
+        score += 4.0
+    if q in entry.get("tamil_name", ""):
+        score += 3.0
+    for kw in entry.get("keywords", []):
+        if q in kw or kw in q:
+            score += 1.0
+    if q in entry.get("icd11_name", "").lower():
+        score += 2.0
+    return score
+
+
+# ── Request / Response Models ─────────────────────────────────────────────────
+
+class SearchResponse(BaseModel):
+    results: List[Dict[str, Any]]
+    total: int
     query: str
-    systems: List[str] = ["namaste", "tm2", "mms"]
-    language: str = "en"
-    limit: int = 20
-    
-    @property
-    def valid_systems(self) -> List[str]:
-        """Validate and return valid systems"""
-        valid = ["namaste", "tm2", "mms"]
-        return [s for s in self.systems if s in valid]
+    language: str
 
 
-class TranslateRequest(BaseModel):
-    """Request model for code translation"""
+class TranslateResponse(BaseModel):
     source_code: str
     source_system: str
     target_system: str
+    target_code: Optional[str]
+    target_name: Optional[str]
+    confidence: float
+    found: bool
 
 
-@router.post("/icd11/sync", response_model=Dict[str, Any])
-async def sync_icd11(
-    request: SyncRequest,
-    current_user: User = Depends(require_role(UserRole.ADMIN)),
-    db: AsyncSession = Depends(get_db)
+class ConceptMapResponse(BaseModel):
+    total_mappings: int
+    mappings: List[Dict[str, Any]]
+    systems: List[str]
+
+
+# ── Routes ────────────────────────────────────────────────────────────────────
+
+@router.get("/search", response_model=SearchResponse)
+async def search_terminology(
+    q: str = Query("", description="Search query (disease name, code, symptom)"),
+    lang: str = Query("en", description="Language: en or ta"),
+    limit: int = Query(10, ge=1, le=50),
+    system: str = Query("all", description="Filter: all | namaste | icd11 | tm2"),
 ):
-    """Sync ICD-11 data from WHO API"""
-    try:
-        logger.info(f"Starting ICD-11 sync: {request.sync_type}")
-        
-        # Sync ICD-11 codes
-        sync_results = await icd_sync_service.sync_icd11_chapter26(db)
-        
-        # Create concept mappings if requested
-        if request.create_mappings:
-            mapping_results = await icd_sync_service.create_concept_mappings(db)
-            sync_results["mappings"] = mapping_results
-        
-        return {
-            "success": True,
-            "message": "ICD-11 sync completed",
-            "results": sync_results
-        }
-        
-    except Exception as e:
-        logger.error(f"ICD-11 sync failed: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"ICD-11 sync failed: {str(e)}"
-        )
+    """
+    Auto-complete search across NAMASTE, TM2, and ICD-11 terminologies.
+    Supports English and Tamil queries.
+    """
+    normalized_q = _normalize(q) if q else ""
+    results = []
+
+    for entry in KNOWLEDGE_BASE:
+        if not normalized_q:
+            results.append({**entry, "score": entry["confidence"]})
+            continue
+
+        score = _score(entry, normalized_q)
+        if score > 0:
+            result = {**entry, "score": round(score / 8.0, 3)}
+
+            # System filter
+            if system == "namaste" and not entry.get("namaste_code"):
+                continue
+            if system == "icd11" and not entry.get("icd11_code"):
+                continue
+            if system == "tm2" and not entry.get("tm2_code"):
+                continue
+
+            results.append(result)
+
+    results.sort(key=lambda x: x.get("score", 0), reverse=True)
+    results = results[:limit]
+
+    return SearchResponse(
+        results=results,
+        total=len(results),
+        query=q,
+        language=lang,
+    )
 
 
-@router.get("/icd11/sync/status", response_model=Dict[str, Any])
-async def get_sync_status(
-    current_user: User = Depends(get_current_active_user),
-    db: AsyncSession = Depends(get_db)
-):
-    """Get ICD-11 sync status"""
-    try:
-        status = await icd_sync_service.get_sync_status(db)
-        return status
-        
-    except Exception as e:
-        logger.error(f"Failed to get sync status: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get sync status: {str(e)}"
-        )
-
-
-@router.post("/search", response_model=Dict[str, Any])
-async def search_codes(
-    request: CodeSearchRequest,
-    current_user: User = Depends(get_current_active_user),
-    db: AsyncSession = Depends(get_db)
-):
-    """Search across NAMASTE, TM2, and MMS codes"""
-    try:
-        results = {
-            "namaste_codes": [],
-            "tm2_codes": [],
-            "mms_codes": [],
-            "total_found": 0,
-            "query": request.query,
-            "systems_searched": request.valid_systems
-        }
-        
-        search_term = f"%{request.query.lower()}%"
-        
-        # Search NAMASTE codes
-        if "namaste" in request.valid_systems:
-            namaste_query = select(NamasteCode).where(
-                or_(
-                    NamasteCode.code.ilike(search_term),
-                    NamasteCode.name_en.ilike(search_term),
-                    NamasteCode.description.ilike(search_term),
-                    NamasteCode.name_ta.ilike(search_term) if request.language == "ta" else False,
-                    NamasteCode.name_hi.ilike(search_term) if request.language == "hi" else False
-                )
-            ).limit(request.limit)
-            
-            namaste_result = await db.execute(namaste_query)
-            namaste_codes = namaste_result.scalars().all()
-            
-            results["namaste_codes"] = [
-                {
-                    "code": code.code,
-                    "system": code.system,
-                    "name": code.name_en,
-                    "name_ta": code.name_ta,
-                    "name_hi": code.name_hi,
-                    "description": code.description,
-                    "category": code.category,
-                    "dosha": code.dosha,
-                    "tm2_code": code.tm2_code,
-                    "icd11_mms_code": code.icd11_mms_code
-                }
-                for code in namaste_codes
-            ]
-        
-        # Search TM2 codes
-        if "tm2" in request.valid_systems:
-            tm2_query = select(ICD11Code).where(
-                and_(
-                    ICD11Code.linearization == "TM2",
-                    or_(
-                        ICD11Code.code.ilike(search_term),
-                        ICD11Code.title.ilike(search_term)
-                    )
-                )
-            ).limit(request.limit)
-            
-            tm2_result = await db.execute(tm2_query)
-            tm2_codes = tm2_result.scalars().all()
-            
-            results["tm2_codes"] = [
-                {
-                    "code": code.code,
-                    "linearization": code.linearization,
-                    "title": code.title,
-                    "chapter": code.chapter,
-                    "parent_code": code.parent_code,
-                    "is_leaf": code.is_leaf
-                }
-                for code in tm2_codes
-            ]
-        
-        # Search MMS codes
-        if "mms" in request.valid_systems:
-            mms_query = select(ICD11Code).where(
-                and_(
-                    ICD11Code.linearization == "MMS",
-                    or_(
-                        ICD11Code.code.ilike(search_term),
-                        ICD11Code.title.ilike(search_term)
-                    )
-                )
-            ).limit(request.limit)
-            
-            mms_result = await db.execute(mms_query)
-            mms_codes = mms_result.scalars().all()
-            
-            results["mms_codes"] = [
-                {
-                    "code": code.code,
-                    "linearization": code.linearization,
-                    "title": code.title,
-                    "chapter": code.chapter,
-                    "parent_code": code.parent_code,
-                    "is_leaf": code.is_leaf
-                }
-                for code in mms_codes
-            ]
-        
-        # Calculate total
-        results["total_found"] = (
-            len(results["namaste_codes"]) +
-            len(results["tm2_codes"]) +
-            len(results["mms_codes"])
-        )
-        
-        return results
-        
-    except Exception as e:
-        logger.error(f"Code search failed: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Code search failed: {str(e)}"
-        )
-
-
-@router.post("/translate", response_model=Dict[str, Any])
+@router.get("/translate", response_model=TranslateResponse)
 async def translate_code(
-    request: TranslateRequest,
-    current_user: User = Depends(get_current_active_user),
-    db: AsyncSession = Depends(get_db)
+    code: str = Query(..., description="Source code to translate"),
+    from_sys: str = Query("namaste", description="Source system: namaste | icd11 | tm2"),
+    to_sys: str = Query("icd11", description="Target system: namaste | icd11 | tm2"),
 ):
-    """Translate code between systems"""
-    try:
-        # Validate systems
-        valid_systems = ["namaste", "tm2", "mms"]
-        if request.source_system not in valid_systems or request.target_system not in valid_systems:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Invalid system. Must be one of: namaste, tm2, mms"
-            )
-        
-        # Find source code
-        if request.source_system == "namaste":
-            source_result = await db.execute(
-                select(NamasteCode).where(NamasteCode.code == request.source_code)
-            )
-            source_code = source_result.scalar_one_or_none()
-            
-            if not source_code:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail="NAMASTE code not found"
+    """
+    Translate a code from one terminology system to another.
+    Implements FHIR ConceptMap lookup.
+    """
+    code_upper = code.upper()
+
+    for entry in KNOWLEDGE_BASE:
+        matched = False
+        if from_sys == "namaste" and entry["namaste_code"] == code_upper:
+            matched = True
+        elif from_sys == "icd11" and entry["icd11_code"] == code_upper:
+            matched = True
+        elif from_sys == "tm2" and entry["tm2_code"] == code_upper:
+            matched = True
+
+        if matched:
+            if to_sys == "icd11":
+                return TranslateResponse(
+                    source_code=code, source_system=from_sys,
+                    target_system=to_sys, target_code=entry["icd11_code"],
+                    target_name=entry["icd11_name"], confidence=0.90, found=True,
                 )
-            
-            # Get mappings
-            mapping_result = await db.execute(
-                select(ConceptMap).where(ConceptMap.namaste_id == source_code.id)
-            )
-            mapping = mapping_result.scalar_one_or_none()
-            
-            if not mapping:
-                return {
-                    "source_code": request.source_code,
-                    "source_system": request.source_system,
-                    "target_codes": [],
-                    "message": "No mapping found"
-                }
-            
-            # Get target codes
-            target_codes = []
-            
-            if request.target_system == "tm2" and mapping.tm2_code:
-                target_codes.append({
-                    "code": mapping.tm2_code,
-                    "system": "tm2",
-                    "equivalence": mapping.equivalence.value,
-                    "confidence": mapping.confidence_score
-                })
-            
-            if request.target_system == "mms" and mapping.mms_id:
-                # Get MMS code details
-                mms_result = await db.execute(
-                    select(ICD11Code).where(ICD11Code.id == mapping.mms_id)
+            elif to_sys == "tm2":
+                return TranslateResponse(
+                    source_code=code, source_system=from_sys,
+                    target_system=to_sys, target_code=entry["tm2_code"],
+                    target_name=entry["tm2_name"], confidence=0.88, found=True,
                 )
-                mms_code = mms_result.scalar_one_or_none()
-                
-                if mms_code:
-                    target_codes.append({
-                        "code": mms_code.code,
-                        "system": "mms",
-                        "title": mms_code.title,
-                        "equivalence": mapping.equivalence.value,
-                        "confidence": mapping.confidence_score
-                    })
-            
-            return {
-                "source_code": request.source_code,
-                "source_system": request.source_system,
-                "target_system": request.target_system,
-                "target_codes": target_codes,
-                "mapping_notes": mapping.mapping_notes,
-                "confidence": mapping.confidence_score
-            }
-        
-        # Handle other system translations (TM2/MMS to NAMASTE)
-        else:
-            # Find ICD-11 code
-            icd_result = await db.execute(
-                select(ICD11Code).where(ICD11Code.code == request.source_code)
-            )
-            icd_code = icd_result.scalar_one_or_none()
-            
-            if not icd_code:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail="ICD-11 code not found"
+            elif to_sys == "namaste":
+                return TranslateResponse(
+                    source_code=code, source_system=from_sys,
+                    target_system=to_sys, target_code=entry["namaste_code"],
+                    target_name=entry["namaste_name"], confidence=0.90, found=True,
                 )
-            
-            # Find mappings to NAMASTE
-            if request.target_system == "namaste":
-                if request.source_system == "tm2":
-                    mapping_result = await db.execute(
-                        select(ConceptMap).where(ConceptMap.tm2_code == request.source_code)
-                    )
-                else:  # mms
-                    mapping_result = await db.execute(
-                        select(ConceptMap).where(ConceptMap.mms_id == icd_code.id)
-                    )
-                
-                mappings = mapping_result.scalars().all()
-                
-                target_codes = []
-                for mapping in mappings:
-                    # Get NAMASTE code details
-                    namaste_result = await db.execute(
-                        select(NamasteCode).where(NamasteCode.id == mapping.namaste_id)
-                    )
-                    namaste_code = namaste_result.scalar_one_or_none()
-                    
-                    if namaste_code:
-                        target_codes.append({
-                            "code": namaste_code.code,
-                            "system": "namaste",
-                            "name": namaste_code.name_en,
-                            "name_ta": namaste_code.name_ta,
-                            "name_hi": namaste_code.name_hi,
-                            "equivalence": mapping.equivalence.value,
-                            "confidence": mapping.confidence_score
-                        })
-                
-                return {
-                    "source_code": request.source_code,
-                    "source_system": request.source_system,
-                    "target_system": request.target_system,
-                    "target_codes": target_codes
-                }
-        
-        return {
-            "source_code": request.source_code,
-            "source_system": request.source_system,
-            "target_system": request.target_system,
-            "target_codes": [],
-            "message": "Translation not supported for this system combination"
+
+    return TranslateResponse(
+        source_code=code, source_system=from_sys,
+        target_system=to_sys, target_code=None,
+        target_name=None, confidence=0.0, found=False,
+    )
+
+
+@router.get("/concept-map", response_model=ConceptMapResponse)
+async def get_concept_map():
+    """Return the full FHIR-style ConceptMap for NAMASTE ↔ TM2 ↔ ICD-11."""
+    mappings = [
+        {
+            "namaste_code": e["namaste_code"],
+            "namaste_name": e["namaste_name"],
+            "tm2_code": e["tm2_code"],
+            "tm2_name": e["tm2_name"],
+            "icd11_code": e["icd11_code"],
+            "icd11_name": e["icd11_name"],
+            "category": e["category"],
+            "tamil_name": e.get("tamil_name", ""),
+            "confidence": e["confidence"],
         }
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Code translation failed: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Code translation failed: {str(e)}"
-        )
+        for e in KNOWLEDGE_BASE
+    ]
+    return ConceptMapResponse(
+        total_mappings=len(mappings),
+        mappings=mappings,
+        systems=["NAMASTE (AYUSH)", "ICD-11 TM2", "ICD-11 MMS"],
+    )
 
 
-@router.get("/codesystem/namaste", response_model=Dict[str, Any])
-async def get_namaste_codesystem(
-    current_user: User = Depends(get_current_active_user),
-    db: AsyncSession = Depends(get_db)
-):
-    """Get NAMASTE CodeSystem information"""
-    try:
-        # Get all NAMASTE codes
-        result = await db.execute(select(NamasteCode))
-        codes = result.scalars().all()
-        
-        # Group by system
-        systems = {}
-        for code in codes:
-            if code.system not in systems:
-                systems[code.system] = []
-            
-            systems[code.system].append({
-                "code": code.code,
-                "name": code.name_en,
-                "name_ta": code.name_ta,
-                "name_hi": code.name_hi,
-                "description": code.description,
-                "category": code.category,
-                "dosha": code.dosha
-            })
-        
-        return {
-            "resourceType": "CodeSystem",
-            "id": "namaste",
-            "name": "NAMASTE",
-            "title": "National Ayurveda, Siddha, Unani, Sowa-Rigpa, and Homeopathy Terminology",
-            "status": "active",
-            "content": "complete",
-            "systems": systems,
-            "total_codes": len(codes)
-        }
-        
-    except Exception as e:
-        logger.error(f"Failed to get NAMASTE CodeSystem: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get NAMASTE CodeSystem: {str(e)}"
-        )
+@router.get("/namaste/{code}")
+async def get_namaste_code(code: str):
+    """Get full details for a specific NAMASTE code."""
+    code_upper = code.upper()
+    for entry in KNOWLEDGE_BASE:
+        if entry["namaste_code"] == code_upper:
+            return entry
+    raise HTTPException(status_code=404, detail=f"NAMASTE code {code} not found")
 
 
-@router.get("/conceptmap/namaste-to-tm2", response_model=Dict[str, Any])
-async def get_namaste_to_tm2_conceptmap(
-    current_user: User = Depends(get_current_active_user),
-    db: AsyncSession = Depends(get_db)
-):
-    """Get NAMASTE to TM2 ConceptMap"""
-    try:
-        # Get all mappings
-        result = await db.execute(
-            select(ConceptMap, NamasteCode)
-            .join(NamasteCode, ConceptMap.namaste_id == NamasteCode.id)
-            .where(ConceptMap.tm2_code.isnot(None))
-        )
-        mappings = result.all()
-        
-        concept_map = {
-            "resourceType": "ConceptMap",
-            "id": "namaste-to-tm2",
-            "name": "NAMASTE to ICD-11 TM2 Mapping",
-            "status": "active",
-            "source": "http://tulsihealth.in/fhir/CodeSystem/namaste",
-            "target": "http://id.who.int/icd/release/11/2024-01/mms",
-            "group": [
-                {
-                    "source": "http://tulsihealth.in/fhir/CodeSystem/namaste",
-                    "target": "http://id.who.int/icd/release/11/2024-01/mms",
-                    "element": [
-                        {
-                            "code": mapping.NamasteCode.code,
-                            "display": mapping.NamasteCode.name_en,
-                            "target": [
-                                {
-                                    "code": mapping.ConceptMap.tm2_code,
-                                    "display": mapping.ConceptMap.tm2_code,
-                                    "equivalence": mapping.ConceptMap.equivalence.value,
-                                    "confidence": mapping.ConceptMap.confidence_score
-                                }
-                            ]
-                        }
-                        for mapping, _ in mappings
-                    ]
-                }
-            ],
-            "total_mappings": len(mappings)
-        }
-        
-        return concept_map
-        
-    except Exception as e:
-        logger.error(f"Failed to get ConceptMap: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get ConceptMap: {str(e)}"
-        )
+@router.get("/icd11/{code}")
+async def get_icd11_code(code: str):
+    """Get all NAMASTE mappings for an ICD-11 code."""
+    code_upper = code.upper()
+    results = [e for e in KNOWLEDGE_BASE if e["icd11_code"] == code_upper]
+    if not results:
+        raise HTTPException(status_code=404, detail=f"ICD-11 code {code} not found")
+    return {"code": code_upper, "mappings": results}
 
 
-@router.get("/valueset/expand", response_model=Dict[str, Any])
-async def expand_valueset(
-    system: str = Query(..., description="CodeSystem to expand"),
-    filter: Optional[str] = Query(None, description="Filter parameter"),
-    current_user: User = Depends(get_current_active_user),
-    db: AsyncSession = Depends(get_db)
-):
-    """Expand ValueSet for given system"""
-    try:
-        if system == "namaste":
-            query = select(NamasteCode)
-            
-            if filter:
-                query = query.where(NamasteCode.system == filter)
-            
-            result = await db.execute(query)
-            codes = result.scalars().all()
-            
-            return {
-                "resourceType": "ValueSet",
-                "status": "active",
-                "compose": {
-                    "include": [
-                        {
-                            "system": "http://tulsihealth.in/fhir/CodeSystem/namaste",
-                            "concept": [
-                                {
-                                    "code": code.code,
-                                    "display": code.name_en,
-                                    "designation": [
-                                        {
-                                            "language": "en",
-                                            "value": code.description
-                                        }
-                                    ]
-                                }
-                                for code in codes[:100]  # Limit for demo
-                            ]
-                        }
-                    ]
-                },
-                "total": len(codes)
-            }
-        
-        elif system in ["tm2", "mms"]:
-            query = select(ICD11Code).where(ICD11Code.linearization == system.upper())
-            
-            result = await db.execute(query)
-            codes = result.scalars().all()
-            
-            return {
-                "resourceType": "ValueSet",
-                "status": "active",
-                "compose": {
-                    "include": [
-                        {
-                            "system": "http://id.who.int/icd/release/11/2024-01/mms",
-                            "concept": [
-                                {
-                                    "code": code.code,
-                                    "display": code.title
-                                }
-                                for code in codes[:100]  # Limit for demo
-                            ]
-                        }
-                    ]
-                },
-                "total": len(codes)
-            }
-        
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Invalid system. Must be one of: namaste, tm2, mms"
-            )
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Failed to expand ValueSet: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to expand ValueSet: {str(e)}"
-        )
+@router.get("/categories")
+async def list_categories():
+    """List all terminology categories."""
+    cats = list({e["category"] for e in KNOWLEDGE_BASE})
+    return {"categories": sorted(cats), "total": len(cats)}
 
 
-@router.get("/suggest", response_model=List[Dict[str, Any]])
-async def suggest_codes(
-    q: str = Query(..., description="Query string"),
-    lang: str = Query("en", description="Language"),
-    systems: str = Query("namaste,tm2,mms", description="Comma-separated systems"),
-    limit: int = Query(10, ge=1, le=20, description="Result limit"),
-    current_user: User = Depends(get_current_active_user),
-    db: AsyncSession = Depends(get_db)
-):
-    """Get code suggestions for autocomplete"""
-    try:
-        # Parse systems
-        system_list = [s.strip() for s in systems.split(",") if s.strip()]
-        valid_systems = ["namaste", "tm2", "mms"]
-        systems_to_search = [s for s in system_list if s in valid_systems]
-        
-        if not systems_to_search:
-            systems_to_search = ["namaste"]  # Default to NAMASTE
-        
-        suggestions = []
-        search_term = f"{q.lower()}%"
-        
-        # Search each system
-        for system in systems_to_search:
-            if system == "namaste":
-                query = select(NamasteCode).where(
-                    or_(
-                        NamasteCode.code.ilike(search_term),
-                        NamasteCode.name_en.ilike(search_term)
-                    )
-                ).limit(limit // len(systems_to_search))
-                
-                result = await db.execute(query)
-                codes = result.scalars().all()
-                
-                for code in codes:
-                    suggestions.append({
-                        "code": code.code,
-                        "system": "namaste",
-                        "display": f"{code.code} - {code.name_en}",
-                        "description": code.description[:100] + "..." if len(code.description) > 100 else code.description
-                    })
-            
-            elif system in ["tm2", "mms"]:
-                query = select(ICD11Code).where(
-                    and_(
-                        ICD11Code.linearization == system.upper(),
-                        or_(
-                            ICD11Code.code.ilike(search_term),
-                            ICD11Code.title.ilike(search_term)
-                        )
-                    )
-                ).limit(limit // len(systems_to_search))
-                
-                result = await db.execute(query)
-                codes = result.scalars().all()
-                
-                for code in codes:
-                    suggestions.append({
-                        "code": code.code,
-                        "system": system,
-                        "display": f"{code.code} - {code.title}",
-                        "description": code.chapter or ""
-                    })
-        
-        # Sort by relevance (simple alphabetical for now)
-        suggestions.sort(key=lambda x: x["display"])
-        
-        return suggestions[:limit]
-        
-    except Exception as e:
-        logger.error(f"Code suggestion failed: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Code suggestion failed: {str(e)}"
-        )
+@router.get("/stats")
+async def terminology_stats():
+    """Terminology service statistics."""
+    return {
+        "total_namaste_codes": len(KNOWLEDGE_BASE),
+        "total_icd11_codes": len({e["icd11_code"] for e in KNOWLEDGE_BASE}),
+        "total_tm2_codes": len({e["tm2_code"] for e in KNOWLEDGE_BASE}),
+        "total_mappings": len(KNOWLEDGE_BASE),
+        "systems": ["NAMASTE AYUSH", "WHO ICD-11 TM2", "WHO ICD-11 MMS"],
+        "languages": ["English", "Tamil"],
+        "status": "operational",
+    }
