@@ -24,7 +24,7 @@ const NAV_ITEMS = [
 const fadeInUp = {
   initial: { opacity: 0, y: 15 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
+  transition: { duration: 0.6, ease: "easeOut" as const }
 };
 
 export default function SettingsPage() {
@@ -46,7 +46,7 @@ export default function SettingsPage() {
 
       <motion.aside 
         initial={{ x: -100, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.8, ease: "easeOut" as const }}
         className="w-[280px] min-h-screen border-r border-white/5 backdrop-blur-3xl flex flex-col p-8 sticky top-0"
       >
         <div className="flex items-center gap-3 mb-12 px-2 cursor-pointer group" onClick={() => router.push('/')}>
