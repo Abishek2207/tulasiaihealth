@@ -48,7 +48,7 @@ function TypingIndicator() {
       <div className="w-8 h-8 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center shrink-0">
         <Bot size={14} className="text-[#00d69b]" />
       </div>
-      <div className="glass px-5 py-4 rounded-[20px] rounded-bl-[4px]">
+      <div className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] px-5 py-4 rounded-[20px] rounded-bl-[4px]">
         <div className="flex gap-1.5 items-center">
           <motion.div animate={{ scale: [1, 1.5, 1] }} transition={{ repeat: Infinity, duration: 1 }} className="w-1.5 h-1.5 rounded-full bg-[#00d69b]/40" />
           <motion.div animate={{ scale: [1, 1.5, 1] }} transition={{ repeat: Infinity, duration: 1, delay: 0.2 }} className="w-1.5 h-1.5 rounded-full bg-[#00d69b]/40" />
@@ -132,9 +132,9 @@ export default function AIAssistantPage() {
 
   function renderContent(content: string) {
     return content.split('\n').map((line, i) => {
-      if (line.startsWith('**') && line.endsWith('**')) return <div key={i} className="text-sm font-black tracking-tight mb-2 mt-2">{line.slice(2, -2)}</div>;
+      if (line.startsWith('**') && line.endsWith('**')) return <div key={i} className="text-sm font-semibold tracking-tight tracking-tight mb-2 mt-2">{line.slice(2, -2)}</div>;
       if (line.startsWith('- ')) return <div key={i} className="flex items-start gap-2 text-[13px] text-white/50 mb-1"><span className="text-[#00d69b]">•</span>{line.slice(2)}</div>;
-      if (line.startsWith('⚠️')) return <div key={i} className="text-[10px] text-white/20 font-black uppercase tracking-widest mt-4 p-3 bg-white/[0.02] border border-white/5 rounded-xl">{line}</div>;
+      if (line.startsWith('⚠️')) return <div key={i} className="text-[10px] text-white/20 font-semibold tracking-tight uppercase tracking-widest mt-4 p-3 bg-white/[0.02] border border-white/5 rounded-xl">{line}</div>;
       if (line.includes('`')) {
         const parts = line.split(/(`[^`]+`)/);
         return (
@@ -152,55 +152,24 @@ export default function AIAssistantPage() {
     <div className="bg-primary min-h-screen text-white font-sans flex relative overflow-hidden selection:bg-[#00d69b]/30">
       <div className="noise opacity-[0.02]" />
 
-      <motion.aside 
-        initial={{ x: -100, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: "easeOut" as const }}
-        className="w-[280px] min-h-screen border-r border-white/5 backdrop-blur-3xl flex flex-col p-8 sticky top-0"
-      >
-        <div className="flex items-center gap-3 mb-12 px-2 cursor-pointer group" onClick={() => router.push('/')}>
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-b from-[#00d69b] to-[#00b383] flex items-center justify-center shadow-lg">
-            <Activity className="text-black" size={20} />
-          </div>
-          <span className="text-xl font-bold tracking-tight">Tulsi<span className="text-[#00d69b]">Health</span></span>
-        </div>
-        <nav className="flex-1 space-y-1.5">
-          {NAV_ITEMS.map(item => {
-            const Icon = item.icon;
-            const isActive = pathname === item.href;
-            return (
-              <Link key={item.href} href={item.href} className={`flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group ${isActive ? 'bg-white/5 text-[#00d69b]' : 'text-white/40 hover:text-white'}`}>
-                <Icon size={18} className={isActive ? 'text-[#00d69b]' : 'group-hover:text-white transition-colors'} />
-                <span className="text-[13px] font-bold tracking-tight">{item.label}</span>
-                {isActive && <motion.div layoutId="active-pill" className="ml-auto w-1.5 h-1.5 bg-[#00d69b] rounded-full shadow-[0_0_10px_#00d69b]" />}
-              </Link>
-            );
-          })}
-        </nav>
-        <div className="mt-auto pt-8 border-t border-white/5">
-          <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-white/30 hover:bg-red-500/10 hover:text-red-400 transition-all font-bold text-xs uppercase tracking-widest">
-            <LogOut size={18} /> Logout
-          </button>
-        </div>
-      </motion.aside>
-
-      <main className="flex-1 flex flex-col relative overflow-hidden">
-        <div className="glass border-b border-white/5 px-10 py-6 flex items-center justify-between shrink-0 relative z-20">
+      <main className="w-full">
+        <div className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] border-b border-white/5 px-10 py-6 flex items-center justify-between shrink-0 relative z-20">
           <div className="flex items-center gap-5">
             <div className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center justify-center shadow-xl">
               <Sparkles className="text-[#00d69b]" size={24} />
             </div>
             <div>
-              <h1 className="text-xl font-black tracking-tighter">Clinical Intelligence</h1>
+              <h1 className="text-xl font-semibold tracking-tight tracking-tighter">Clinical Intelligence</h1>
               <div className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-[#00d69b] shadow-[0_0_10px_#00d69b]" />
-                <span className="text-[10px] text-white/20 font-black uppercase tracking-widest">Neural RAG Engine Active</span>
+                <span className="text-[10px] text-white/20 font-semibold tracking-tight uppercase tracking-widest">Neural RAG Engine Active</span>
               </div>
             </div>
           </div>
           <div className="flex items-center gap-4">
             <div className="flex p-1 bg-white/[0.03] rounded-xl border border-white/5">
-              <button onClick={() => setLanguage('en')} className={`px-4 py-1.5 rounded-lg text-[10px] font-black transition-all ${language === 'en' ? 'bg-white text-black' : 'text-white/20 hover:text-white/40'}`}>EN</button>
-              <button onClick={() => setLanguage('ta')} className={`px-4 py-1.5 rounded-lg text-[10px] font-black transition-all ${language === 'ta' ? 'bg-white text-black' : 'text-white/20 hover:text-white/40'}`}>தமிழ்</button>
+              <button onClick={() => setLanguage('en')} className={`px-4 py-1.5 rounded-lg text-[10px] font-semibold tracking-tight transition-all ${language === 'en' ? 'bg-white text-black' : 'text-white/20 hover:text-white/40'}`}>EN</button>
+              <button onClick={() => setLanguage('ta')} className={`px-4 py-1.5 rounded-lg text-[10px] font-semibold tracking-tight transition-all ${language === 'ta' ? 'bg-white text-black' : 'text-white/20 hover:text-white/40'}`}>தமிழ்</button>
             </div>
             <motion.button whileHover={{ rotate: -45 }} onClick={() => setMessages([{ id: '0', role: 'assistant', content: 'Conversation reset. Ready for clinical inquiry.', timestamp: new Date() }])} className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center text-white/20 hover:text-white transition-all"><RotateCcw size={16} /></motion.button>
           </div>
@@ -215,7 +184,7 @@ export default function AIAssistantPage() {
                 </div>
                 <div className={`max-w-[80%] md:max-w-[70%] px-8 py-6 rounded-[28px] shadow-2xl ${msg.role === 'assistant' ? 'glass rounded-bl-[4px] border-white/10' : 'bg-white/[0.05] border border-white/10 rounded-br-[4px]'}`}>
                   {msg.role === 'assistant' ? renderContent(msg.content) : <p className="text-sm font-bold tracking-tight text-white/90">{msg.content}</p>}
-                  <div className="text-[9px] font-black uppercase tracking-widest text-white/10 mt-4 border-t border-white/5 pt-3">
+                  <div className="text-[9px] font-semibold tracking-tight uppercase tracking-widest text-white/10 mt-4 border-t border-white/5 pt-3">
                     {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </div>
                 </div>
@@ -257,7 +226,7 @@ export default function AIAssistantPage() {
              </div>
              <div className="flex items-center justify-center gap-2 mt-4 px-2">
                <AlertCircle size={10} className="text-white/10" />
-               <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white/10">Clinical Intelligence Node · Assistive Guidance Only</span>
+               <span className="text-[9px] font-semibold tracking-tight uppercase tracking-[0.2em] text-white/10">Clinical Intelligence Node · Assistive Guidance Only</span>
              </div>
           </div>
         </div>
@@ -265,3 +234,6 @@ export default function AIAssistantPage() {
     </div>
   );
 }
+
+
+

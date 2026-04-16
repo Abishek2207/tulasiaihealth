@@ -120,7 +120,7 @@ export default function NewPatientPage() {
       </aside>
 
       {/* ── Main Content ── */}
-      <main className="flex-1 p-8 md:p-12 relative z-10 overflow-y-auto">
+      <main className="w-full">
         <div className="max-w-[800px] mx-auto">
           {/* Header */}
           <div className="flex items-center gap-6 mb-10 animate-fade-up">
@@ -131,22 +131,22 @@ export default function NewPatientPage() {
               <ArrowLeft size={20} />
             </button>
             <div>
-              <h1 className="text-3xl font-black tracking-tight">Register New Patient</h1>
+              <h1 className="text-3xl font-semibold tracking-tight tracking-tight">Register New Patient</h1>
               <p className="text-white/40 font-medium">Create a new unified clinical medical record</p>
             </div>
           </div>
 
           {success ? (
-            <div className="glass p-20 text-center animate-fade-up">
+            <div className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-20 text-center animate-fade-up">
                <div className="w-20 h-20 rounded-full bg-[#00d69b]/10 border border-[#00d69b]/20 flex items-center justify-center mx-auto mb-8 shadow-[0_0_40px_rgba(0,214,155,0.2)]">
                   <CheckCircle2 className="text-[#00d69b]" size={40} />
                </div>
-               <h2 className="text-3xl font-black mb-4">Registration Successful</h2>
+               <h2 className="text-3xl font-semibold tracking-tight mb-4">Registration Successful</h2>
                <p className="text-white/40 max-w-xs mx-auto mb-8">
                  Patient has been securely added to the registry. Generating TulsiHealth QR identification...
                </p>
                <div className="flex flex-col items-center gap-4">
-                  <span className="text-[10px] font-black tracking-[0.3em] text-[#00d69b] uppercase">Redirecting...</span>
+                  <span className="text-[10px] font-semibold tracking-tight tracking-[0.3em] text-[#00d69b] uppercase">Redirecting...</span>
                   <div className="h-1 w-48 bg-white/5 rounded-full overflow-hidden">
                      <div className="h-full bg-[#00d69b] rounded-full animate-[shimmer_2s_linear_infinite]" style={{ width: '100%' }} />
                   </div>
@@ -155,8 +155,8 @@ export default function NewPatientPage() {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-8 animate-fade-up delay-100">
                {/* Identity Card */}
-               <div className="glass p-8">
-                  <h3 className="text-xs font-black uppercase tracking-[0.2em] text-white/30 mb-8 flex items-center gap-2">
+               <div className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-8">
+                  <h3 className="text-xs font-semibold tracking-tight uppercase tracking-[0.2em] text-white/30 mb-8 flex items-center gap-2">
                      <User size={14} className="text-[#00d69b]" /> Primary Identity
                   </h3>
                   
@@ -212,11 +212,11 @@ export default function NewPatientPage() {
                </div>
 
                {/* Clinical Mapping */}
-               <div className="glass p-8 relative overflow-hidden">
+               <div className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-8 relative overflow-hidden">
                   <div className="absolute top-0 right-0 p-6 opacity-[0.03]">
                      <Stethoscope size={100} />
                   </div>
-                  <h3 className="text-xs font-black uppercase tracking-[0.2em] text-white/30 mb-8 flex items-center gap-2">
+                  <h3 className="text-xs font-semibold tracking-tight uppercase tracking-[0.2em] text-white/30 mb-8 flex items-center gap-2">
                      <ShieldCheck size={14} className="text-[#7075ff]" /> Medical Segmentation
                   </h3>
                   
@@ -246,8 +246,8 @@ export default function NewPatientPage() {
                </div>
 
                {/* Contact Information */}
-               <div className="glass p-8">
-                  <h3 className="text-xs font-black uppercase tracking-[0.2em] text-white/30 mb-8 flex items-center gap-2">
+               <div className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-8">
+                  <h3 className="text-xs font-semibold tracking-tight uppercase tracking-[0.2em] text-white/30 mb-8 flex items-center gap-2">
                      <Phone size={14} className="text-blue-400" /> Contact Details
                   </h3>
                   
@@ -297,13 +297,13 @@ export default function NewPatientPage() {
                   <button 
                      type="submit" 
                      disabled={loading}
-                     className="flex-1 py-5 rounded-2xl bg-[#00d69b] text-black font-black text-lg shadow-[0_20px_40px_-10px_rgba(0,214,155,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3"
+                     className="flex-1 py-5 rounded-2xl bg-[#00d69b] text-black font-semibold tracking-tight text-lg shadow-[0_20px_40px_-10px_rgba(0,214,155,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3"
                   >
                      {loading ? <Loader2 className="animate-spin" size={24} /> : <><Save size={24} /> Finalize Registration</>}
                   </button>
                </div>
                
-               <p className="text-center text-[10px] font-black uppercase tracking-[0.2em] text-white/10 pb-10">
+               <p className="text-center text-[10px] font-semibold tracking-tight uppercase tracking-[0.2em] text-white/10 pb-10">
                   By clicking finalize, you agree to secure clinical data processing under the DPDP Act 2023.
                </p>
             </form>
@@ -313,3 +313,6 @@ export default function NewPatientPage() {
     </div>
   );
 }
+
+
+

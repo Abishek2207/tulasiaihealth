@@ -23,7 +23,7 @@ const fadeInUp = {
   initial: { opacity: 0, y: 30 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-100px" },
-  transition: { duration: 0.8, ease: "easeOut" as const }
+  transition: { duration: 0.8, ease: "easeOut" as "easeOut" }
 };
 
 const staggerContainer = {
@@ -110,7 +110,7 @@ export default function LandingPage() {
               <motion.div 
                 initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
                 animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                transition={{ duration: 1.2, ease: "easeOut" as const }}
+                transition={{ duration: 1.2, ease: "easeOut" }}
                 className="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-white/10 bg-white/[0.02] backdrop-blur-md mb-12 shadow-[0_0_30px_rgba(255,255,255,0.05)]"
               >
                 <div className="w-2 h-2 rounded-full bg-[#00d69b] animate-pulse" />
@@ -120,7 +120,7 @@ export default function LandingPage() {
               <motion.h1 
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1.2, delay: 0.1, ease: "easeOut" as const }}
+                transition={{ duration: 1.2, delay: 0.1, ease: "easeOut" }}
                 className="text-[12vw] sm:text-[9vw] lg:text-[7.5rem] font-black leading-[0.85] tracking-[-0.04em] text-white"
               >
                 Intelligence <br/>
@@ -130,7 +130,7 @@ export default function LandingPage() {
               <motion.p 
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1.2, delay: 0.2, ease: "easeOut" as const }}
+                transition={{ duration: 1.2, delay: 0.2, ease: "easeOut" }}
                 className="max-w-2xl text-xl md:text-2xl text-white/40 leading-[1.6] font-medium mt-12 mb-16 tracking-tight"
               >
                 An uncompromising electronic medical record engineered for high-velocity clinical environments. Bridging AYUSH mechanics with global FHIR interoperability.
@@ -156,7 +156,7 @@ export default function LandingPage() {
                   rotateY: [0, 360],
                   rotateX: [10, -10, 10]
                 }} 
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" as const }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" as "linear" }}
                 className="absolute inset-x-0 top-1/2 -translate-y-1/2 w-full aspect-square border-[1px] border-white/5 rounded-full flex items-center justify-center"
                 style={{ transformStyle: 'preserve-3d' }}
               >
@@ -333,3 +333,6 @@ export default function LandingPage() {
 const Bot = ({ size }: { size: number }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
 )
+
+
+

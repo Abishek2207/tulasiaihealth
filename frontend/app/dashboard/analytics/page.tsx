@@ -68,7 +68,7 @@ const TOP_DIAGNOSES = [
 const CUSTOM_TOOLTIP = ({ active, payload, label }: any) => {
   if (!active || !payload?.length) return null;
   return (
-    <div className="glass p-4 rounded-[20px] text-[10px] font-black tracking-widest uppercase border-white/10 shadow-2xl">
+    <div className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-4 rounded-[20px] text-[10px] font-semibold tracking-tight tracking-widest uppercase border-white/10 shadow-2xl">
       <div className="text-white/20 mb-3 border-b border-white/5 pb-2">{label} Report</div>
       <div className="space-y-2">
         {payload.map((p: any, i: number) => (
@@ -114,42 +114,8 @@ export default function AnalyticsPage() {
       <div className="noise opacity-[0.02]" />
 
       {/* Sidebar */}
-      <motion.aside 
-        initial={{ x: -100, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: "easeOut" as const }}
-        className="w-[280px] min-h-screen border-r border-white/5 backdrop-blur-3xl flex flex-col p-8 sticky top-0"
-      >
-        <div className="flex items-center gap-3 mb-12 px-2 cursor-pointer group" onClick={() => router.push('/')}>
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-b from-[#00d69b] to-[#00b383] flex items-center justify-center shadow-lg">
-            <Activity className="text-black" size={20} />
-          </div>
-          <span className="text-xl font-bold tracking-tight">Tulsi<span className="text-[#00d69b]">Health</span></span>
-        </div>
-
-        <nav className="flex-1 space-y-1.5">
-          {NAV_ITEMS.map((item, i) => {
-            const Icon = item.icon;
-            const isActive = pathname === item.href;
-            return (
-              <Link key={item.href} href={item.href} className={`flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group ${isActive ? 'bg-white/5 text-[#00d69b]' : 'text-white/40 hover:text-white'}`}>
-                <Icon size={18} className={isActive ? 'text-[#00d69b]' : 'group-hover:text-white transition-colors'} />
-                <span className="text-[13px] font-bold tracking-tight">{item.label}</span>
-                {isActive && <motion.div layoutId="active-pill" className="ml-auto w-1.5 h-1.5 bg-[#00d69b] rounded-full shadow-[0_0_10px_#00d69b]" />}
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="mt-auto pt-8 border-t border-white/5">
-          <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-white/30 hover:bg-red-500/10 hover:text-red-400 transition-all font-bold text-xs uppercase tracking-widest">
-            <LogOut size={18} /> Logout
-          </button>
-        </div>
-      </motion.aside>
-
       {/* Main */}
-      <main className="flex-1 p-12 md:p-16 relative z-10 overflow-y-auto">
+      <main className="w-full">
         <div className="max-w-[1400px] mx-auto">
           {/* Header */}
           <motion.div {...fadeInUp} className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16">
@@ -158,8 +124,8 @@ export default function AnalyticsPage() {
                 <BarChart3 className="text-[#7075ff]" size={32} />
               </div>
               <div>
-                <h1 className="text-4xl font-black tracking-tighter mb-1">Intelligence</h1>
-                <p className="text-white/30 text-xs font-black uppercase tracking-[0.2em]">Clinical Performance · Global Standards Sync</p>
+                <h1 className="text-4xl font-semibold tracking-tight tracking-tighter mb-1">Intelligence</h1>
+                <p className="text-white/30 text-xs font-semibold tracking-tight uppercase tracking-[0.2em]">Clinical Performance · Global Standards Sync</p>
               </div>
             </div>
             <div className="flex gap-1.5 p-1.5 bg-white/[0.02] border border-white/5 rounded-[20px]">
@@ -167,7 +133,7 @@ export default function AnalyticsPage() {
                 <button 
                   key={r} 
                   onClick={() => setActiveRange(r)} 
-                  className={`px-5 py-2.5 rounded-[14px] text-[10px] font-black transition-all uppercase tracking-widest ${activeRange === r ? 'bg-white text-black shadow-lg' : 'text-white/20 hover:text-white/40'}`}
+                  className={`px-5 py-2.5 rounded-[14px] text-[10px] font-semibold tracking-tight transition-all uppercase tracking-widest ${activeRange === r ? 'bg-white text-black shadow-lg' : 'text-white/20 hover:text-white/40'}`}
                 >
                   {r}
                 </button>
@@ -182,7 +148,7 @@ export default function AnalyticsPage() {
               return (
                 <motion.div 
                   key={i} {...fadeInUp} transition={{ delay: i * 0.05 }}
-                  className="glass p-8 group hover:border-white/10 transition-all cursor-default relative overflow-hidden"
+                  className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-8 group hover:border-white/10 transition-all cursor-default relative overflow-hidden"
                 >
                   <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
                     <Sparkles size={12} className="text-[#00d69b]" />
@@ -191,12 +157,12 @@ export default function AnalyticsPage() {
                     <div className="w-10 h-10 rounded-xl bg-white/[0.02] border border-white/5 flex items-center justify-center">
                       <Icon size={18} className="text-white/20 group-hover:text-white transition-colors" />
                     </div>
-                    <div className={`text-[10px] font-black uppercase tracking-widest ${kpi.positive ? 'text-[#00d69b]' : 'text-red-400'}`}>
+                    <div className={`text-[10px] font-semibold tracking-tight uppercase tracking-widest ${kpi.positive ? 'text-[#00d69b]' : 'text-red-400'}`}>
                       {kpi.change}
                     </div>
                   </div>
-                  <div className="text-3xl font-black tracking-tighter text-white mb-2">{kpi.value}</div>
-                  <div className="text-[10px] font-black uppercase tracking-[0.25em] text-white/20 whitespace-nowrap">
+                  <div className="text-3xl font-semibold tracking-tight tracking-tighter text-white mb-2">{kpi.value}</div>
+                  <div className="text-[10px] font-semibold tracking-tight uppercase tracking-[0.25em] text-white/20 whitespace-nowrap">
                     {kpi.label}
                   </div>
                 </motion.div>
@@ -206,20 +172,20 @@ export default function AnalyticsPage() {
 
           {/* Main Charts Row */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-            <motion.div {...fadeInUp} transition={{ delay: 0.3 }} className="glass p-10 col-span-2 relative overflow-hidden">
+            <motion.div {...fadeInUp} transition={{ delay: 0.3 }} className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-10 col-span-2 relative overflow-hidden">
               <div className="absolute top-0 right-0 p-10 pointer-events-none opacity-20">
                 <Globe2 className="text-[#7075ff]" size={120} />
               </div>
               <div className="flex items-center justify-between mb-12 relative z-10">
                 <div>
-                  <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/10 mb-2">Patient Traffic & Encoding</h3>
-                  <div className="text-xl font-black tracking-tight">Consultation Throughput</div>
+                  <h3 className="text-[10px] font-semibold tracking-tight uppercase tracking-[0.3em] text-white/10 mb-2">Patient Traffic & Encoding</h3>
+                  <div className="text-xl font-semibold tracking-tight tracking-tight">Consultation Throughput</div>
                 </div>
                 <div className="flex items-center gap-8">
-                  <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-white/20">
+                  <div className="flex items-center gap-2 text-[9px] font-semibold tracking-tight uppercase tracking-widest text-white/20">
                     <div className="w-2.5 h-2.5 rounded-full bg-[#00d69b] shadow-[0_0_8px_#00d69b]" /> Visits
                   </div>
-                  <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-white/20">
+                  <div className="flex items-center gap-2 text-[9px] font-semibold tracking-tight uppercase tracking-widest text-white/20">
                     <div className="w-2.5 h-2.5 rounded-full bg-[#7075ff] shadow-[0_0_8px_#7075ff]" /> Dual-Coded
                   </div>
                 </div>
@@ -263,8 +229,8 @@ export default function AnalyticsPage() {
               </div>
             </motion.div>
 
-            <motion.div {...fadeInUp} transition={{ delay: 0.4 }} className="glass p-10 flex flex-col">
-              <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/10 mb-8">Clinical Taxonomy Distribution</h3>
+            <motion.div {...fadeInUp} transition={{ delay: 0.4 }} className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-10 flex flex-col">
+              <h3 className="text-[10px] font-semibold tracking-tight uppercase tracking-[0.3em] text-white/10 mb-8">Clinical Taxonomy Distribution</h3>
               <div className="flex-1 min-h-[220px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -285,9 +251,9 @@ export default function AnalyticsPage() {
                   <div key={i} className="flex items-center justify-between group cursor-default">
                     <div className="flex items-center gap-3">
                       <div className="w-2.5 h-2.5 rounded-full" style={{ background: item.color, boxShadow: `0 0 10px ${item.color}40` }} />
-                      <span className="text-[11px] font-black uppercase tracking-widest text-white/30 group-hover:text-white transition-colors">{item.name}</span>
+                      <span className="text-[11px] font-semibold tracking-tight uppercase tracking-widest text-white/30 group-hover:text-white transition-colors">{item.name}</span>
                     </div>
-                    <span className="text-[11px] font-black" style={{ color: item.color }}>{item.value}%</span>
+                    <span className="text-[11px] font-semibold tracking-tight" style={{ color: item.color }}>{item.value}%</span>
                   </div>
                 ))}
               </div>
@@ -295,10 +261,10 @@ export default function AnalyticsPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <motion.div {...fadeInUp} transition={{ delay: 0.5 }} className="glass p-10">
+            <motion.div {...fadeInUp} transition={{ delay: 0.5 }} className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-10">
               <div className="flex items-center justify-between mb-12">
-                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/10">Neural Response Integrity</h3>
-                <div className="px-3 py-1 rounded-full bg-[#00d69b]/10 text-[#00d69b] text-[9px] font-black uppercase tracking-widest">Real-time Benchmark</div>
+                <h3 className="text-[10px] font-semibold tracking-tight uppercase tracking-[0.3em] text-white/10">Neural Response Integrity</h3>
+                <div className="px-3 py-1 rounded-full bg-[#00d69b]/10 text-[#00d69b] text-[9px] font-semibold tracking-tight uppercase tracking-widest">Real-time Benchmark</div>
               </div>
               <div className="h-[280px]">
                 <ResponsiveContainer width="100%" height="100%">
@@ -316,10 +282,10 @@ export default function AnalyticsPage() {
               </div>
             </motion.div>
 
-            <motion.div {...fadeInUp} transition={{ delay: 0.6 }} className="glass p-10">
+            <motion.div {...fadeInUp} transition={{ delay: 0.6 }} className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-10">
               <div className="flex items-center justify-between mb-10">
-                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/10">High-Vibe Diagnoses</h3>
-                <div className="flex items-center gap-2 text-xs font-black text-[#00d69b]">
+                <h3 className="text-[10px] font-semibold tracking-tight uppercase tracking-[0.3em] text-white/10">High-Vibe Diagnoses</h3>
+                <div className="flex items-center gap-2 text-xs font-semibold tracking-tight text-[#00d69b]">
                   <ArrowUp size={16} /> Volume Peak
                 </div>
               </div>
@@ -330,10 +296,10 @@ export default function AnalyticsPage() {
                     whileHover={{ x: 10 }}
                     className="flex items-center gap-6 p-6 rounded-[28px] bg-white/[0.01] border border-white/5 hover:bg-white/[0.03] transition-all group"
                   >
-                    <div className="text-2xl font-black text-white/5 group-hover:text-[#00d69b] transition-colors">{i + 1}</div>
+                    <div className="text-2xl font-semibold tracking-tight text-white/5 group-hover:text-[#00d69b] transition-colors">{i + 1}</div>
                     <div className="flex-1">
-                      <div className="text-[13px] font-black uppercase tracking-tight mb-1">{d.name}</div>
-                      <div className="text-[10px] text-white/10 font-black tracking-[0.2em]">{d.code}</div>
+                      <div className="text-[14px] font-semibold uppercase tracking-tight mb-1">{d.name}</div>
+                      <div className="text-[10px] text-white/10 font-semibold tracking-tight tracking-[0.2em]">{d.code}</div>
                     </div>
                     <div className="w-40 px-4 hidden md:block">
                       <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
@@ -346,8 +312,8 @@ export default function AnalyticsPage() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-black text-white">{d.count}</div>
-                      <div className={`flex items-center justify-end gap-1 text-[9px] font-black uppercase tracking-widest ${d.trend === 'up' ? 'text-[#00d69b]' : d.trend === 'down' ? 'text-red-400' : 'text-white/20'}`}>
+                      <div className="text-lg font-semibold tracking-tight text-white">{d.count}</div>
+                      <div className={`flex items-center justify-end gap-1 text-[9px] font-semibold tracking-tight uppercase tracking-widest ${d.trend === 'up' ? 'text-[#00d69b]' : d.trend === 'down' ? 'text-red-400' : 'text-white/20'}`}>
                         {d.trend}
                       </div>
                     </div>
@@ -361,3 +327,6 @@ export default function AnalyticsPage() {
     </div>
   );
 }
+
+
+

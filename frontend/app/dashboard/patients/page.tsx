@@ -104,42 +104,8 @@ export default function PatientsPage() {
       <div className="noise opacity-[0.02]" />
       
       {/* ── Sidebar ── */}
-      <motion.aside 
-        initial={{ x: -100, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: "easeOut" as const }}
-        className="w-[280px] min-h-screen border-r border-white/5 backdrop-blur-3xl flex flex-col p-8 sticky top-0"
-      >
-        <div className="flex items-center gap-3 mb-12 px-2 cursor-pointer group" onClick={() => router.push('/')}>
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-b from-[#00d69b] to-[#00b383] flex items-center justify-center shadow-lg">
-            <Activity className="text-black" size={20} />
-          </div>
-          <span className="text-xl font-bold tracking-tight">Tulsi<span className="text-[#00d69b]">Health</span></span>
-        </div>
-
-        <nav className="flex-1 space-y-1.5 ">
-          {NAV_ITEMS.map((item, i) => {
-            const Icon = item.icon;
-            const isActive = pathname === item.href;
-            return (
-              <Link key={item.href} href={item.href} className={`flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group ${isActive ? 'bg-white/5 text-[#00d69b]' : 'text-white/40 hover:text-white'}`}>
-                <Icon size={18} className={isActive ? 'text-[#00d69b]' : 'group-hover:text-white transition-colors'} />
-                <span className="text-[13px] font-bold tracking-tight">{item.label}</span>
-                {isActive && <motion.div layoutId="active-pill" className="ml-auto w-1.5 h-1.5 bg-[#00d69b] rounded-full shadow-[0_0_10px_#00d69b]" />}
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="mt-auto pt-8 border-t border-white/5">
-          <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-white/30 hover:bg-red-500/10 hover:text-red-400 transition-all font-bold text-xs uppercase tracking-widest">
-            <LogOut size={18} /> Logout
-          </button>
-        </div>
-      </motion.aside>
-
       {/* ── Main Content ── */}
-      <main className="flex-1 p-12 md:p-16 relative z-10 overflow-y-auto">
+      <main className="w-full">
         <div className="max-w-[1200px] mx-auto">
           {/* Header */}
           <motion.div {...fadeInUp} className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16">
@@ -148,15 +114,15 @@ export default function PatientsPage() {
                 <Users className="text-[#00d69b]" size={32} />
               </div>
               <div>
-                <h1 className="text-4xl font-black tracking-tighter mb-1">Patient Hub</h1>
-                <p className="text-white/30 text-xs font-black uppercase tracking-[0.2em]">{patients.length} Clinical Profiles Verified</p>
+                <h1 className="text-4xl font-semibold tracking-tight tracking-tighter mb-1">Patient Hub</h1>
+                <p className="text-white/30 text-xs font-semibold tracking-tight uppercase tracking-[0.2em]">{patients.length} Clinical Profiles Verified</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
                <motion.button 
                  whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
                  onClick={() => router.push('/dashboard/patients/new')}
-                 className="px-8 py-4 rounded-[18px] bg-[#00d69b] text-black font-black text-xs uppercase tracking-widest shadow-xl hover:shadow-[#00d69b]/20 transition-all flex items-center gap-3"
+                 className="px-8 py-4 rounded-[18px] bg-[#00d69b] text-black font-semibold tracking-tight text-xs uppercase tracking-widest shadow-xl hover:shadow-[#00d69b]/20 transition-all flex items-center gap-3"
                >
                  <Plus size={16} strokeWidth={3} /> Register New
                </motion.button>
@@ -173,7 +139,7 @@ export default function PatientsPage() {
                onChange={e => setSearch(e.target.value)}
                className="w-full pl-16 pr-6 py-6 bg-white/[0.03] border border-white/5 rounded-[28px] text-lg font-bold tracking-tight focus:bg-white/[0.06] focus:border-[#00d69b]/30 transition-all outline-none placeholder:text-white/5"
              />
-             <div className="absolute right-6 top-1/2 -translate-y-1/2 text-white/5 text-[9px] font-black uppercase tracking-widest hidden md:block">
+             <div className="absolute right-6 top-1/2 -translate-y-1/2 text-white/5 text-[9px] font-semibold tracking-tight uppercase tracking-widest hidden md:block">
                Press / to search
              </div>
           </motion.div>
@@ -187,19 +153,19 @@ export default function PatientsPage() {
                   className="flex flex-col items-center justify-center py-32 text-white/10"
                 >
                   <RefreshCcw className="animate-spin mb-6" size={48} strokeWidth={3} />
-                  <span className="text-[10px] font-black tracking-[0.3em] uppercase">Syncing Registry Node</span>
+                  <span className="text-[10px] font-semibold tracking-tight tracking-[0.3em] uppercase">Syncing Registry Node</span>
                 </motion.div>
               ) : filtered.length === 0 ? (
                 <motion.div 
                   key="empty" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
-                  className="glass p-24 text-center border-dashed border-white/10"
+                  className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-24 text-center border-dashed border-white/10"
                 >
                   <div className="w-24 h-24 rounded-full bg-white/[0.02] flex items-center justify-center mx-auto mb-8 border border-white/5">
                      <Users className="text-white/10" size={40} />
                   </div>
-                  <h3 className="text-2xl font-black mb-3 tracking-tight">No Matches Found</h3>
+                  <h3 className="text-2xl font-semibold tracking-tight mb-3 tracking-tight">No Matches Found</h3>
                   <p className="text-white/20 text-xs font-bold uppercase tracking-widest mb-10 max-w-xs mx-auto leading-relaxed">We couldn't find any patients matching your current search parameters.</p>
-                  <button onClick={() => setSearch('')} className="text-[#00d69b] font-black text-[10px] uppercase tracking-[0.2em] hover:text-white transition-colors">Reset Global Filter</button>
+                  <button onClick={() => setSearch('')} className="text-[#00d69b] font-semibold tracking-tight text-[10px] uppercase tracking-[0.2em] hover:text-white transition-colors">Reset Global Filter</button>
                 </motion.div>
               ) : (
                 filtered.map((p, i) => (
@@ -209,30 +175,30 @@ export default function PatientsPage() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.05, duration: 0.5, ease: "easeOut" as const }}
                     onClick={() => router.push(`/dashboard/patients/${p.patient_id}`)}
-                    className="glass p-8 flex flex-col md:flex-row items-center gap-10 group cursor-pointer hover:border-[#00d69b]/20 relative overflow-hidden"
+                    className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-8 flex flex-col md:flex-row items-center gap-10 group cursor-pointer hover:border-[#00d69b]/20 relative overflow-hidden"
                   >
                     <div className="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-100 transition-opacity">
                       <ChevronRight size={20} className="text-[#00d69b]" />
                     </div>
                     
                     <div className="w-20 h-20 rounded-[28px] bg-gradient-to-br from-[#00d69b]/10 to-transparent p-[1px]">
-                      <div className="w-full h-full rounded-[27px] bg-primary flex items-center justify-center text-3xl font-black text-white group-hover:text-[#00d69b] transition-colors">
+                      <div className="w-full h-full rounded-[27px] bg-primary flex items-center justify-center text-3xl font-semibold tracking-tight text-white group-hover:text-[#00d69b] transition-colors">
                         {p.name.charAt(0)}
                       </div>
                     </div>
                     
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-col md:flex-row md:items-center gap-4 mb-4">
-                        <h3 className="text-2xl font-black tracking-tight group-hover:text-[#00d69b] transition-colors">{p.name}</h3>
+                        <h3 className="text-2xl font-semibold tracking-tight tracking-tight group-hover:text-[#00d69b] transition-colors">{p.name}</h3>
                         <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-black px-3 py-1 bg-white/5 text-white/20 rounded-lg tracking-widest uppercase">{p.patient_id}</span>
-                          <span className={`text-[10px] font-black px-3 py-1 rounded-lg tracking-widest uppercase ${p.status === 'Active' ? 'bg-[#00d69b]/10 text-[#00d69b]' : 'bg-white/5 text-white/40'}`}>
+                          <span className="text-[10px] font-semibold tracking-tight px-3 py-1 bg-white/5 text-white/20 rounded-lg tracking-widest uppercase">{p.patient_id}</span>
+                          <span className={`text-[10px] font-semibold tracking-tight px-3 py-1 rounded-lg tracking-widest uppercase ${p.status === 'Active' ? 'bg-[#00d69b]/10 text-[#00d69b]' : 'bg-white/5 text-white/40'}`}>
                             {p.status || 'Verified'}
                           </span>
                         </div>
                       </div>
                       
-                      <div className="flex flex-wrap items-center gap-x-10 gap-y-3 text-[11px] font-black uppercase tracking-[0.1em] text-white/20">
+                      <div className="flex flex-wrap items-center gap-x-10 gap-y-3 text-[11px] font-semibold tracking-tight uppercase tracking-[0.1em] text-white/20">
                          <span className="flex items-center gap-2 group-hover:text-white/40 transition-colors"><Calendar size={14} className="text-[#00d69b]" /> {p.age} Y · {p.gender}</span>
                          <span className="flex items-center gap-2 group-hover:text-white/40 transition-colors"><Droplets size={14} className="text-red-400" /> {p.blood_group}</span>
                          <span className="flex items-center gap-2 group-hover:text-white/40 transition-colors"><Phone size={14} className="text-[#7075ff]" /> {p.phone}</span>
@@ -241,8 +207,8 @@ export default function PatientsPage() {
                     </div>
 
                     <div className="flex flex-row md:flex-col items-center md:items-end gap-3 px-6 md:px-10 border-l border-white/5">
-                      <div className="text-4xl font-black text-white/5 group-hover:text-[#00d69b]/20 transition-colors leading-none">{p.encounter_count}</div>
-                      <div className="text-[9px] font-black tracking-[0.3em] text-white/10 uppercase text-right leading-none">Global Syncs</div>
+                      <div className="text-4xl font-semibold tracking-tight text-white/5 group-hover:text-[#00d69b]/20 transition-colors leading-none">{p.encounter_count}</div>
+                      <div className="text-[9px] font-semibold tracking-tight tracking-[0.3em] text-white/10 uppercase text-right leading-none">Global Syncs</div>
                     </div>
                   </motion.div>
                 ))
@@ -254,3 +220,6 @@ export default function PatientsPage() {
     </div>
   );
 }
+
+
+

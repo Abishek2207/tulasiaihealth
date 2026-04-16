@@ -154,7 +154,7 @@ export default function PatientProfilePage() {
       </aside>
 
       {/* Main */}
-      <main className="flex-1 p-8 overflow-y-auto">
+      <main className="w-full">
         <div className="max-w-[1200px] mx-auto">
           {/* Back + Header */}
           <div className="flex items-center gap-4 mb-8">
@@ -163,7 +163,7 @@ export default function PatientProfilePage() {
             </button>
             <div>
               <div className="text-xs text-white/30 font-bold uppercase tracking-[0.2em] mb-1">Patient Profile</div>
-              <h1 className="text-2xl font-black tracking-tight">{patient.name}</h1>
+              <h1 className="text-2xl font-semibold tracking-tight tracking-tight">{patient.name}</h1>
             </div>
             <div className="ml-auto flex items-center gap-3">
               <button
@@ -172,15 +172,15 @@ export default function PatientProfilePage() {
               >
                 <QrCode size={16} /> View QR
               </button>
-              <Link href="/dashboard/diagnosis" className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#00d69b] text-black text-sm font-black hover:bg-[#00e5a8] transition-all">
+              <Link href="/dashboard/diagnosis" className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#00d69b] text-black text-sm font-semibold tracking-tight hover:bg-[#00e5a8] transition-all">
                 <Plus size={16} /> New Diagnosis
               </Link>
             </div>
           </div>
 
           {/* Patient Card */}
-          <div className="glass p-6 mb-6 flex flex-col md:flex-row gap-6">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#00d69b]/20 to-[#7075ff]/20 border border-white/10 flex items-center justify-center text-4xl font-black text-[#00d69b] shrink-0">
+          <div className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-6 mb-6 flex flex-col md:flex-row gap-6">
+            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#00d69b]/20 to-[#7075ff]/20 border border-white/10 flex items-center justify-center text-4xl font-semibold tracking-tight text-[#00d69b] shrink-0">
               {patient.name[0]}
             </div>
             <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -232,13 +232,13 @@ export default function PatientProfilePage() {
           {activeTab === 'overview' && (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Recovery Score */}
-              <div className="glass p-6 col-span-2">
+              <div className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-6 col-span-2">
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xs font-black uppercase tracking-[0.2em] text-white/30 flex items-center gap-2">
+                  <h3 className="text-xs font-semibold tracking-tight uppercase tracking-[0.2em] text-white/30 flex items-center gap-2">
                     <TrendingUp size={14} className="text-[#00d69b]" /> Recovery Progress (12 Months)
                   </h3>
                   <div className="flex items-center gap-2">
-                    <div className={`px-3 py-1 rounded-full text-xs font-black uppercase ${patient.recovery_score >= 70 ? 'bg-[#00d69b]/10 text-[#00d69b] border border-[#00d69b]/30' : 'bg-amber-500/10 text-amber-400 border border-amber-500/30'}`}>
+                    <div className={`px-3 py-1 rounded-full text-xs font-semibold tracking-tight uppercase ${patient.recovery_score >= 70 ? 'bg-[#00d69b]/10 text-[#00d69b] border border-[#00d69b]/30' : 'bg-amber-500/10 text-amber-400 border border-amber-500/30'}`}>
                       {patient.recovery_score}% Recovery
                     </div>
                   </div>
@@ -248,8 +248,8 @@ export default function PatientProfilePage() {
 
               {/* Risk + Conditions */}
               <div className="space-y-4">
-                <div className="glass p-5">
-                  <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 mb-4 flex items-center gap-2">
+                <div className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-5">
+                  <h3 className="text-[10px] font-semibold tracking-tight uppercase tracking-[0.2em] text-white/30 mb-4 flex items-center gap-2">
                     <AlertTriangle size={12} className="text-amber-400" /> Active Conditions
                   </h3>
                   <div className="space-y-2">
@@ -261,8 +261,8 @@ export default function PatientProfilePage() {
                     ))}
                   </div>
                 </div>
-                <div className="glass p-5">
-                  <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 mb-4 flex items-center gap-2">
+                <div className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-5">
+                  <h3 className="text-[10px] font-semibold tracking-tight uppercase tracking-[0.2em] text-white/30 mb-4 flex items-center gap-2">
                     <Shield size={12} className="text-red-400" /> Allergies
                   </h3>
                   <div className="space-y-2">
@@ -281,7 +281,7 @@ export default function PatientProfilePage() {
           {activeTab === 'timeline' && (
             <div className="space-y-4">
               {patient.timeline.map((event: any, i: number) => (
-                <div key={i} className="glass p-6 flex gap-6 hover:border-white/10 transition-all">
+                <div key={i} className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-6 flex gap-6 hover:border-white/10 transition-all">
                   <div className="flex flex-col items-center">
                     <div className={`w-10 h-10 rounded-xl border flex items-center justify-center ${TYPE_COLORS[event.type]}`}>
                       {event.type === 'visit' ? <Clock size={16} /> : event.type === 'diagnosis' ? <Stethoscope size={16} /> : <Pill size={16} />}
@@ -292,7 +292,7 @@ export default function PatientProfilePage() {
                     <div className="flex items-center justify-between mb-2">
                       <h4 className="font-bold text-sm">{event.title}</h4>
                       <div className="flex items-center gap-3">
-                        <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-full border ${TYPE_COLORS[event.type]}`}>{event.type}</span>
+                        <span className={`text-[10px] font-semibold tracking-tight uppercase px-2 py-0.5 rounded-full border ${TYPE_COLORS[event.type]}`}>{event.type}</span>
                         <span className="text-xs text-white/30">{event.date}</span>
                       </div>
                     </div>
@@ -312,9 +312,9 @@ export default function PatientProfilePage() {
           {activeTab === 'vitals' && (
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {Object.entries(patient.vitals).map(([key, val]) => (
-                <div key={key} className="glass p-6 hover:border-white/10 transition-all">
-                  <div className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 mb-3">{key.replace('_', ' ')}</div>
-                  <div className="text-2xl font-black text-[#00d69b]">{val as string}</div>
+                <div key={key} className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-6 hover:border-white/10 transition-all">
+                  <div className="text-[10px] font-semibold tracking-tight uppercase tracking-[0.2em] text-white/30 mb-3">{key.replace('_', ' ')}</div>
+                  <div className="text-2xl font-semibold tracking-tight text-[#00d69b]">{val as string}</div>
                 </div>
               ))}
             </div>
@@ -323,8 +323,8 @@ export default function PatientProfilePage() {
           {/* Dual Codes Tab */}
           {activeTab === 'codes' && (
             <div className="space-y-4">
-              <div className="glass p-6">
-                <h3 className="text-xs font-black uppercase tracking-[0.2em] text-white/30 mb-6">Dual-Coding Summary — NAMASTE ↔ ICD-11</h3>
+              <div className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-6">
+                <h3 className="text-xs font-semibold tracking-tight uppercase tracking-[0.2em] text-white/30 mb-6">Dual-Coding Summary — NAMASTE ↔ ICD-11</h3>
                 <div className="space-y-3">
                   {[
                     { namaste: 'AYU-D-0001', namasteLabel: 'Vataja Jwara', icd11: '1D01', icd11Label: 'Fever of unknown origin', tm2: 'TM2-001' },
@@ -332,16 +332,16 @@ export default function PatientProfilePage() {
                   ].map((row, i) => (
                     <div key={i} className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 grid grid-cols-3 gap-4">
                       <div>
-                        <div className="text-[9px] font-black uppercase text-[#00d69b]/60 tracking-widest mb-1">NAMASTE (AYUSH)</div>
+                        <div className="text-[9px] font-semibold tracking-tight uppercase text-[#00d69b]/60 tracking-widest mb-1">NAMASTE (AYUSH)</div>
                         <div className="font-bold text-xs font-mono text-[#00d69b]">{row.namaste}</div>
                         <div className="text-xs text-white/50 mt-1">{row.namasteLabel}</div>
                       </div>
                       <div>
-                        <div className="text-[9px] font-black uppercase text-[#7075ff]/60 tracking-widest mb-1">ICD-11 TM2</div>
+                        <div className="text-[9px] font-semibold tracking-tight uppercase text-[#7075ff]/60 tracking-widest mb-1">ICD-11 TM2</div>
                         <div className="font-bold text-xs font-mono text-[#7075ff]">{row.tm2}</div>
                       </div>
                       <div>
-                        <div className="text-[9px] font-black uppercase text-amber-400/60 tracking-widest mb-1">WHO ICD-11</div>
+                        <div className="text-[9px] font-semibold tracking-tight uppercase text-amber-400/60 tracking-widest mb-1">WHO ICD-11</div>
                         <div className="font-bold text-xs font-mono text-amber-400">{row.icd11}</div>
                         <div className="text-xs text-white/50 mt-1">{row.icd11Label}</div>
                       </div>
@@ -357,11 +357,11 @@ export default function PatientProfilePage() {
       {/* QR Modal */}
       {showQR && (
         <div className="fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setShowQR(false)}>
-          <div className="glass p-8 rounded-3xl max-w-sm w-full border border-white/10 text-center" onClick={e => e.stopPropagation()}>
+          <div className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-8 rounded-3xl max-w-sm w-full border border-white/10 text-center" onClick={e => e.stopPropagation()}>
             <button onClick={() => setShowQR(false)} className="absolute top-4 right-4 w-8 h-8 rounded-full glass flex items-center justify-center hover:bg-white/10 transition-all">
               <X size={16} />
             </button>
-            <div className="text-xs font-black uppercase tracking-[0.2em] text-white/30 mb-6">Patient QR Code</div>
+            <div className="text-xs font-semibold tracking-tight uppercase tracking-[0.2em] text-white/30 mb-6">Patient QR Code</div>
             <div className="w-48 h-48 mx-auto bg-white p-3 rounded-2xl mb-6">
               <img
                 src={qrCode || `https://api.qrserver.com/v1/create-qr-code/?size=168x168&data=TULSIHEALTH-${patient.id}&color=020205&bgcolor=FFFFFF`}
@@ -369,7 +369,7 @@ export default function PatientProfilePage() {
                 className="w-full h-full object-contain"
               />
             </div>
-            <div className="font-black text-lg tracking-tight mb-1">{patient.name}</div>
+            <div className="font-semibold tracking-tight text-lg tracking-tight mb-1">{patient.name}</div>
             <div className="font-mono text-sm text-[#00d69b] mb-6">{patient.id}</div>
             <p className="text-xs text-white/30 leading-relaxed">Scan this QR at any TulsiHealth registered hospital for instant cross-facility access. Valid for authorized users only.</p>
           </div>
@@ -378,3 +378,6 @@ export default function PatientProfilePage() {
     </div>
   );
 }
+
+
+

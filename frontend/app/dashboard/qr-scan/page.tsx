@@ -109,42 +109,8 @@ export default function QRScanPage() {
       <div className="noise opacity-[0.02]" />
       
       {/* ── Sidebar ── */}
-      <motion.aside 
-        initial={{ x: -100, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: "easeOut" as const }}
-        className="w-[280px] min-h-screen border-r border-white/5 backdrop-blur-3xl flex flex-col p-8 sticky top-0"
-      >
-        <div className="flex items-center gap-3 mb-12 px-2 cursor-pointer group" onClick={() => router.push('/')}>
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-b from-[#00d69b] to-[#00b383] flex items-center justify-center shadow-lg">
-            <Activity className="text-black" size={20} />
-          </div>
-          <span className="text-xl font-bold tracking-tight">Tulsi<span className="text-[#00d69b]">Health</span></span>
-        </div>
-
-        <nav className="flex-1 space-y-1.5 ">
-          {NAV_ITEMS.map((item, i) => {
-            const Icon = item.icon;
-            const isActive = pathname === item.href;
-            return (
-              <Link key={item.href} href={item.href} className={`flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group ${isActive ? 'bg-white/5 text-[#00d69b]' : 'text-white/40 hover:text-white'}`}>
-                <Icon size={18} className={isActive ? 'text-[#00d69b]' : 'group-hover:text-white transition-colors'} />
-                <span className="text-[13px] font-bold tracking-tight">{item.label}</span>
-                {isActive && <motion.div layoutId="active-pill" className="ml-auto w-1.5 h-1.5 bg-[#00d69b] rounded-full shadow-[0_0_10px_#00d69b]" />}
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="mt-auto pt-8 border-t border-white/5">
-          <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-white/30 hover:bg-red-500/10 hover:text-red-400 transition-all font-bold text-xs uppercase tracking-widest">
-            <LogOut size={18} /> Logout
-          </button>
-        </div>
-      </motion.aside>
-
       {/* ── Main Content ── */}
-      <main className="flex-1 p-12 md:p-16 relative z-10 overflow-y-auto">
+      <main className="w-full">
         <div className="max-w-[1200px] mx-auto">
           {/* Page Header */}
           <motion.div {...fadeInUp} className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16">
@@ -153,8 +119,8 @@ export default function QRScanPage() {
                 <QrCode className="text-[#7075ff]" size={32} />
               </div>
               <div>
-                <h1 className="text-4xl font-black tracking-tighter mb-1">Identification</h1>
-                <p className="text-white/30 text-xs font-black uppercase tracking-[0.2em]">Verified QR Portal · Blockchain Identity Trail</p>
+                <h1 className="text-4xl font-semibold tracking-tight tracking-tighter mb-1">Identification</h1>
+                <p className="text-white/30 text-xs font-semibold tracking-tight uppercase tracking-[0.2em]">Verified QR Portal · Blockchain Identity Trail</p>
               </div>
             </div>
           </motion.div>
@@ -162,7 +128,7 @@ export default function QRScanPage() {
           {!patient ? (
             <motion.div 
               {...fadeInUp} transition={{ delay: 0.1 }}
-              className="glass p-16 md:p-24 text-center relative overflow-hidden"
+              className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-16 md:p-24 text-center relative overflow-hidden"
             >
               <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#7075ff]/30 to-transparent" />
               
@@ -188,7 +154,7 @@ export default function QRScanPage() {
                           style={{ top: `${scanProgress}%` }}
                         />
                         <RefreshCcw className="animate-spin text-[#7075ff]" size={48} strokeWidth={3} />
-                        <span className="text-[10px] font-black tracking-[0.3em] text-[#7075ff] uppercase">Decoding Hub</span>
+                        <span className="text-[10px] font-semibold tracking-tight tracking-[0.3em] text-[#7075ff] uppercase">Decoding Hub</span>
                       </motion.div>
                     ) : (
                       <motion.div 
@@ -198,7 +164,7 @@ export default function QRScanPage() {
                         <div className="w-20 h-20 rounded-full bg-[#7075ff]/10 flex items-center justify-center text-[#7075ff]">
                           <QrCode size={40} strokeWidth={2.5} />
                         </div>
-                        <span className="text-[10px] font-black tracking-[0.3em] text-white/20 uppercase">Lens Ready</span>
+                        <span className="text-[10px] font-semibold tracking-tight tracking-[0.3em] text-white/20 uppercase">Lens Ready</span>
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -206,7 +172,7 @@ export default function QRScanPage() {
               </div>
 
               <div className="max-w-lg mx-auto">
-                <h2 className="text-3xl font-black mb-6 tracking-tight leading-tight">Secure Portal Authorization</h2>
+                <h2 className="text-3xl font-semibold tracking-tight mb-6 tracking-tight leading-tight">Secure Portal Authorization</h2>
                 <p className="text-white/30 text-sm font-bold leading-relaxed mb-12 uppercase tracking-widest px-10">
                   Retrieve verified clinical history and identity using the patient's encrypted TulsiHealth node or ABHA token.
                 </p>
@@ -216,13 +182,13 @@ export default function QRScanPage() {
                     whileTap={{ scale: 0.98 }}
                     onClick={handleScan} 
                     disabled={scanning}
-                    className="w-full sm:w-auto px-12 py-6 rounded-[24px] bg-[#7075ff] text-white font-black text-lg shadow-2xl hover:bg-[#6065ff] disabled:opacity-50 transition-all flex items-center justify-center gap-3 uppercase tracking-widest"
+                    className="w-full sm:w-auto px-12 py-6 rounded-[24px] bg-[#7075ff] text-white font-semibold tracking-tight text-lg shadow-2xl hover:bg-[#6065ff] disabled:opacity-50 transition-all flex items-center justify-center gap-3 uppercase tracking-widest"
                   >
                     {scanning ? 'Authorizing...' : <><ScanLine size={24} strokeWidth={3} /> Launch Portal</>}
                   </motion.button>
                   <motion.button 
                     whileHover={{ scale: 1.02 }}
-                    className="w-full sm:w-auto px-12 py-6 rounded-[24px] bg-white/5 border border-white/5 text-white/20 font-black text-sm uppercase tracking-widest hover:bg-white/10 transition-all"
+                    className="w-full sm:w-auto px-12 py-6 rounded-[24px] bg-white/5 border border-white/5 text-white/20 font-semibold tracking-tight text-sm uppercase tracking-widest hover:bg-white/10 transition-all"
                   >
                     Manual Registry
                   </motion.button>
@@ -230,22 +196,22 @@ export default function QRScanPage() {
               </div>
               
               <div className="mt-20 flex flex-col md:flex-row items-center justify-center gap-12 border-t border-white/5 pt-12 opacity-20">
-                <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em]"><ShieldCheck size={16} /> ISO 27001 SECURE</div>
-                <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em]"><Info size={16} /> HIPAA COMPLIANT</div>
-                <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em]"><Activity size={16} /> REAL-TIME SYNC</div>
+                <div className="flex items-center gap-3 text-[10px] font-semibold tracking-tight uppercase tracking-[0.3em]"><ShieldCheck size={16} /> ISO 27001 SECURE</div>
+                <div className="flex items-center gap-3 text-[10px] font-semibold tracking-tight uppercase tracking-[0.3em]"><Info size={16} /> HIPAA COMPLIANT</div>
+                <div className="flex items-center gap-3 text-[10px] font-semibold tracking-tight uppercase tracking-[0.3em]"><Activity size={16} /> REAL-TIME SYNC</div>
               </div>
             </motion.div>
           ) : (
             <motion.div {...fadeInUp} className="space-y-10">
               {/* Patient Core Card */}
-              <div className="glass rounded-[40px] overflow-hidden">
+              <div className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] rounded-[40px] overflow-hidden">
                 <div className="p-10 md:p-14 border-b border-white/5 flex flex-col md:flex-row items-center gap-12 bg-gradient-to-br from-[#00d69b]/5 to-transparent">
                   <motion.div 
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     className="w-40 h-40 rounded-[48px] bg-gradient-to-tr from-[#00d69b] to-[#7075ff] p-[3px]"
                   >
-                    <div className="w-full h-full rounded-[45px] bg-primary flex items-center justify-center text-6xl font-black text-[#00d69b]">
+                    <div className="w-full h-full rounded-[45px] bg-primary flex items-center justify-center text-6xl font-semibold tracking-tight text-[#00d69b]">
                       {patient.name.charAt(0)}
                     </div>
                   </motion.div>
@@ -254,14 +220,14 @@ export default function QRScanPage() {
                     <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
                        <motion.div 
                          initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
-                         className="px-4 py-1.5 rounded-full bg-[#00d69b]/10 border border-[#00d69b]/20 text-[#00d69b] text-[10px] font-black uppercase tracking-widest flex items-center gap-2"
+                         className="px-4 py-1.5 rounded-full bg-[#00d69b]/10 border border-[#00d69b]/20 text-[#00d69b] text-[10px] font-semibold tracking-tight uppercase tracking-widest flex items-center gap-2"
                        >
                          <ShieldCheck size={14} strokeWidth={3} /> Identity Verified
                        </motion.div>
-                       <span className="text-[10px] font-black text-white/10 uppercase tracking-[0.3em]">{patient.id}</span>
+                       <span className="text-[10px] font-semibold tracking-tight text-white/10 uppercase tracking-[0.3em]">{patient.id}</span>
                     </div>
-                    <h2 className="text-5xl font-black tracking-tighter mb-4">{patient.name}</h2>
-                    <div className="flex flex-wrap items-center justify-center md:justify-start gap-8 text-white/30 text-[11px] font-black uppercase tracking-widest">
+                    <h2 className="text-5xl font-semibold tracking-tight tracking-tighter mb-4">{patient.name}</h2>
+                    <div className="flex flex-wrap items-center justify-center md:justify-start gap-8 text-white/30 text-[11px] font-semibold tracking-tight uppercase tracking-widest">
                        <span className="flex items-center gap-2"><User size={16} className="text-[#00d69b]" /> {patient.age} Yrs</span>
                        <span className="flex items-center gap-2"><Heart size={16} className="text-red-400" /> {patient.blood_group}</span>
                        <span className="flex items-center gap-2 text-[#ffb84d]"><Activity size={16} /> {patient.ayush_system} Engine</span>
@@ -280,7 +246,7 @@ export default function QRScanPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 p-10 md:p-14">
                   <div className="space-y-10">
                     <div>
-                      <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/10 mb-6 flex items-center gap-3">
+                      <h4 className="text-[10px] font-semibold tracking-tight uppercase tracking-[0.3em] text-white/10 mb-6 flex items-center gap-3">
                         <AlertTriangle size={18} className="text-red-400" /> Active Registry Alerts
                       </h4>
                       <div className="space-y-4">
@@ -298,7 +264,7 @@ export default function QRScanPage() {
                     </div>
 
                     <div>
-                      <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/10 mb-6 flex items-center gap-3">
+                      <h4 className="text-[10px] font-semibold tracking-tight uppercase tracking-[0.3em] text-white/10 mb-6 flex items-center gap-3">
                         <Pill size={18} className="text-[#ffb84d]" /> Current Prescription
                       </h4>
                       <div className="space-y-4">
@@ -317,7 +283,7 @@ export default function QRScanPage() {
 
                   <div className="space-y-10">
                     <div>
-                      <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/10 mb-6 flex items-center gap-3">
+                      <h4 className="text-[10px] font-semibold tracking-tight uppercase tracking-[0.3em] text-white/10 mb-6 flex items-center gap-3">
                         <History size={18} className="text-[#7075ff]" /> Medical Intelligence Timeline
                       </h4>
                       <div className="space-y-5">
@@ -331,12 +297,12 @@ export default function QRScanPage() {
                                <ChevronRight size={16} className="text-[#00d69b]" />
                             </div>
                             <div className="flex justify-between items-start mb-4">
-                               <div className="font-black text-lg tracking-tight group-hover:text-[#00d69b] transition-colors">{h.display}</div>
-                               <span className="text-[9px] font-black px-2.5 py-1 bg-[#00d69b]/10 text-[#00d69b] rounded-lg tracking-widest uppercase">Dual-Coded</span>
+                               <div className="font-semibold tracking-tight text-lg tracking-tight group-hover:text-[#00d69b] transition-colors">{h.display}</div>
+                               <span className="text-[9px] font-semibold tracking-tight px-2.5 py-1 bg-[#00d69b]/10 text-[#00d69b] rounded-lg tracking-widest uppercase">Dual-Coded</span>
                             </div>
                             <div className="flex items-center gap-6">
-                               <div className="flex-1 text-[11px] text-white/20 font-black uppercase tracking-[0.2em]">{h.icd11_display}</div>
-                               <span className="text-[11px] font-black text-white/10 group-hover:text-white transition-colors">{h.icd11}</span>
+                               <div className="flex-1 text-[11px] text-white/20 font-semibold tracking-tight uppercase tracking-[0.2em]">{h.icd11_display}</div>
+                               <span className="text-[11px] font-semibold tracking-tight text-white/10 group-hover:text-white transition-colors">{h.icd11}</span>
                             </div>
                           </motion.div>
                         ))}
@@ -347,7 +313,7 @@ export default function QRScanPage() {
                       whileHover={{ scale: 1.02, y: -2 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => router.push('/dashboard/emr')}
-                      className="w-full py-7 rounded-[32px] bg-gradient-to-r from-[#00d69b] to-[#00b383] text-black font-black text-xl shadow-2xl hover:shadow-[#00d69b]/20 transition-all flex items-center justify-center gap-4 uppercase tracking-[0.2em]"
+                      className="w-full py-7 rounded-[32px] bg-gradient-to-r from-[#00d69b] to-[#00b383] text-black font-semibold tracking-tight text-xl shadow-2xl hover:shadow-[#00d69b]/20 transition-all flex items-center justify-center gap-4 uppercase tracking-[0.2em]"
                     >
                       <Stethoscope size={28} strokeWidth={3} /> Consultation
                     </motion.button>
@@ -361,7 +327,7 @@ export default function QRScanPage() {
                     <History size={20} />
                     <Database size={20} />
                  </div>
-                 <p className="text-[9px] font-black tracking-[0.4em] uppercase text-center">
+                 <p className="text-[9px] font-semibold tracking-tight tracking-[0.4em] uppercase text-center">
                     Proof of Integrity: 0x82f9b1d...83c01
                  </p>
               </div>
@@ -390,3 +356,6 @@ function Database({ className, size }: { className?: string; size?: number }) {
     </svg>
   );
 }
+
+
+

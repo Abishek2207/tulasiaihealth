@@ -145,41 +145,8 @@ export default function TriagePage() {
       <div className="noise opacity-[0.02]" />
       
       {/* ── Sidebar ── */}
-      <motion.aside 
-        initial={{ x: -100, opacity: 0 }} animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: "easeOut" as const }}
-        className="w-[280px] min-h-screen border-r border-white/5 backdrop-blur-3xl flex flex-col p-8 sticky top-0"
-      >
-        <div className="flex items-center gap-3 mb-12 px-2 cursor-pointer group" onClick={() => router.push('/')}>
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-b from-[#00d69b] to-[#00b383] flex items-center justify-center shadow-lg">
-            <Activity className="text-black" size={20} />
-          </div>
-          <span className="text-xl font-bold tracking-tight">Tulsi<span className="text-[#00d69b]">Health</span></span>
-        </div>
-
-        <nav className="flex-1 space-y-1.5">
-          {NAV_ITEMS.map((item, i) => {
-            const Icon = item.icon;
-            const isActive = pathname === item.href;
-            return (
-              <Link key={item.href} href={item.href} className={`flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group ${isActive ? 'bg-white/5 text-[#00d69b]' : 'text-white/40 hover:text-white'}`}>
-                <Icon size={18} className={isActive ? 'text-[#00d69b]' : 'group-hover:text-white transition-colors'} />
-                <span className="text-[13px] font-bold tracking-tight">{item.label}</span>
-                {isActive && <motion.div layoutId="active-pill" className="ml-auto w-1.5 h-1.5 bg-[#00d69b] rounded-full shadow-[0_0_10px_#00d69b]" />}
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="mt-auto pt-8 border-t border-white/5">
-          <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-white/30 hover:bg-red-500/10 hover:text-red-400 transition-all font-bold text-xs uppercase tracking-widest">
-            <LogOut size={18} /> Logout
-          </button>
-        </div>
-      </motion.aside>
-
       {/* ── Main Content ── */}
-      <main className="flex-1 p-12 md:p-16 relative z-10 overflow-y-auto">
+      <main className="w-full">
         <div className="max-w-[1300px] mx-auto">
           {/* Page Header */}
           <motion.div {...fadeInUp} className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16">
@@ -188,37 +155,37 @@ export default function TriagePage() {
                 <BrainCircuit className="text-[#00d69b]" size={32} />
               </div>
               <div>
-                <h1 className="text-4xl font-black tracking-tighter mb-1">Neural Triage</h1>
-                <p className="text-white/30 text-xs font-black uppercase tracking-[0.2em] leading-relaxed">AI Clinical Assessment · Global Protocol Sync</p>
+                <h1 className="text-4xl font-semibold tracking-tight tracking-tighter mb-1">Neural Triage</h1>
+                <p className="text-white/30 text-xs font-semibold tracking-tight uppercase tracking-[0.2em] leading-relaxed">AI Clinical Assessment · Global Protocol Sync</p>
               </div>
             </div>
             <div className="flex items-center gap-3 px-4 py-2 bg-white/[0.02] border border-white/5 rounded-full">
               <div className="w-1.5 h-1.5 rounded-full bg-[#00d69b] animate-pulse shadow-[0_0_10px_#00d69b]" />
-              <span className="text-[10px] font-black uppercase tracking-widest text-white/20 whitespace-nowrap">Node 01 Active</span>
+              <span className="text-[10px] font-semibold tracking-tight uppercase tracking-widest text-white/20 whitespace-nowrap">Node 01 Active</span>
             </div>
           </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Input Panel */}
             <div className="space-y-8">
-              <motion.div {...fadeInUp} transition={{ delay: 0.1 }} className="glass p-10 group relative overflow-hidden">
+              <motion.div {...fadeInUp} transition={{ delay: 0.1 }} className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-10 group relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-100 transition-opacity">
                   <User size={16} className="text-[#00d69b]" />
                 </div>
-                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/10 mb-8">Clinical Demographics</h3>
+                <h3 className="text-[10px] font-semibold tracking-tight uppercase tracking-[0.3em] text-white/10 mb-8">Clinical Demographics</h3>
                 <div className="grid grid-cols-2 gap-6">
                    <div className="space-y-3">
-                     <label className="text-[10px] font-black text-white/20 uppercase tracking-widest ml-1">Age Reference</label>
+                     <label className="text-[10px] font-semibold tracking-tight text-white/20 uppercase tracking-widest ml-1">Age Reference</label>
                      <input 
-                       className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-4 text-sm font-black focus:bg-white/[0.05] focus:border-[#00d69b]/30 outline-none transition-all" 
+                       className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-4 text-sm font-semibold tracking-tight focus:bg-white/[0.05] focus:border-[#00d69b]/30 outline-none transition-all" 
                        value={age} 
                        onChange={e => setAge(e.target.value)} 
                      />
                    </div>
                    <div className="space-y-3">
-                     <label className="text-[10px] font-black text-white/20 uppercase tracking-widest ml-1">Bio Gender</label>
+                     <label className="text-[10px] font-semibold tracking-tight text-white/20 uppercase tracking-widest ml-1">Bio Gender</label>
                      <select 
-                       className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-4 text-sm font-black focus:bg-white/[0.05] focus:border-[#00d69b]/30 outline-none transition-all appearance-none cursor-pointer" 
+                       className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-4 text-sm font-semibold tracking-tight focus:bg-white/[0.05] focus:border-[#00d69b]/30 outline-none transition-all appearance-none cursor-pointer" 
                        value={gender} 
                        onChange={e => setGender(e.target.value)}
                      >
@@ -230,11 +197,11 @@ export default function TriagePage() {
                 </div>
               </motion.div>
 
-              <motion.div {...fadeInUp} transition={{ delay: 0.2 }} className="glass p-10 relative overflow-hidden group">
+              <motion.div {...fadeInUp} transition={{ delay: 0.2 }} className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-10 relative overflow-hidden group">
                 <div className="absolute top-0 right-0 p-10 pointer-events-none opacity-[0.05] group-hover:opacity-[0.08] transition-opacity">
                   <Brain size={140} />
                 </div>
-                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/10 mb-8">Neural Mapping Inputs</h3>
+                <h3 className="text-[10px] font-semibold tracking-tight uppercase tracking-[0.3em] text-white/10 mb-8">Neural Mapping Inputs</h3>
                 
                 <div className="flex flex-wrap gap-2.5 mb-10">
                    {COMMON_SYMPTOMS.map(s => {
@@ -244,7 +211,7 @@ export default function TriagePage() {
                          whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                          key={s} 
                          onClick={() => isSelected ? removeSymptom(s) : addSymptom(s)}
-                         className={`px-5 py-2.5 rounded-[14px] text-[11px] font-black tracking-tight border transition-all duration-300 ${isSelected ? 'bg-[#00d69b] border-transparent text-black' : 'bg-white/[0.02] border-white/5 text-white/20 hover:text-white hover:border-white/10'}`}
+                         className={`px-5 py-2.5 rounded-[14px] text-[11px] font-semibold tracking-tight tracking-tight border transition-all duration-300 ${isSelected ? 'bg-[#00d69b] border-transparent text-black' : 'bg-white/[0.02] border-white/5 text-white/20 hover:text-white hover:border-white/10'}`}
                        >
                          {s}
                        </motion.button>
@@ -268,7 +235,7 @@ export default function TriagePage() {
                      {symptoms.map(s => (
                        <motion.div 
                          key={s} initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }}
-                         className="flex items-center gap-2.5 px-4 py-2 rounded-xl bg-white/[0.03] border border-white/5 text-[#00d69b] text-[10px] font-black uppercase tracking-widest group/pill hover:border-[#00d69b]/20 transition-all cursor-default"
+                         className="flex items-center gap-2.5 px-4 py-2 rounded-xl bg-white/[0.03] border border-white/5 text-[#00d69b] text-[10px] font-semibold tracking-tight uppercase tracking-widest group/pill hover:border-[#00d69b]/20 transition-all cursor-default"
                        >
                           {s}
                           <button onClick={() => removeSymptom(s)} className="text-white/10 hover:text-red-400 transition-colors">
@@ -283,7 +250,7 @@ export default function TriagePage() {
                   whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}
                   onClick={runTriage}
                   disabled={loading || symptoms.length === 0}
-                  className="w-full py-6 rounded-[24px] bg-[#00d69b] text-black font-black text-xs uppercase tracking-[0.3em] shadow-xl hover:shadow-[#00d69b]/20 disabled:opacity-30 disabled:hover:shadow-none transition-all flex items-center justify-center gap-4 relative overflow-hidden"
+                  className="w-full py-6 rounded-[24px] bg-[#00d69b] text-black font-semibold tracking-tight text-xs uppercase tracking-[0.3em] shadow-xl hover:shadow-[#00d69b]/20 disabled:opacity-30 disabled:hover:shadow-none transition-all flex items-center justify-center gap-4 relative overflow-hidden"
                 >
                   {loading ? (
                     <>
@@ -306,12 +273,12 @@ export default function TriagePage() {
                 {!result ? (
                   <motion.div 
                     key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                    className="glass flex-1 flex flex-col items-center justify-center text-center p-16 border-dashed border-white/5 bg-transparent"
+                    className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] flex-1 flex flex-col items-center justify-center text-center p-16 border-dashed border-white/5 bg-transparent"
                   >
                     <div className="w-24 h-24 rounded-[32px] bg-white/[0.01] border border-white/5 flex items-center justify-center mb-10">
                       <Sparkles size={48} className="text-white/5" />
                     </div>
-                    <h4 className="text-xl font-black tracking-tight mb-4">Neural Engine Standby</h4>
+                    <h4 className="text-xl font-semibold tracking-tight tracking-tight mb-4">Neural Engine Standby</h4>
                     <p className="text-white/20 text-[11px] font-bold uppercase tracking-widest leading-relaxed max-w-xs">
                       Activate assessment by injecting clinical markers. Model v4.2.1 optimized for AYUSH-ICD sync.
                     </p>
@@ -328,14 +295,14 @@ export default function TriagePage() {
                       </div>
                       <div className="flex items-start justify-between mb-12 relative z-10">
                          <div>
-                           <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/10 block mb-2">Priority Vector</span>
-                           <h2 className={`text-5xl font-black tracking-tighter ${result.risk_level === 'critical' ? 'text-red-400 underline decoration-red-400/20' : 'text-[#00d69b]'}`}>
+                           <span className="text-[10px] font-semibold tracking-tight uppercase tracking-[0.3em] text-white/10 block mb-2">Priority Vector</span>
+                           <h2 className={`text-5xl font-semibold tracking-tight tracking-tighter ${result.risk_level === 'critical' ? 'text-red-400 underline decoration-red-400/20' : 'text-[#00d69b]'}`}>
                              {result.risk_level.toUpperCase()}
                            </h2>
                          </div>
                          <div className={`w-24 h-24 rounded-[32px] flex flex-col items-center justify-center border-2 ${result.risk_level === 'critical' ? 'border-red-400/30 text-red-400' : 'border-[#00d69b]/30 text-[#00d69b]'} bg-black/40 backdrop-blur-2xl`}>
-                            <span className="text-3xl font-black leading-none">{(result.risk_score * 100).toFixed(0)}</span>
-                            <span className="text-[9px] font-black uppercase tracking-widest mt-1 opacity-40 text-white">Score</span>
+                            <span className="text-3xl font-semibold tracking-tight leading-none">{(result.risk_score * 100).toFixed(0)}</span>
+                            <span className="text-[9px] font-semibold tracking-tight uppercase tracking-widest mt-1 opacity-40 text-white">Score</span>
                          </div>
                       </div>
                       
@@ -343,7 +310,7 @@ export default function TriagePage() {
                          {result.recommendations.map((rec: string, i: number) => (
                            <motion.div 
                              key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1 }}
-                             className="flex items-center gap-4 text-[11px] font-black uppercase tracking-widest text-white/60 bg-white/[0.02] p-5 rounded-2xl border border-white/5"
+                             className="flex items-center gap-4 text-[11px] font-semibold tracking-tight uppercase tracking-widest text-white/60 bg-white/[0.02] p-5 rounded-2xl border border-white/5"
                            >
                               <CheckCircle2 size={16} className={result.risk_level === 'critical' ? 'text-red-400' : 'text-[#00d69b]'} />
                               {rec}
@@ -353,8 +320,8 @@ export default function TriagePage() {
                     </div>
 
                     {/* Diagnosis Matches */}
-                    <div className="glass p-10">
-                       <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/10 mb-8 flex items-center gap-3">
+                    <div className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-10">
+                       <h3 className="text-[10px] font-semibold tracking-tight uppercase tracking-[0.3em] text-white/10 mb-8 flex items-center gap-3">
                           <Stethoscope size={16} className="text-[#00d69b]" /> Predicted Codings
                        </h3>
                        <div className="space-y-4">
@@ -364,12 +331,12 @@ export default function TriagePage() {
                               className="p-6 rounded-[28px] bg-white/[0.01] border border-white/5 hover:bg-white/[0.03] transition-all flex items-center justify-between group cursor-default"
                             >
                                <div>
-                                 <div className="text-[14px] font-black uppercase tracking-tight text-white group-hover:text-[#00d69b] transition-colors mb-1">{m.display}</div>
-                                 <div className="text-[10px] text-white/10 font-black tracking-[0.2em] uppercase">ICD-11 Sync: {m.icd11}</div>
+                                 <div className="text-[14px] font-semibold tracking-tight uppercase tracking-tight text-white group-hover:text-[#00d69b] transition-colors mb-1">{m.display}</div>
+                                 <div className="text-[10px] text-white/10 font-semibold tracking-tight tracking-[0.2em] uppercase">ICD-11 Sync: {m.icd11}</div>
                                </div>
                                <div className="text-right">
-                                 <div className="text-2xl font-black text-white">{(m.confidence * 100).toFixed(0)}%</div>
-                                 <div className="text-[9px] font-black uppercase tracking-widest text-white/10">Confidence</div>
+                                 <div className="text-2xl font-semibold tracking-tight text-white">{(m.confidence * 100).toFixed(0)}%</div>
+                                 <div className="text-[9px] font-semibold tracking-tight uppercase tracking-widest text-white/10">Confidence</div>
                                </div>
                             </motion.div>
                           ))}
@@ -380,22 +347,22 @@ export default function TriagePage() {
                     {medicines && (
                       <motion.div 
                         initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }}
-                        className="glass p-10 border-amber-500/20 bg-amber-500/[0.01] mb-auto"
+                        className="bg-white/[0.015] border border-white/[0.03] shadow-[inset_0_1px_rgba(255,255,255,0.02)] rounded-[32px] p-10 border-amber-500/20 bg-amber-500/[0.01] mb-auto"
                       >
-                         <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-amber-500/60 mb-8 flex items-center gap-3">
+                         <h3 className="text-[10px] font-semibold tracking-tight uppercase tracking-[0.3em] text-amber-500/60 mb-8 flex items-center gap-3">
                             <Pill size={16} /> Precision Protocol Advice
                          </h3>
                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                             {medicines.medicines.map((m: any, i: number) => (
                               <div key={i} className="p-5 rounded-2xl bg-amber-500/[0.03] border border-amber-500/10 hover:border-amber-500/30 transition-all">
-                                 <div className="font-black text-amber-500 text-[11px] uppercase tracking-widest mb-1">{m.name}</div>
+                                 <div className="font-semibold tracking-tight text-amber-500 text-[11px] uppercase tracking-widest mb-1">{m.name}</div>
                                  <div className="text-[10px] font-bold text-white/20 uppercase tracking-tighter">{m.dosage || m.dose}</div>
                               </div>
                             ))}
                          </div>
                          <div className="flex gap-4 p-5 rounded-2xl bg-black/20 border border-white/5">
                             <AlertCircle size={18} className="text-amber-500 shrink-0 mt-0.5" />
-                            <p className="text-[9px] font-black text-white/10 leading-relaxed uppercase tracking-[0.1em] italic">
+                            <p className="text-[9px] font-semibold tracking-tight text-white/10 leading-relaxed uppercase tracking-[0.1em] italic">
                               {medicines.disclaimer}
                             </p>
                          </div>
@@ -406,13 +373,13 @@ export default function TriagePage() {
                        <motion.button 
                          whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
                          onClick={() => router.push('/dashboard/emr')}
-                         className="flex-1 py-5 rounded-[24px] bg-white/[0.03] border border-white/5 font-black text-[10px] uppercase tracking-widest hover:bg-white/[0.06] transition-all flex items-center justify-center gap-3"
+                         className="flex-1 py-5 rounded-[24px] bg-white/[0.03] border border-white/5 font-semibold tracking-tight text-[10px] uppercase tracking-widest hover:bg-white/[0.06] transition-all flex items-center justify-center gap-3"
                        >
                           <Stethoscope size={18} className="text-[#00d69b]" /> Commit to EMR
                        </motion.button>
                        <motion.button 
                         whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-                        className="flex-1 py-5 rounded-[24px] bg-white/[0.03] border border-white/5 font-black text-[10px] uppercase tracking-widest hover:bg-white/[0.06] transition-all flex items-center justify-center gap-3"
+                        className="flex-1 py-5 rounded-[24px] bg-white/[0.03] border border-white/5 font-semibold tracking-tight text-[10px] uppercase tracking-widest hover:bg-white/[0.06] transition-all flex items-center justify-center gap-3"
                        >
                           <ShieldCheck size={18} className="text-[#00d69b]" /> Verify Audit
                        </motion.button>
@@ -427,3 +394,6 @@ export default function TriagePage() {
     </div>
   );
 }
+
+
+

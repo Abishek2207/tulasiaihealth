@@ -54,7 +54,7 @@ interface PatientIDCardProps {
 const fadeInUp = {
   initial: { opacity: 0, y: 15 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6, ease: "easeOut" as const }
+  transition: { duration: 0.6, ease: "easeOut" as "easeOut" }
 };
 
 export default function PatientIDCard({
@@ -319,3 +319,6 @@ export default function PatientIDCard({
     </motion.div>
   );
 }
+
+
+
